@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Cargill",
+    "code": "001",
+    "district": "San Jose",
+    "province": "San Jose"
+  },
+  {
+    "name": "Abbot",
+    "code": "002",
+    "district": "Grecia",
+    "province": "Alajuela"
+  }
+
+]

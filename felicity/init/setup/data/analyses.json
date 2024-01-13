@@ -1,0 +1,350 @@
+{
+  "categories": ["Quality Control", "Molecular Techniques"],
+  "qc_levels": [
+    "Blank",
+    "Negative Control",
+    "Positive Control",
+    "Low Positive Control",
+    "High Positive Control"
+  ],
+  "sample_types": [
+    {
+      "name": "QC Sample",
+      "description": "QC Sample",
+      "abbr": "QCS",
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Agua Residual",
+      "description": "Agua Residual",
+      "abbr": "AR",
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Agua Potable",
+      "description": "Agua Potable",
+      "abbr": "AP",
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Agua Piscina",
+      "description": "Agua Piscina",
+      "abbr": "APS",
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Suelo",
+      "description": "Suelo",
+      "abbr": "Sl",
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Foliar",
+      "description": "Foliar",
+      "abbr": "Fr",
+      "active": 0,
+      "mappins": [{ "loinc": "" }]
+    }
+  ],
+  "analyses": [
+    {
+      "name": "pH",
+      "description": "pH",
+      "keyword": "pH",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Color Aparente",
+      "description": "Color",
+      "keyword": "CA",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Conductividad",
+      "description": "Conductividad",
+      "keyword": "CE",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Olor",
+      "description": "Olor",
+      "keyword": "olor",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Temperatura",
+      "description": "Temperatura",
+      "keyword": "T",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Turbiedad",
+      "description": "Turbiedad",
+      "keyword": "Tb",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Cloro residual",
+      "description": "Cloro residual libre y combinado",
+      "keyword": "CRL",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+
+    {
+      "name": "Coliformes totales",
+      "description": "Coliformes totales",
+      "keyword": "ColifT",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "E-Coli",
+      "description": "E-Coli",
+      "keyword": "E-Coli",
+      "sort_key": 2,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Alcalinidad",
+      "description": "Alcalinidad",
+      "keyword": "Alc",
+      "sort_key": 3,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Aluminio",
+      "description": "Aluminio",
+      "keyword": "Al",
+      "sort_key": 4,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Calcio",
+      "description": "Calcio",
+      "keyword": "Ca",
+      "sort_key": 5,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+
+    {
+      "name": "Cloro",
+      "description": "Cloro",
+      "keyword": "Cl",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Cloruro",
+      "description": "Cloruro",
+      "keyword": "Cl-",
+      "sort_key": 2,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Cobre",
+      "description": "Cobre",
+      "keyword": "Cu",
+      "sort_key": 3,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Dureza Total",
+      "description": "Dureza Total",
+      "keyword": "DT",
+      "sort_key": 5,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Floruro",
+      "description": "Floruro",
+      "keyword": "Fl-",
+      "sort_key": 7,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Hierro",
+      "description": "Hierro",
+      "keyword": "Fe",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Magnesio",
+      "description": "Magnesio",
+      "keyword": "Mg",
+      "sort_key": 2,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Manganeso",
+      "description": "Manganeso",
+      "keyword": "Mn",
+      "sort_key": 3,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Postasio",
+      "description": "Potasio",
+      "keyword": "K",
+      "sort_key": 4,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+
+    {
+      "name": "Salinidad",
+      "description": "Salinidad",
+      "keyword": "NaCl",
+      "sort_key": 1,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Sodio",
+      "description": "Sodio",
+      "keyword": "Na",
+      "sort_key": 2,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Sulfato",
+      "description": "Sulfato",
+      "keyword": "SO4",
+      "sort_key": 4,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Zinc",
+      "description": "Zinc",
+      "keyword": "Zn",
+      "sort_key": 5,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "TDS",
+      "description": "TDS",
+      "keyword": "TDS",
+      "sort_key": 7,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "UVT",
+      "description": "UVT",
+      "keyword": "UVT",
+      "sort_key": 8,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Silice",
+      "description": "Silice",
+      "keyword": "Si",
+      "sort_key": 8,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "Arsenico",
+      "description": "Arsenico",
+      "keyword": "As",
+      "sort_key": 8,
+      "active": 1,
+      "mappins": [{ "loinc": "" }]
+    }
+  ],
+  "analyses_profiles": [
+    {
+      "name": "N-1",
+      "description": "N-1 aguas",
+      "analyses_names": [
+        "pH",
+        "Color Aparente",
+        "Conductividad",
+        "Olor",
+        "Temperatura",
+        "Turbiedad",
+        "Cloro residual",
+        "Coliformes totales",
+        "E-Coli"
+      ],
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "N-2",
+      "description": "N-2 aguas",
+      "analyses_names": [
+        "Aluminio",
+        "Calcio",
+        "Cloro",
+        "Cloruro",
+        "Cobre",
+        "Dureza Total",
+        "Floruro",
+        "Hierro",
+        "Magnesio",
+        "Manganeso",
+        "Postasio",
+        "Salinidad",
+        "Sodio",
+        "Sulfato",
+        "Zinc",
+        "TDS",
+        "UVT"
+      ],
+      "mappins": [{ "loinc": "" }]
+    },
+    {
+      "name": "N-3",
+      "description": "N-3 aguas",
+      "analyses_names": [
+        "Silice",
+        "Arsenico"
+      ],
+      "mappins": [{ "loinc": "" }]
+    }
+  ],
+  "rejection_reasons": [
+    "Sample clotted",
+    "Sample details and form details not matching",
+    "Sample spoilled",
+    "Sample insufficient",
+    "Sample haemolysed",
+    "Sample too old"
+  ]
+}

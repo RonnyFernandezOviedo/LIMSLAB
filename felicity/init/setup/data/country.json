@@ -1,0 +1,123 @@
+{
+  "country": {
+    "name": "Costa Rica",
+    "code": "CR",
+    "provinces": [
+      {
+        "name": "San Jose",
+        "code": "SJ",
+        "districts": [
+		{ "name": "San Jose", "code": "SJO" },
+		{ "name": "Escazu", "code": "EZ" },
+		{ "name": "Desamparador", "code": "DE" },
+		{ "name": "Puriscal", "code": "PU" },
+		{ "name": "Tarrazu", "code": "TA" },
+		{ "name": "Aserrì", "code": "AS" },
+		{ "name": "Mora", "code": "MO" },
+		{ "name": "Goicoechea", "code": "GO" },
+		{ "name": "Santa Ana", "code": "SA" },
+		{ "name": "Alajuelita", "code": "AJ" },
+		{ "name": "Vázquez de Coronado", "code": "VA" },
+		{ "name": "Acosta", "code": "AC" },
+		{ "name": "Tibás", "code": "TI" },
+		{ "name": "Moravia", "code": "MR" },
+		{ "name": "Montes de Oca", "code": "MT" },
+		{ "name": "Turrubares", "code": "Tu" },
+		{ "name": "Dota", "code": "DT" },
+		{ "name": "Curridabat", "code": "CU" },
+		{ "name": "Pérez Zeledón", "code": "PZ" },
+		{ "name": "León Cortés Castro", "code": "Mo" }
+		]
+      },
+      {
+        "name": "Alajuela",
+        "code": "Al",
+        "districts": [
+		{ "name": "Alajuela", "code": "AlJ" },
+		{ "name": "San Ramon", "code": "SR" },
+		{ "name": "Grecia", "code": "GE" },
+		{ "name": "San Mateo", "code": "SM" },
+		{ "name": "Naranjo", "code": "NA" },
+		{ "name": "Guatuso", "code": "GT" },
+		{ "name": "San Carlos", "code": "SC" },
+		{ "name": "Palmares", "code": "PL" },
+		{ "name": "Atenas", "code": "AT" },
+		{ "name": "Poas", "code": "PO" },
+		{ "name": "Orotina", "code": "OR" },
+		{ "name": "Zarcero", "code": "ZA" },
+		{ "name": "Sarchi", "code": "SCH" },
+		{ "name": "Upala", "code": "UP" },
+		{ "name": "Los Chiles", "code": "CH" },
+		{ "name": "Rio Cuarto", "code": "RC" }
+		]
+      },
+      {
+        "name": "Heredia",
+        "code": "He",
+        "districts": [
+          { "name": "Buhera", "code": "MA-BU" },
+          { "name": "Chimanimani", "code": "MA-CH" },
+          { "name": "Chipinge", "code": "MA-CP" },
+          { "name": "Makoni", "code": "MA-MA" },
+          { "name": "Mutare", "code": "MA-MU" },
+          { "name": "Mutasa", "code": "MA-MT" },
+          { "name": "Nyanga", "code": "MA-NY" }
+        ]
+      },
+      {
+        "name": "Guanacaste",
+        "code": "Gu",
+        "districts": [
+          { "name": "Bindura", "code": "MC-BI" },
+          { "name": "Guruve", "code": "MC-GU" },
+          { "name": "Mazowe", "code": "MC-MA" },
+          { "name": "Mbire", "code": "MC-MB" },
+          { "name": "Mukumbura", "code": "MC-MU" },
+          { "name": "Muzarabani", "code": "MC-MZ" },
+          { "name": "Rushinga", "code": "MC-RU" },
+          { "name": "Shamva", "code": "MC-SH" }
+        ]
+      },
+      {
+        "name": "Cartago",
+        "code": "Ca",
+        "districts": [
+          { "name": "Chikomba", "code": "ME-CH" },
+          { "name": "Goromonzi", "code": "ME-GO" },
+          { "name": "Hwedza (Wedza)", "code": "ME-HW" },
+          { "name": "Marondera", "code": "ME-MA" },
+          { "name": "Mudzi", "code": "ME-MU" },
+          { "name": "Murehwa", "code": "ME-MR" },
+          { "name": "Mutoko", "code": "ME-MT" },
+          { "name": "Seke", "code": "ME-SE" },
+          { "name": "Uzumba Maramba Pfungwe", "code": "ME-UZ" }
+        ]
+      },
+      {
+        "name": "Limon",
+        "code": "Li",
+        "districts": [
+          { "name": "Chegutu", "code": "MW-CH" },
+          { "name": "Hurungwe", "code": "MW-HU" },
+          { "name": "Kadoma", "code": "MW-KA" },
+          { "name": "Kariba", "code": "MW-KR" },
+          { "name": "Mukonde", "code": "MW-MU" },
+          { "name": "Zvimba", "code": "MW-ZV" }
+        ]
+      },
+      {
+        "name": "Puntarenas",
+        "code": "Pu",
+        "districts": [
+          { "name": "Bikita", "code": "MV-BI" },
+          { "name": "Chiredzi", "code": "MV-CH" },
+          { "name": "Chivi", "code": "MV-CV" },
+          { "name": "Gutu", "code": "MV-GU" },
+          { "name": "Masvingo", "code": "MV-MA" },
+          { "name": "Mwenezi", "code": "MV-MW" },
+          { "name": "Zaka", "code": "MV-ZA" }
+        ]
+      }
+    ]
+  }
+}
