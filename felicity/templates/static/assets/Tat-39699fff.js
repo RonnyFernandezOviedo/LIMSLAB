@@ -1,1 +1,0 @@
-import{d as e,_ as t,o,c as s}from"./index-e479c930.js";const n=e({name:"tab-tat",setup(){return{}}}),a={class:"text-xl text-gray-700 font-semibold"};function r(c,_,p,d,u,f){return o(),s("h1",a,"Turn Aroud Time Measures")}const m=t(n,[["render",r]]);export{m as default};

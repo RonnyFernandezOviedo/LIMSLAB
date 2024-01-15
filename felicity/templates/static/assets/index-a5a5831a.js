@@ -1,1 +1,0 @@
-import{d as o,o as n,L as t,u as _,z as a,A as r}from"./index-e479c930.js";const d=o({__name:"index",setup(s){const e=a(()=>r(()=>import("./Storage-fb30bc9d.js"),["assets/Storage-fb30bc9d.js","assets/index-e479c930.js","assets/index-5bc4f6f2.css"]));return(c,p)=>(n(),t(_(e)))}});export{d as default};
