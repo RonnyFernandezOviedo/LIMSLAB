@@ -46,7 +46,6 @@ class Auditable(BaseAuditDBModel, AuditableMixin):
 
     __abstract__ = True
 
-
 # class EventHooked(BaseAuditDBModel, EventHookMixin):
 #     """Listens for All events:  Not working"""
 #     __abstract__ = True

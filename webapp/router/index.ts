@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/auth',
         name: guards.pages.LOGIN,
-        component: () => import('../views/auth/Login.vue'),
+        component: () => import('../views/auth/Auth.vue'),
         meta: { layout: 'empty' },
     },
     {

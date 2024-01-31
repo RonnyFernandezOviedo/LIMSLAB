@@ -89,11 +89,11 @@ class Settings(BaseSettings):
             return v
         return f'postgresql+asyncpg://{info.data.get("POSTGRES_USER")}:{info.data.get("POSTGRES_PASSWORD")}@{info.data.get("POSTGRES_SERVER")}/test_{info.data.get("POSTGRES_DB") or ""}'
 
-    SMTP_TLS: bool = getenv_boolean("SMTP_TLS", False)
-    SMTP_PORT: int | None = getenv_value("SMTP_PORT", 1025)
-    SMTP_HOST: str | None = getenv_value("SMTP_HOST", "localhost")
-    SMTP_USER: str | None = getenv_value("SMTP_USER", "")
-    SMTP_PASSWORD: str | None = getenv_value("SMTP_PASSWORD", "")
+    SMTP_TLS: bool = getenv_boolean("SMTP_TLS", True)
+    SMTP_PORT: int | None = getenv_value("SMTP_PORT", 465)
+    SMTP_HOST: str | None = getenv_value("SMTP_HOST", "smtp.gmail.com")
+    SMTP_USER: str | None = getenv_value("SMTP_USER", "feroviro86@gmail.com")
+    SMTP_PASSWORD: str | None = getenv_value("SMTP_PASSWORD", "kcvb bdzy bqfc qsrp")
     EMAILS_FROM_EMAIL: EmailStr | None = getenv_value(
         "EMAILS_FROM_EMAIL", "felicity@felicity.labs"
     )

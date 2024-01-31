@@ -7,7 +7,7 @@ def subscribe(event_type: str, fn: Callable):
     if not event_type in subscribers:
         subscribers[event_type] = []
 
-    subscribers[event_type].append(fn)
+    subscribers[event_type].append(fn) 
 
 
 def post_event(event_type: str, **kwargs):

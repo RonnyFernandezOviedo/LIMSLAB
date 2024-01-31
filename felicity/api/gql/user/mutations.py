@@ -22,7 +22,7 @@ from apps.user import schemas as user_schemas
 from core import security
 from core.config import settings
 from core.events import post_event
-from core.security import generate_password_reset_token
+from core.security import generate_password_reset_token, verify_password_reset_token
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -48,6 +48,19 @@ UpdatedGroupPermsResponse = strawberry.union(
 
 GroupResponse = strawberry.union(
     "GroupResponse", (GroupType, OperationError), description=""  # noqa
+)
+
+
+@strawberry.type
+class PasswordResetValidityType:
+    username: str
+    auth_uid: str
+
+
+PasswordResetValidityResponse = strawberry.union(
+    "PasswordResetValidityResponse",
+    (PasswordResetValidityType, OperationError),
+    description="",  # noqa
 )
 
 
@@ -294,6 +307,64 @@ class UserMutations:
 
         await user.unlink_auth()
         return StrawberryMapper[UserType]().map(**user.marshal_simple())
+    
+    @strawberry.mutation()
+    async def request_password_reset(self, info, email: str) -> MessageResponse:
+
+        user = await user_models.User.get_by_email(email)
+        if not user:
+            return OperationError(
+                error="User with provided email not found? Check your email and try again"
+            )
+
+        if not user.auth_uid:
+            return OperationError(
+                error="Authentication for provided user does not exist. Talk to your administrator"
+            )
+
+        password_reset_token = generate_password_reset_token(email) 
+        post_event("password-reset", user=user, token=password_reset_token)
+
+        msg = "Password recovery email sent"
+        return MessagesType(message=msg)
+
+    @strawberry.mutation()
+    async def validate_password_reset_token(
+        self, info, token: str
+    ) -> PasswordResetValidityResponse:
+
+        email = verify_password_reset_token(token)
+        if not email:
+            return OperationError(error="Your token is invalid")
+
+        user = await user_models.User.get_by_email(email)
+        if not user:
+            return OperationError(error="Your token is invalid")
+        auth = await user_models.UserAuth.get(uid=user.auth_uid)
+        return PasswordResetValidityType(
+            username=auth.user_name, auth_uid=user.auth_uid
+        ) 
+
+    @strawberry.mutation()
+    async def reset_password(
+        self,
+        info,
+        auth_uid: str,
+        username: str,
+        password: str,
+        passwordc: str,
+    ) -> MessageResponse:
+
+        auth = await user_models.UserAuth.get(uid=auth_uid, user_name=username)
+
+        if password != passwordc:
+            return OperationError(error=f"Passwords dont match")
+
+        auth_in = user_schemas.AuthUpdate(password=password, user_name=username)
+        await auth.update(auth_in)
+        return MessagesType(
+            message="Password was successfully reset, Now login with your new password"
+        )
 
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def recover_password(self, info, username: str) -> MessageResponse:
