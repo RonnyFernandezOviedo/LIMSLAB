@@ -1,1 +1,0 @@
-import{_ as e,o as s,c,b as o}from"./index-22e9c43e.js";const t={},n={class:""},a=o("h4",null,"Publication Preferences:> email and sms",-1),_=[a];function r(i,d){return s(),c("div",n,_)}const f=e(t,[["render",r]]);export{f as default};

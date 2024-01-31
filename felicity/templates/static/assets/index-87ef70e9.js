@@ -1,1 +1,0 @@
-import{d as n,o,L as t,u as _,z as r,A as a}from"./index-22e9c43e.js";const d=n({__name:"index",setup(s){const e=r(()=>a(()=>import("./Inventory-95531556.js"),["assets/Inventory-95531556.js","assets/index-22e9c43e.js","assets/index-5bc4f6f2.css"]));return(c,p)=>(o(),t(_(e)))}});export{d as default};
