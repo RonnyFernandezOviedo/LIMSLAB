@@ -1,0 +1,1 @@
+import{_ as e,o as s,c as t,b as o}from"./index-236e333a.js";const c={},_={class:""},n=o("h4",null,"LIMS System",-1),a=[n];function r(d,i){return s(),t("div",_,a)}const f=e(c,[["render",r]]);export{f as default};
