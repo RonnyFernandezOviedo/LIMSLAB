@@ -131,7 +131,7 @@ export const useShipmentStore = defineStore('shipment', {
                     this.fetchingSamples = false;
                     const page = payload.samplesForShipmentAssign;
                     const samples = page.items.map((s: ISample) => {
-                        s.analysisResults = s.analysisResults?.filter(r => r.status === "pending")
+                        s.analysisResults = s.analysisResults?.filter(r => r.status === "pendiente")
                         return s;
                     });
                     if (params.filterAction) {

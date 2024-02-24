@@ -161,7 +161,7 @@ function addPatient(payload: IPatient) {
         lastName: payload.lastName,
         age: payload.age,
         gender: payload.gender,
-        dateOfBirth: payload.dateOfBirth,
+        //dateOfBirth: payload.dateOfBirth, by Ronny
         ageDobEstimated: payload.ageDobEstimated,
         clientUid: payload.client.uid,
         phoneMobile: payload.phoneMobile,

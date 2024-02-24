@@ -46,9 +46,9 @@ async def check_sample_verification(
     _sample_ids = [r.sample_id for r in restricted] if restricted else []
     if _sample_ids:
         message = (
-            f"Self verification is not allowed for sample(s): {', '.join(_sample_ids)}."
+            f"La auto verificacion no esta permitida para los resultados:: {', '.join(_sample_ids)}."
         )
-        suggestion = "The person verifying samples must be different from the one who submitted them."
+        suggestion = "La persona que verifica los resultados debe ser diferente a la que los envió."
 
     # push hangings
     for hang in hangings:
@@ -103,8 +103,8 @@ async def check_result_verification(
     )
     if _result_data:
         message = (
-            f"Self verification is not allowed for results: {', '.join(_result_data)}."
+            f"La auto verificacion no esta permitida para los resultados: {', '.join(_result_data)}."
         )
-        suggestion = "The person verifying results must be different from the one who submitted them."
+        suggestion = "La persona que verifica los resultados debe ser diferente a la que los envió."
 
     return allowed, restricted, message, suggestion

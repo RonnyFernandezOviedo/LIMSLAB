@@ -24,17 +24,17 @@
             fill="white"
           />
         </svg>
-        <span class="text-gray-700 font-semibold text-2xl">FelicityLIMS</span>
+        <span class="text-gray-700 font-semibold text-2xl">LIMS Laboratorio</span>
       </div>
       <hr>
       <section class="flex justify-center items-center mt-4">
-        <h1>Sorry You are not Authorised to access this resource</h1>
+        <h1>Lo siento! Usted no esta autorizado para acceder a esta seccion</h1>
 
         <div>
           <button 
           @click="goHome"
           class="ml-4 py-2 px-4 text-center border-indigo-200 border rounded-sm w-full text-indigo-600 text-sm hover:bg-indigo-600 hover:text-white">
-            Go Home /
+            Regresar
           </button>
         </div>
 

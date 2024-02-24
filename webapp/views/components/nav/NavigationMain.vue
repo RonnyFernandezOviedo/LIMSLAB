@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { ref, onMounted, computed, defineAsyncComponent } from "vue";
 import { useNotificationStore, useAuthStore } from "../../../stores";
 import { userPreferenceComposable, useApiUtil } from "../../../composables";
@@ -7,8 +8,8 @@ const Drawer = defineAsyncComponent(
   () => import("../../../components/Drawer.vue")
 )
 
-const { errors } = useApiUtil()
 
+const { errors } = useApiUtil()
 const dropdownOpen = ref(false);
 const themeChange = ref(false);
 const isOpen = ref(false);
@@ -28,6 +29,7 @@ const showErrors = ref(false)
 </script>
 
 <template>
+  <h1>{{ console.log(guards.canAccessPage(guards.pages.ADMINISTRATION)) }}</h1>
   <nav id="main-nav" class="flex items-center pr-4 bg-sky-800" role="navigation">
     <div class="flex-1 py-2">
       <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"></div>

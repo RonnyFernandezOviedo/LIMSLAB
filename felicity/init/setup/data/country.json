@@ -12,21 +12,21 @@
 		{ "name": "Desamparador", "code": "DE" },
 		{ "name": "Puriscal", "code": "PU" },
 		{ "name": "Tarrazu", "code": "TA" },
-		{ "name": "Aserrì", "code": "AS" },
+		{ "name": "Aserri", "code": "AS" },
 		{ "name": "Mora", "code": "MO" },
 		{ "name": "Goicoechea", "code": "GO" },
 		{ "name": "Santa Ana", "code": "SA" },
 		{ "name": "Alajuelita", "code": "AJ" },
-		{ "name": "Vázquez de Coronado", "code": "VA" },
+		{ "name": "Vazquez de Coronado", "code": "VA" },
 		{ "name": "Acosta", "code": "AC" },
-		{ "name": "Tibás", "code": "TI" },
+		{ "name": "Tibas", "code": "TI" },
 		{ "name": "Moravia", "code": "MR" },
 		{ "name": "Montes de Oca", "code": "MT" },
 		{ "name": "Turrubares", "code": "Tu" },
 		{ "name": "Dota", "code": "DT" },
 		{ "name": "Curridabat", "code": "CU" },
-		{ "name": "Pérez Zeledón", "code": "PZ" },
-		{ "name": "León Cortés Castro", "code": "Mo" }
+		{ "name": "Perez Zeledon", "code": "PZ" },
+		{ "name": "Leon Cortes Castro", "code": "Mo" }
 		]
       },
       {
@@ -55,67 +55,79 @@
         "name": "Heredia",
         "code": "He",
         "districts": [
-          { "name": "Buhera", "code": "MA-BU" },
-          { "name": "Chimanimani", "code": "MA-CH" },
-          { "name": "Chipinge", "code": "MA-CP" },
-          { "name": "Makoni", "code": "MA-MA" },
-          { "name": "Mutare", "code": "MA-MU" },
-          { "name": "Mutasa", "code": "MA-MT" },
-          { "name": "Nyanga", "code": "MA-NY" }
+          { "name": "Heredia", "code": "HER" },
+          { "name": "Barva", "code": "BA" },
+          { "name": "Santo Domingo", "code": "STD" },
+          { "name": "Santa Barbara", "code": "STDB" },
+          { "name": "San Rafael", "code": "SRF" },
+          { "name": "San Isidro", "code": "SI" },
+          { "name": "Belen", "code": "BEL" },
+          { "name": "Flores", "code": "FLS" },
+          { "name": "San Pablo", "code": "SP" },
+          { "name": "Sarapiqui", "code": "SAR" }
         ]
       },
       {
         "name": "Guanacaste",
         "code": "Gu",
         "districts": [
-          { "name": "Bindura", "code": "MC-BI" },
-          { "name": "Guruve", "code": "MC-GU" },
-          { "name": "Mazowe", "code": "MC-MA" },
-          { "name": "Mbire", "code": "MC-MB" },
-          { "name": "Mukumbura", "code": "MC-MU" },
-          { "name": "Muzarabani", "code": "MC-MZ" },
-          { "name": "Rushinga", "code": "MC-RU" },
-          { "name": "Shamva", "code": "MC-SH" }
+          { "name": "Liberia", "code": "LIB" },
+          { "name": "Nicoya", "code": "NIY" },
+          { "name": "Santa Cruz", "code": "STC" },
+          { "name": "Bagaces", "code": "BAG" },
+          { "name": "Carrillo", "code": "CARR" },
+          { "name": "Canas", "code": "CAN" },
+          { "name": "Abangares", "code": "ABG" },
+          { "name": "Tilaran", "code": "TIL" },
+          { "name": "Nandayure", "code": "NAYL" },
+          { "name": "La Cruz", "code": "LAC" },
+          { "name": "Hojancha", "code": "HOJ" }
         ]
       },
       {
         "name": "Cartago",
         "code": "Ca",
         "districts": [
-          { "name": "Chikomba", "code": "ME-CH" },
-          { "name": "Goromonzi", "code": "ME-GO" },
-          { "name": "Hwedza (Wedza)", "code": "ME-HW" },
-          { "name": "Marondera", "code": "ME-MA" },
-          { "name": "Mudzi", "code": "ME-MU" },
-          { "name": "Murehwa", "code": "ME-MR" },
-          { "name": "Mutoko", "code": "ME-MT" },
-          { "name": "Seke", "code": "ME-SE" },
-          { "name": "Uzumba Maramba Pfungwe", "code": "ME-UZ" }
+          { "name": "Cartago", "code": "CAG" },
+          { "name": "Paraiso", "code": "PAR" },
+          { "name": "La Union", "code": "LAUN" },
+          { "name": "Jimenez", "code": "JIZ" },
+          { "name": "Turrialba", "code": "TURR" },
+          { "name": "Alvarado", "code": "ALV" },
+          { "name": "Oreamuno", "code": "ORE" },
+          { "name": "El Guarco", "code": "GUAC" }
+    
         ]
       },
       {
         "name": "Limon",
         "code": "Li",
         "districts": [
-          { "name": "Chegutu", "code": "MW-CH" },
-          { "name": "Hurungwe", "code": "MW-HU" },
-          { "name": "Kadoma", "code": "MW-KA" },
-          { "name": "Kariba", "code": "MW-KR" },
-          { "name": "Mukonde", "code": "MW-MU" },
-          { "name": "Zvimba", "code": "MW-ZV" }
+          { "name": "Limon", "code": "LIM" },
+          { "name": "Pococi", "code": "POC" },
+          { "name": "Siquirres", "code": "SIQR" },
+          { "name": "Talamanca", "code": "TAL" },
+          { "name": "Matina", "code": "MAT" },
+          { "name": "Guacimo", "code": "GUACI" }
         ]
       },
       {
         "name": "Puntarenas",
         "code": "Pu",
         "districts": [
-          { "name": "Bikita", "code": "MV-BI" },
-          { "name": "Chiredzi", "code": "MV-CH" },
-          { "name": "Chivi", "code": "MV-CV" },
-          { "name": "Gutu", "code": "MV-GU" },
-          { "name": "Masvingo", "code": "MV-MA" },
-          { "name": "Mwenezi", "code": "MV-MW" },
-          { "name": "Zaka", "code": "MV-ZA" }
+          { "name": "Puntarenas", "code": "PT" },
+          { "name": "Esparza", "code": "ESP" },
+          { "name": "Buens Aires", "code": "BNA" },
+          { "name": "Montes de Oro", "code": "MTO" },
+          { "name": "Osa", "code": "OSA" },
+          { "name": "Quepos", "code": "QP" },
+          { "name": "Golfito", "code": "GLT" },
+          { "name": "Coto Brus", "code": "CTB" },
+          { "name": "Parrita", "code": "PARR" },
+          { "name": "Corredores", "code": "CORR" },
+          { "name": "Garabito", "code": "GRB" },
+          { "name": "Monteverde", "code": "MTV" },
+          { "name": "Puerto Jimenez", "code": "PTJ" }
         ]
       }
     ]

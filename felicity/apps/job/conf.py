@@ -4,7 +4,7 @@ This file is part of Felicity LIMS Software
 
 
 class States:
-    PENDING = "pending"
+    PENDING = "pendiente"
     RUNNING = "running"
     FAILED = "failed"
     FINISHED = "finished"

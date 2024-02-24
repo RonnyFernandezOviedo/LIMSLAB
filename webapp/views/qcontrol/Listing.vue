@@ -163,7 +163,7 @@
                 class="appearance-none h-full rounded-l-sm border block  w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                    <option value="">All</option>
                     <option value="pending">Pending</option>
-                    <option value="resulted">Resulted</option>
+                    <option value="resultado">Resulted</option>
                     <option value="to_be_verified">To be Verified</option>
                     <option value="verified">Verified</option>
                 </select>

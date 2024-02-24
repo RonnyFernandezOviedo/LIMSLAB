@@ -78,10 +78,34 @@ function changes(log: any): any {
           valueB = translateUser(valueB);
           valueA = translateUser(valueA);
         }
+        if (keyA && keyA === "published_by_uid") {
+          keyA = "publicado_por";
+          valueB = translateUser(valueB);
+          valueA = translateUser(valueA);
+        }
+        if (keyA && keyA === "status") {
+          keyA = "cambio_estado";
+        }
+        if (keyA && keyA === "date_received") {
+          keyA = "fecha_recibido";
+          valueA = parseDate(valueA);
+        }
+        if (keyA && keyA === "date_submitted") {
+          keyA = "fecha_carga";
+          valueA = parseDate(valueA);
+        }
+        if (keyA && keyA === "date_verified") {
+          keyA = "fecha_verificacion";
+          valueA = parseDate(valueA);
+        }
+        if (keyA && keyA === "date_published") {
+          keyA = "fecha_publicacion";
+          valueA = parseDate(valueA);
+        }
 
         trails.add({
           key: keyA,
-          old: (valueB as any)?.length > 0 ? valueB : "Ninguna",
+          old: (valueB as any)?.length > 0 ? valueB : "",
           new: (valueA as any)?.toString()?.length > 0 ? valueA : "Ninguna",
         });
       }

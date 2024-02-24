@@ -37,7 +37,7 @@ watch(
   () => sample?.value?.status,
   (statusIn, _) => {
     if (!statusIn) return;
-    if (statusIn !== "invalidated") {
+    if (statusIn !== "invalidada") {
       sampleStore.resetRepeatSample();
       return;
     } else {
@@ -64,52 +64,52 @@ function profileAnalysesText(
 }
 
 const canReceive = computed(() => {
-  if (["expected"].includes(sample?.value?.status?.toLowerCase()!)) return true;
+  if (["esperada"].includes(sample?.value?.status?.toLowerCase()!)) return true;
   return false;
 });
 
 const receiveSample = async () => receiveSamples([sample?.value?.uid!]),
   canCancel = computed(() => {
-    if (["received", "expected"].includes(sample?.value?.status?.toLowerCase()!))
+    if (["recibido", "esperada"].includes(sample?.value?.status?.toLowerCase()!))
       return true;
     return false;
   });
 
 const cancelSample = async () => cancelSamples([sample?.value?.uid!]),
   canReinstate = computed(() => {
-    if (["cancelled"].includes(sample?.value?.status?.toLowerCase()!)) return true;
+    if (["cancelada"].includes(sample?.value?.status?.toLowerCase()!)) return true;
     return false;
   });
 
 const reInstateSample = async () => reInstateSamples([sample?.value?.uid!]),
   canVerify = computed(() => {
-    if (sample?.value?.status?.toLowerCase() === "awaiting") return true;
+    if (sample?.value?.status?.toLowerCase() === "Esperando") return true;
     return false;
   });
 
 const verifySample = async () => verifySamples([sample?.value?.uid!]),
   canInvalidate = computed(() => {
-    if (sample?.value?.status?.toLowerCase() === "published") return true;
+    if (sample?.value?.status?.toLowerCase() === "publicado") return true;
     return false;
   });
 
 const publishText = computed(() => {
-  if (["approved"].includes(sample?.value?.status?.toLowerCase()!)) return "Publish";
-  if (["published"].includes(sample?.value?.status?.toLowerCase()!))
-    return "Re publish";
-  return "Pre publish";
+  if (["aprobada"].includes(sample?.value?.status?.toLowerCase()!)) return "Publicar";
+  if (["publicado"].includes(sample?.value?.status?.toLowerCase()!))
+    return "Re publicar";
+  return "Pre publicar";
 }),
   canPublish = computed(() => {
     if (
-      ["awaiting", "approved", "published"].includes(
+      ["Esperando", "aprobada", "publicado"].includes(
         sample?.value?.status?.toLowerCase()!
       )
     )
       return true;
     const results = sampleStore.analysisResults;
     if (
-      ["received", "paired"].includes(sample?.value?.status?.toLowerCase() ?? "") &&
-      results?.some((r) => ["approved"].includes(r.status?.toLowerCase() ?? ""))
+      ["recibido", "paired"].includes(sample?.value?.status?.toLowerCase() ?? "") &&
+      results?.some((r) => ["aprobada"].includes(r.status?.toLowerCase() ?? ""))
     ) {
       return true;
     }
@@ -117,10 +117,10 @@ const publishText = computed(() => {
   }),
   publishSample = async () => {
     const action = publishText.value.startsWith("Pre")
-      ? "pre-publish"
+      ? "pre-publicar"
       : publishText.value.startsWith("Re")
-        ? "re-publish"
-        : "publish";
+        ? "re-publicar"
+        : "publicar";
     publishSamples([{ uid: sample?.value?.uid, action }]);
   };
 
@@ -131,7 +131,7 @@ const invalidateSample = async () =>
   });
 
 const canReject = computed(() => {
-  if (["received", "expected"].includes(sample?.value?.status?.toLowerCase()!))
+  if (["recibido", "esperada"].includes(sample?.value?.status?.toLowerCase()!))
     return true;
   return false;
 }),
@@ -219,7 +219,7 @@ const goToStorage = async (sample?: ISample) => {
             <div v-show="state.dropdownOpen" class="absolute mt-4 py-0 bg-gray-300 rounded-sm shadow-xl z-20">
               <div v-show="canReceive" @click="receiveSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-sky-800 hover:text-white">
-                Receive
+                Recibir
               </div>
               <div v-show="canVerify" @click="verifySample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-sky-800 hover:text-white">
@@ -227,15 +227,15 @@ const goToStorage = async (sample?: ISample) => {
               </div>
               <div v-show="canReject" @click="rejectSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-orange-600 hover:text-white">
-                Reject
+                Rechazar
               </div>
               <div v-show="canCancel" @click="cancelSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-orange-600 hover:text-white">
-                Cancel
+                Cancelar
               </div>
               <div v-show="canReinstate" @click="reInstateSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-orange-600 hover:text-white">
-                Reinstate
+                Reinstegrar
               </div>
               <div v-show="canPublish" @click="publishSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-gray-400 hover:text-white">
@@ -243,11 +243,11 @@ const goToStorage = async (sample?: ISample) => {
               </div>
               <div v-show="canInvalidate" @click="invalidateSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-gray-400 hover:text-white">
-                Invalidate
+                Invalidar
               </div>
               <div v-show="canRecover" @click="recoverSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-gray-400 hover:text-white">
-                Recover
+                Recuperar
               </div>
             </div>
           </div>

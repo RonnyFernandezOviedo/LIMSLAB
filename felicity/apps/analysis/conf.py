@@ -5,30 +5,30 @@ This file is part of Felicity LIMS Software
 
 class States:
     class Sample:
-        SCHEDULED = "scheduled"  # scheduled for collection
-        EXPECTED = "expected"  # not yet received in the laboratory
-        RECEIVED = "received"  # received in the laboratory and ready for processing
-        AWAITING = "awaiting"  # pending approval
-        APPROVED = "approved"  # authorised for release
-        PUBLISHING = "publishing"  # printed samples, ready for dispatch
-        PUBLISHED = "published"  # printed samples, ready for dispatch
+        SCHEDULED = "programado"  # scheduled for collection
+        EXPECTED = "esperada"  # not yet received in the laboratory
+        RECEIVED = "recibido"  # received in the laboratory and ready for processing
+        AWAITING = "Esperando"  # pending approval
+        APPROVED = "aprobada"  # authorised for release
+        PUBLISHING = "publicando"  # printed samples, ready for dispatch
+        PUBLISHED = "publicado"  # printed samples, ready for dispatch
         INVALIDATED = "invalidated"  # approval condemnation
-        CANCELLED = "cancelled"  # no longer required <in other words deleted>
-        REJECTED = "rejected"  # declined for non conformance reasons
+        CANCELLED = "cancelada"  # no longer required <in other words deleted>
+        REJECTED = "rechazada"  # declined for non conformance reasons
         STORED = "stored"  # samples in storage
         REFERRED = "referred"  # sample with all analyses refered
         PAIRED = "paired"  # samples with some (not all) analysis referred
 
     class Result:
-        PENDING = "pending"  # analytes that are pending results
-        SUBMITTING = "submitting"
-        RESULTED = "resulted"  # analytes that have results but not approved yet. 'to_be_verified' / 'un-authorised'
+        PENDING = "pendiente"  # analytes that are pending results
+        SUBMITTING = "cargando"
+        RESULTED = "resultado"  # analytes that have results but not approved yet. 'to_be_verified' / 'un-authorised'
         RETRACTED = "retracted"  # analytes with erroneous results for correction
         CANCELLED = (
-            "cancelled"  # analytes that are no longer required <in other words deleted>
+            "cancelada"  # analytes that are no longer required <in other words deleted>
         )
-        APPROVING = "approving"
-        APPROVED = "approved"  # analytes that are authorised/approved
+        APPROVING = "aprobando"
+        APPROVED = "aprobada"  # analytes that are authorised/approved
         REFERRED = "referred"  # analytes that are refered
 
     def __init__(self):

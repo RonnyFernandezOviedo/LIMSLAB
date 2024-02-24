@@ -466,8 +466,8 @@ async def publish_samples(
         return OperationError(error=f"No samples to impress are provided!")
 
     # set status of these samples to PUBLISHING for those whose action is "publish" !important
-    final_publish = list(filter(lambda p: p.action == "published", samples))
-    not_final = list(filter(lambda p: p.action != "published", samples))
+    final_publish = list(filter(lambda p: p.action == "publicado", samples))
+    not_final = list(filter(lambda p: p.action != "publicado", samples))
     await analysis_models.Sample.bulk_update_with_mappings(
         [
             {"uid": sample.uid, "status": states.sample.PUBLISHING}

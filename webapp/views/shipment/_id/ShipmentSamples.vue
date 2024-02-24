@@ -68,7 +68,7 @@ function check(sample: ISample): void {
 }
 
 function checkDisabled(sample: ISample): boolean {
-  return ["retracted", "approved"].includes(sample.status!);
+  return ["retracted", "cancelada"].includes(sample.status!);
 }
 
 function unCheck(sample: ISample): void {
@@ -108,7 +108,7 @@ function checkUserActionPermissios(): void {
   }
 }
 
-const viewShipmentModifier = computed(() => !["cancelled", "dispatched"].includes(shipment.value?.state ?? ""))
+const viewShipmentModifier = computed(() => !["cancelada", "dispatched"].includes(shipment.value?.state ?? ""))
 
 const { manageSamples } = useShipmentComposable();
 

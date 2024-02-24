@@ -11,7 +11,7 @@ const selectedRoute = computed(() => locationStore.getConfRoute)
 </script>
 
 <template>
-  <PageHeading title="Felicity Configurations" />
+  <PageHeading title="Configuraciones" />
   <div class="flex justify-start italic uppercase text-md text-gray-600 font-bold">
     <span @click="resetSelected">
       <router-link to="/admin" class="no-underline">

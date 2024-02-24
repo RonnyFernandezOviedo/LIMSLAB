@@ -82,7 +82,7 @@ function check(result: IAnalysisResult): void {
 }
 
 function checkDisabled(result: IAnalysisResult): boolean {
-  return ["retracted", "approved"].includes(result.status!);
+  return ["retracted", "aprobada"].includes(result.status!);
 }
 
 function unCheck(result: IAnalysisResult): void {
@@ -113,7 +113,7 @@ function editResult(result: any): void {
 }
 
 function isEditable(result: IAnalysisResult): Boolean {
-  if (result.status !== "pending") {
+  if (result.status !== "pendiente") {
     return false;
   }
   if (result?.editable || isNullOrWs(result?.result)) {
@@ -143,19 +143,19 @@ function getResultRowColor(result: any): string {
   switch (result?.status) {
     case "retracted":
       return "bg-gray-300 text-sm italic text-gray-500";
-    case "pending":
+    case "pendiente":
       if (result?.retest === true) {
         return "bg-sky-800 text-sm leading-5 text-sky-800";
       } else {
         return "";
       }
-    case "resulted":
+    case "resultado":
       if (result?.retest === true) {
         return "bg-sky-800 text-sm leading-5 text-sky-800";
       } else {
         return "";
       }
-    case "approved":
+    case "aprobada":
       if (result?.retest === true) {
         return "bg-sky-800 text-sm leading-5 text-sky-800";
       } else {
@@ -170,7 +170,7 @@ function isDisabledRowCheckBox(result: any): boolean {
   switch (result?.status) {
     case "retracted":
       return true;
-    case "approved":
+    case "aprobada":
       if (result?.reportable === false) {
         return true;
       } else {
@@ -193,7 +193,7 @@ function checkUserActionPermissios(): void {
   if (checked.length === 0) return;
 
   // can submit
-  if (checked.every((result: IAnalysisResult) => result.status === "pending")) {
+  if (checked.every((result: IAnalysisResult) => result.status === "pendiente")) {
     can_submit.value = true;
     can_unassign.value = true;
   }

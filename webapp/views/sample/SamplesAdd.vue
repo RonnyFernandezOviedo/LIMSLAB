@@ -89,11 +89,11 @@ const analysesProfiles = computed(() => analysisStore.getAnalysesProfiles);
 // Analysis Request Form
 const arSaving = ref(false);
 const arSchema = object({
-  clientRequestId: string().required("Client Request ID is Required"),
+  clientRequestId: string().required("Cliente ID es requerido"),
   clinicalData: string().nullable(),
-  client: object().required("Client is Required"),
-  clientContactUid: number().required("Client Contact is Required"),
-  samples: array().required().min(1, "Add at least 1 sample"),
+  client: object().required("Cliente es requerido"),
+  clientContactUid: number().required("Contacto de cliente es requerido"),
+  samples: array().required().min(1, "Agregue al menos 1 muestra"),
   priority: number(),
 });
 

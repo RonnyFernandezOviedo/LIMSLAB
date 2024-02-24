@@ -107,10 +107,10 @@ function isDisabledRowCheckBox(result: any): boolean {
   switch (result?.status) {
     case "retracted":
       return true;
-    case "approved":
+    case "aprobada":
       return true;
-    case "cancelled":
-      if (sample?.value?.status !== "received") return true;
+    case "cancelada":
+      if (sample?.value?.status !== "recibido") return true;
       return false;
     default:
       return false;
@@ -123,10 +123,10 @@ function editResult(result: any): void {
 }
 
 function isEditable(result: IAnalysisResult): Boolean {
-  if (!["received", "paired"].includes(sample?.value?.status ?? "")) {
+  if (!["recibido", "paired"].includes(sample?.value?.status ?? "")) {
     return false;
   }
-  if (result.status !== "pending") {
+  if (result.status !== "pendiente") {
     return false;
   }
   if (result?.editable || isNullOrWs(result?.result)) {
@@ -166,26 +166,26 @@ function resetAnalysesPermissions(): void {
   if (checked.length === 0) return;
 
   // can reinstate
-  if (checked.every((result: IAnalysisResult) => result.status === "cancelled")) {
+  if (checked.every((result: IAnalysisResult) => result.status === "cancelada")) {
     state.can_reinstate = true;
   }
 
   // can cancel
-  if (checked.every((result: IAnalysisResult) => result.status === "pending")) {
+  if (checked.every((result: IAnalysisResult) => result.status === "pendiente")) {
     state.can_cancel = true;
   }
 
   // can submit
   if (
     checked.every(
-      (result: IAnalysisResult) => ["pending"].includes(result.status ?? "") && !isNullOrWs(result.result)
+      (result: IAnalysisResult) => ["pendiente"].includes(result.status ?? "") && !isNullOrWs(result.result)
     )
   ) {
     state.can_submit = true;
   }
 
   // can verify/retract/retest
-  if (checked.every((result: IAnalysisResult) => result.status === "resulted")) {
+  if (checked.every((result: IAnalysisResult) => result.status === "resultado")) {
     state.can_retract = true;
     state.can_approve = true;
     state.can_retest = true;
@@ -414,18 +414,18 @@ const retestResults = () =>
   <section class="my-4">
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) && state.can_cancel
-    " key="cancel" @click.prevent="cancelResults" :color="'sky-800'">Cancel</FButton>
+    " key="cancel" @click.prevent="cancelResults" :color="'sky-800'">Cancelar</FButton>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) &&
       state.can_reinstate
-    " key="reinstate" @click.prevent="reInstateResults" :color="'orange-600'">Re-Instate</FButton>
+    " key="reinstate" @click.prevent="reInstateResults" :color="'orange-600'">Re-Instegrar</FButton>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) && state.can_submit
-    " key="submit" @click.prevent="submitResults" :color="'orange-600'">Submit</FButton>
+    " key="submit" @click.prevent="submitResults" :color="'orange-600'">Cargar</FButton>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) &&
       state.can_retract
-    " key="retract" @click.prevent="retractResults" :color="'orange-600'">Retract</FButton>
+    " key="retract" @click.prevent="retractResults" :color="'orange-600'">Retirar</FButton>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) &&
       state.can_approve

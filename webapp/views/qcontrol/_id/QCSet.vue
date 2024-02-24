@@ -109,17 +109,17 @@ function resetAnalysesPermissions(): void {
   if (checked.length === 0) return;
 
   // can reinstate
-  if (checked.every((result) => result.status === "cancelled")) {
+  if (checked.every((result) => result.status === "cancelada")) {
     can_reinstate.value = true;
   }
 
   // can submit
-  if (checked.every((result) => result.status === "pending")) {
+  if (checked.every((result) => result.status === "pendiente")) {
     can_submit.value = true;
   }
 
   // can verify/ retract/retest
-  if (checked.every((result) => result.status === "resulted")) {
+  if (checked.every((result) => result.status === "resultado")) {
     can_retract.value = true;
     can_verify.value = true;
     can_retest.value = true;
@@ -165,7 +165,7 @@ function editResult(result: any): void {
 function isEditable(result: IAnalysisResult): Boolean {
   if (result?.editable || isNullOrWs(result?.result)) {
     if (
-      ["cancelled", "verified", "retracted", "to_be_verified"].includes(result.status!)
+      ["cancelada", "verified", "retracted", "to_be_verified"].includes(result.status!)
     ) {
       result.editable = false;
       return false;
@@ -599,7 +599,7 @@ function toggleView(choice: string): void {
       @click.prevent="submitResults()"
       class="px-2 py-1 mr-2 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none"
     >
-      Submit
+      Cargar
     </button>
     <button
       v-if="shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) && can_retract"

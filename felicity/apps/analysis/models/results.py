@@ -155,7 +155,7 @@ class AnalysisResult(Auditable, BaseMPTT):
             is_verified = True
         final = await self.save()
         if final.status == conf.states.result.APPROVED:
-            await streamer.stream(final, verifier, "approved", "result")
+            await streamer.stream(final, verifier, "aprobada", "result")
         return is_verified, final
 
     async def retract(self, retracted_by):
@@ -179,7 +179,7 @@ class AnalysisResult(Auditable, BaseMPTT):
             self.updated_by_uid = cancelled_by.uid  # noqa
         final = await self.save()
         if final.status == conf.states.result.CANCELLED:
-            await streamer.stream(final, cancelled_by, "cancelled", "result")
+            await streamer.stream(final, cancelled_by, "cancelada", "result")
         return final
 
     async def re_instate(self, sample, re_instated_by):

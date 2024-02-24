@@ -38,9 +38,9 @@ let showModal = ref<boolean>(false);
 
 const filterOptions = ref([
   { name: "All", value: "" },
-  { name: "Pending", value: "pending" },
-  { name: "Awaiting", value: "awaiting" },
-  { name: "Approved", value: "approved" },
+  { name: "Pendiente", value: "pendiente" },
+  { name: "Esperando", value: "Esperando" },
+  { name: "Aprobada", value: "aprobada" },
   { name: "Empty", value: "empty" },
 ]);
 

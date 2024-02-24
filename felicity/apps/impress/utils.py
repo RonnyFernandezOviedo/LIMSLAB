@@ -122,15 +122,16 @@ async def impress_samples(sample_meta: List[any], user):
         ]:
             impress_meta = impress_marshaller(sample)
             impress_meta = remove_circular_refs(impress_meta)
-            
             report_state = "Unknown"
             action = s_meta.get("action")
-            if action == "publish":
-                report_state = "Final Report"
-            if action == "re-publish":
-                report_state = "Final Report -- republish"
-            if action == "pre-publish":
-                report_state = "Preliminary Report"
+            logger.info(f"estado-action {sample}")
+
+            if action == "publicar":
+                report_state = "Reporte final"
+            if action == "re-publicar":
+                report_state = "Reporte final -- republicado"
+            if action == "pre-publicar":
+                report_state = "Report preeliminar"
                 
             logger.info(f"report_state {report_state}: running impress ....")
             impress_engine = FelicityImpress()
@@ -152,7 +153,7 @@ async def impress_samples(sample_meta: List[any], user):
             )
             await ReportImpress.create(sc_in)
             
-            if action != "pre-publish":
+            if action != "pre-publicado":
                 sample = await sample.publish(published_by=user)
 
             logger.info(f"sample {sample.sample_id} has been impressed.")

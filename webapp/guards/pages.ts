@@ -1,16 +1,17 @@
 import { useAuthStore } from '../stores';
 import { IGroup } from '../models/auth';
 
+
+
 async function canAccessPage(pageName: string) {
-    const authStore = useAuthStore();
-
+    const authStore =  useAuthStore();
     const groups = authStore.auth?.user?.groups;
-
     if (!groups || groups?.length == 0) return false;
 
-    const group = groups![0] as IGroup;
+    const group =  groups![0] as IGroup;
 
-    if (group) {
+    if  (group) {
+        console.log(group?.pages?.includes(pageName))
         return group?.pages?.includes(pageName);
     }
 

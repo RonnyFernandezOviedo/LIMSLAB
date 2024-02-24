@@ -68,12 +68,12 @@ export default function useAnalysisComposable() {
 
     // Submit Analyses
     function submitResult(result: IAnalysisResult): void {
-        if (result.status !== 'pending') return;
+        if (result.status !== 'pendiente') return;
         result.result = result.editResult;
         withClientMutation(SUBMIT_ANALYSIS_RESULTS, [{ uid: result.uid, result: result.result }], 'submitAnalysisResults').then(resp => {
             toastInfo(resp.message);
-            sampleStore.backgroundProcessing([{ uid: result.uid, result: result.result }], undefined, 'submitting');
-            worksheetStore.backgroundProcessing([{ uid: result.uid, result: result.result }], undefined, 'submitting');
+            sampleStore.backgroundProcessing([{ uid: result.uid, result: result.result }], undefined, 'cargando');
+            worksheetStore.backgroundProcessing([{ uid: result.uid, result: result.result }], undefined, 'cargando');
         });
     }
 
@@ -96,11 +96,11 @@ export default function useAnalysisComposable() {
                         'submitAnalysisResults'
                     ).then(resp => {
                         toastInfo(resp.message);
-                        sampleStore.backgroundProcessing(results, sourceObject === 'sample' ? sourceObjectUid : undefined, 'submitting');
+                        sampleStore.backgroundProcessing(results, sourceObject === 'Muestra' ? sourceObjectUid : undefined, 'cargando');
                         worksheetStore.backgroundProcessing(
                             results,
                             sourceObject === 'worksheet' ? sourceObjectUid : undefined,
-                            'submitting'
+                            'cargando'
                         );
                     });
                 }
@@ -129,8 +129,8 @@ export default function useAnalysisComposable() {
                     ).then(resp => {
                         toastInfo(resp.message);
                         const data = uids.map(item => ({ uid: item }));
-                        sampleStore.backgroundProcessing(data, sourceObject === 'sample' ? sourceObjectUid : undefined, 'approving');
-                        worksheetStore.backgroundProcessing(data, sourceObject === 'worksheet' ? sourceObjectUid : undefined, 'approving');
+                        sampleStore.backgroundProcessing(data, sourceObject === 'Muestra' ? sourceObjectUid : undefined, 'aprobando');
+                        worksheetStore.backgroundProcessing(data, sourceObject === 'worksheet' ? sourceObjectUid : undefined, 'aprobando');
                     });
                 }
             });

@@ -9,7 +9,7 @@
   ],
   "sample_types": [
     {
-      "name": "QC Sample",
+      "name": "Muestra Control",
       "description": "QC Sample",
       "abbr": "QCS",
       "active": 1,
@@ -340,11 +340,9 @@
     }
   ],
   "rejection_reasons": [
-    "Sample clotted",
-    "Sample details and form details not matching",
-    "Sample spoilled",
-    "Sample insufficient",
-    "Sample haemolysed",
-    "Sample too old"
+    "Muestra sin codigo",
+    "Muestra contaminada",
+    "Muestra insuficiente",
+    "Muestra muy vieja"
   ]
 }

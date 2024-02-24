@@ -61,11 +61,11 @@ async def submit_analysis_results(
     verify_user_auth(
         is_authenticated,
         felicity_user,
-        "Only Authenticated user can submit analysis results",
+        "Solo usuarios autenticados pueden enviar resultados de análisis",
     )
 
     if len(analysis_results) == 0:
-        return OperationError(error=f"No Results to update are provided!")
+        return OperationError(error=f"¡No se han proporcionado resultados para actualizar!")
 
     an_results = [result.__dict__ for result in analysis_results]
 
@@ -98,7 +98,7 @@ async def submit_analysis_results(
     #     await sa.change_status("processing", felicity_user.uid)
 
     return OperationSuccess(
-        message="Your results are being submitted in the background."
+        message="Sus resultados se envian en segundo plano."
     )
 
 
@@ -110,11 +110,11 @@ async def verify_analysis_results(
     verify_user_auth(
         is_authenticated,
         felicity_user,
-        "Only Authenticated user can verify analysis results",
+        "Solo usuarios autenticados pueden verificar resultados de análisis",
     )
 
     if len(analyses) == 0:
-        return OperationError(error=f"No analyses to verify are provided!")
+        return OperationError(error=f"¡No se han proporcionado resultados para verificar!")
 
     # set status of these analysis_results to PROCESSING
     await result_models.AnalysisResult.bulk_update_with_mappings(
@@ -141,7 +141,7 @@ async def verify_analysis_results(
     #     await sa.change_status("APPROVING", felicity_user.uid)
 
     return OperationSuccess(
-        message="Your results are being verified in the background."
+        message="Sus resultados se verifican en segundo plano."
     )
 
 
@@ -151,20 +151,20 @@ async def retract_analysis_results(info, analyses: list[str]) -> AnalysisResultR
     verify_user_auth(
         is_authenticated,
         felicity_user,
-        "Only Authenticated user can retract analysis results",
+        "Solo usuarios autenticados pueden retirar resultados de análisis",
     )
 
     return_results = []
 
     if len(analyses) == 0:
-        return OperationError(error=f"No analyses to retract are provided!")
+        return OperationError(error=f"¡No se han proporcionado resultados para retirar!")
 
     for _ar_uid in analyses:
         a_result: result_models.AnalysisResult = await result_models.AnalysisResult.get(
             uid=_ar_uid
         )
         if not a_result:
-            return OperationError(error=f"AnalysisResult with uid {_ar_uid} not found")
+            return OperationError(error=f"Resulatado de Analisis con uid {_ar_uid} no encontrado")
 
         retest, a_result = await a_result.retest_result(
             retested_by=felicity_user, next_action="retract"
@@ -196,11 +196,11 @@ async def retest_analysis_results(info, analyses: list[str]) -> AnalysisResultRe
     verify_user_auth(
         is_authenticated,
         felicity_user,
-        "Only Authenticated user can retest analysis results",
+        "Solo usuarios autenticados pueden re-analizar resultados",
     )
 
     if len(analyses) == 0:
-        return OperationError(error=f"No analyses to Re-Analizar are provided!")
+        return OperationError(error=f"¡No se han proporcionado resultados para re-analizar!")
 
     retests, originals = await retest_from_result_uids(analyses, felicity_user)
 
@@ -218,20 +218,20 @@ async def cancel_analysis_results(info, analyses: list[str]) -> AnalysisResultRe
     verify_user_auth(
         is_authenticated,
         felicity_user,
-        "Only Authenticated user can cancel analysis results",
+        "Solo usuarios autenticados pueden cancelar resultados de analisis",
     )
 
     return_results = []
 
     if len(analyses) == 0:
-        return OperationError(error=f"No analyses to Re-Analizar are provided!")
+        return OperationError(error=f"¡No se han proporcionado resultados para calcelar!")
 
     for _ar_uid in analyses:
         a_result: result_models.AnalysisResult = await result_models.AnalysisResult.get(
             uid=_ar_uid
         )
         if not a_result:
-            return OperationError(error=f"AnalysisResult with uid {_ar_uid} not found")
+            return OperationError(error=f"Resulatado de Analisis con uid {_ar_uid} no encontrado")
 
         # must not belong to a worksheet
         if a_result.assigned:
@@ -253,20 +253,20 @@ async def re_instate_analysis_results(
     verify_user_auth(
         is_authenticated,
         felicity_user,
-        "Only Authenticated user can re instate cancelled analysis " "results",
+        "Solo usuarios autenticados pueden reintegrar resultados de analisis cancelados",
     )
 
     return_results = []
 
     if len(analyses) == 0:
-        return OperationError(error=f"No analyses to Reinstate are provided!")
+        return OperationError(error=f"¡No se han proporcionado resultados de analsis para reintegrar!")
 
     for _ar_uid in analyses:
         a_result: result_models.AnalysisResult = await result_models.AnalysisResult.get(
             uid=_ar_uid
         )
         if not a_result:
-            return OperationError(error=f"AnalysisResult with uid {_ar_uid} not found")
+            return OperationError(error=f"Resulatado de Analisis con uid {_ar_uid} no encontrado")
 
         a_result = await a_result.re_instate(re_instated_by=felicity_user)
         if a_result:

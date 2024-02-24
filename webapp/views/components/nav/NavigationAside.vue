@@ -31,7 +31,7 @@ function toggleNavText(): void {
         <font-awesome-icon icon="bars" />
       </div>
       <router-link to="/" id="brand" class="flex items-center md:w-auto pl-6 pt-2 pb-1 text-white">
-        <font-awesome-icon icon="xxxxxmeteorxxx" class="text-3xl" />
+        <font-awesome-icon icon="" class="text-3xl" />
         <h1
           :class="['text-left text-2xl font-medium mx-2 transition-all duration-500', viewNavText ? 'scale-100' : 'scale-0 w-0 overflow-hidden']">
           Laboratorio</h1>

@@ -194,7 +194,7 @@ function saveForm(): void {
           <button
             class="p-2 my-2 ml-8 text-sm border-sky-800 border text-dark-700 transition-colors duration-150 rounded-sm focus:outline-none hover:bg-sky-800 hover:text-gray-100"
             @click="FormManager(true, 'provincia')">
-            Agergar Provincia
+            Agregar Provincia
           </button>
         </div>
         <div class="overflow-y-scroll overscroll-contain scroll-section">
@@ -246,11 +246,11 @@ function saveForm(): void {
         <div class="grid grid-cols-2 gap-x-4 mb-4">
           <label class="block col-span-1 mb-2">
             <span class="text-gray-700">Nombre</span>
-            <input class="form-input mt-1 block w-full" v-model="form.name" placeholder="Name ..." />
+            <input class="form-input mt-1 block w-full" v-model="form.name" placeholder="Nombre ..." />
           </label>
           <label class="block col-span-1 mb-2">
             <span class="text-gray-700">Codigo</span>
-            <input class="form-input mt-1 block w-full" v-model="form.code" placeholder="Code ..." />
+            <input class="form-input mt-1 block w-full" v-model="form.code" placeholder="Codigo ..." />
           </label>
         </div>
         <hr />

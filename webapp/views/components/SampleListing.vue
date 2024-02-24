@@ -38,14 +38,14 @@ const state = reactive({
 const samples = computed<ISample[]>(() => sampleStore.getSamples);
 const filterOptions = ref([
   { name: "Todas", value: "" },
-  { name: "Expected", value: "expected" },
-  { name: "Recibida", value: "received" },
-  { name: "Esperando", value: "awaiting" },
-  { name: "Aprobada", value: "approved" },
-  { name: "Publicada", value: "published" },
-  { name: "Invalidada", value: "invalidated" },
-  { name: "Cancelada", value: "cancelled" },
-  { name: "Rechazada", value: "rejected" },
+  { name: "Esperada", value: "esperada" },
+  { name: "Recibida", value: "recibido" },
+  { name: "Esperando", value: "Esperando" },
+  { name: "Aprobada", value: "aprobada" },
+  { name: "Publicada", value: "publicado" },
+  { name: "Invalidada", value: "invalidada" },
+  { name: "Cancelada", value: "cancelada" },
+  { name: "Rechazada", value: "rechazada" },
   { name: "Almacenada", value: "stored" },
   { name: "Referred", value: "referred" },
   { name: "Paired", value: "paired" },
@@ -479,20 +479,20 @@ function checkUserActionPermissios(): void {
   if (checked.length === 0) return;
 
   // can_receive
-  if (checked.every((sample: ISample) => sample.status === "expected")) {
+  if (checked.every((sample: ISample) => sample.status === "esperada")) {
     state.can_receive = true;
   }
 
   // can_cancel
   if (
-    checked.every((sample: ISample) => ["received", "expected"].includes(sample.status!))
+    checked.every((sample: ISample) => ["recibido", "esperada"].includes(sample.status!))
   ) {
     state.can_cancel = true;
     state.can_reject = true;
   }
 
   // can_store;
-  if (checked.every((sample: ISample) => ["received"].includes(sample.status!))) {
+  if (checked.every((sample: ISample) => ["recibido"].includes(sample.status!))) {
     state.can_store = true;
     state.can_copy_to = true;
   }
@@ -502,24 +502,24 @@ function checkUserActionPermissios(): void {
   }
 
   // can_reinstate
-  if (checked.every((sample: ISample) => sample.status === "cancelled")) {
+  if (checked.every((sample: ISample) => sample.status === "cancelada")) {
     state.can_reinstate = true;
   }
 
   // can_download
   if (
-    checked.every((sample: ISample) => ["approved", "published"].includes(sample.status!))
+    checked.every((sample: ISample) => ["aprobada", "publicado"].includes(sample.status!))
   ) {
     state.can_copy_to = true;
   }
 
   // can_print
-  if (checked.every((sample: ISample) => sample.status === "approved")) {
+  if (checked.every((sample: ISample) => sample.status === "aprobada")) {
     state.can_publish = true;
   }
 
   // can_print
-  if (checked.every((sample: ISample) => sample.status === "published")) {
+  if (checked.every((sample: ISample) => sample.status === "publicado")) {
     state.can_print = true;
     state.can_download = true;
   }
@@ -561,7 +561,7 @@ const receiveSamples_ = async () =>
   receiveSamples(getSampleUids()).finally(() => unCheckAll());
 
 const publishReports_ = async () => {
-  const samples = getSampleUids().map((uid) => ({ uid, action: "published" }));
+  const samples = getSampleUids().map((uid) => ({ uid, action: "publicado" }));
   await publishSamples(samples).finally(() => unCheckAll());
 };
 

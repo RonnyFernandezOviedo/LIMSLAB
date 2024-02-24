@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from typing import Any, AsyncIterator, List, Optional
 
+
 from sqlalchemy import Column, String
 from sqlalchemy import or_ as sa_or_
 from sqlalchemy import select
@@ -9,9 +10,9 @@ from sqlalchemy import update
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import func
 from sqlalchemy.sql.expression import bindparam
-from sqlalchemy_mixins import AllFeaturesMixinAsync, smart_query
+from sqlalchemy_mixins import AllFeaturesMixinAsync, smart_query, 
 
-from core.uid_gen import get_flake_uid
+from core.uid_gen import get_flake_uid 
 from database.paginator.cursor import EdgeNode, PageCursor, PageInfo
 from database.session import AsyncSessionScoped
 from utils import has_value_or_is_truthy
@@ -20,7 +21,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class DBModel(DeclarativeBase, AllFeaturesMixinAsync):
+
+class DBModel(DeclarativeBase, AllFeaturesMixinAsync): 
     __name__: str
     __abstract__ = True
     __mapper_args__ = {"eager_defaults": True}

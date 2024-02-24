@@ -873,7 +873,7 @@ class Sample(Auditable, BaseMPTT):
             self.date_verified = datetime.now()
             self.updated_by_uid = verified_by.uid  # noqa
             saved = await self.save()
-            await streamer.stream(saved, verified_by, "approved", "sample")
+            await streamer.stream(saved, verified_by, "aprobada", "sample")
             return True, saved
         return False, self
 
@@ -914,7 +914,7 @@ class Sample(Auditable, BaseMPTT):
             self.received_by_uid = rejected_by.uid
             self.updated_by_uid = rejected_by.uid  # noqa
             rejected = await self.save()
-            await streamer.stream(rejected, rejected_by, "rejected", "sample")
+            await streamer.stream(rejected, rejected_by, "rechazada", "sample")
             return rejected
         return self
 

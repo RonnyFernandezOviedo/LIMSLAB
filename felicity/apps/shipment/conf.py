@@ -15,12 +15,12 @@ class ShipmentStates(object):
     EMPTY = "empty"  # shipment without samples
     PREPERATION = "preperation"  # shipment containing at least a single sample
     READY = "ready"  # shipment finalised
-    AWAITING = "awaiting"  # shipment queued for dispatch
+    AWAITING = "Esperando"  # shipment queued for dispatch
     FAILED = "failed"  # shipment queued for dispatch, has at least a one dispatch trial
     SHIPPED = "shipped"  # shipment that was successfully send and acknowledged in the other system
-    REJECTED = "rejected"  # shipment rejected by the receiving lab
-    RECEIVED = "received"  # shipment receved by the receiving lab
-    CANCELLED = "cancelled"  #
+    REJECTED = "rechazada"  # shipment rejected by the receiving lab
+    RECEIVED = "recibido"  # shipment receved by the receiving lab
+    CANCELLED = "cancelada"  #
 
 
 shipment_states = ShipmentStates()

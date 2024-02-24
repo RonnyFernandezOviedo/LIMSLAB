@@ -98,7 +98,7 @@ class UserMutations:
             user_e = await user_models.User.get_by_email(email=email)
             if user_e:
                 return OperationError(
-                    error="A user with this email already exists in the system"
+                    error="Usuario con el mismo email ya existe en el sistema"
                 )
 
         user_in = {

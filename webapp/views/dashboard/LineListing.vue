@@ -169,13 +169,13 @@ const downloadReport = (report: any) => {
                 <select name="sample_states" v-model="state.listingForm.sample_states"
                   class="form-input mt-1 block w-full" multiple>
                   <option value=""></option>
-                  <option value="publicado">published</option>
-                  <option value="verified">verified</option>
-                  <option value="to_be_verified">to_be_verified</option>
-                  <option value="received">received</option>
-                  <option value="cancelled">cancelled</option>
-                  <option value="rejected">rejected</option>
-                  <option value="invalidated">invalidated</option>
+                  <option value="publicado">publicado</option>
+                  <option value="verificado">verificado</option>
+                  <option value="Para_ser_verificada">Para_ser_verificada</option>
+                  <option value="recibido">recibido</option>
+                  <option value="cancelada">cancelada</option>
+                  <option value="rechazada">rechazada</option>
+                  <option value="invalidada">invalidada</option>
                   <option value="due">due</option>
                 </select>
               </label>
@@ -184,21 +184,21 @@ const downloadReport = (report: any) => {
               <label class="block col-span-1 mb-2">
                 <span class="text-gray-700">Period Date Criteria</span>
                 <select name="date_column" v-model="state.listingForm.date_column" class="form-input mt-1 block w-full">
-                  <option value="created_at">Created Date</option>
-                  <option value="date_published">Published Date</option>
-                  <option value="date_submitted">Submission Date</option>
-                  <option value="date_verified">Verified Date</option>
-                  <option value="date_cancelled">Cacellation Date</option>
-                  <option value="date_invalidated">Invalidation Date</option>
+                  <option value="fecha_creacion">Fecha creacion</option>
+                  <option value="fecha_publicacion">Fecha publicacion</option>
+                  <option value="fecha_carga">Fecha carga</option>
+                  <option value="fecha_verificacion">Fecha verificacion</option>
+                  <option value="fecha_cancelacion">Fecha cancelacion</option>
+                  <option value="fecha_invalidado">Fecha invalidado</option>
                 </select>
               </label>
               <label class="block col-span-1 mb-2">
-                <span class="text-gray-700">Period Start</span>
+                <span class="text-gray-700">Periodo Inicio</span>
                 <input name="period_start" type="datetime-local" class="form-input mt-1 block w-full" autocomplete="off"
                   v-model="state.listingForm.period_start" placeholder="From ..." />
               </label>
               <label class="block col-span-1 mb-2">
-                <span class="text-gray-700">Period End</span>
+                <span class="text-gray-700">Periodo Final</span>
                 <input name="period_end" type="datetime-local" class="form-input mt-1 block w-full"
                   v-model="state.listingForm.period_end" placeholder="To ..." />
               </label>
@@ -206,7 +206,7 @@ const downloadReport = (report: any) => {
             <hr />
             <button type="button" @click.prevent="saveListingForm()"
               class="-mb-4 w-full border border-sky-800 bg-sky-800 text-white rounded-sm px-4 py-2 m-2 transition-colors duration-500 ease select-none hover:bg-sky-800 focus:outline-none focus:shadow-outline">
-              Save Form
+              Guardar forma
             </button>
           </form>
         </div>

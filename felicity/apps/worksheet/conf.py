@@ -23,11 +23,11 @@ class WSStates(object):
     """
 
     EMPTY = "empty"  # worksheets without samples
-    PENDING = "pending"  # worksheets containing at least a single 'pending' analyte
-    SUBMITTING = "submitting"
-    AWAITING = "awaiting"  # worksheets whose analytes are results but not all approved/verified
-    APPROVING = "approving"
-    APPROVED = "approved"  # worksheets where all analytes are approved/verified
+    PENDING = "pendiente"  # worksheets containing at least a single 'pending' analyte
+    SUBMITTING = ""
+    AWAITING = "Esperando"  # worksheets whose analytes are results but not all approved/verified
+    APPROVING = "aprobando"
+    APPROVED = "aprobada"  # worksheets where all analytes are approved/verified
 
 
 worksheet_states = WSStates()
