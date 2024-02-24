@@ -1,1 +1,0 @@
-import{d as o,a9 as t,a as s,o as r,N as n}from"./index-b75e268d.js";const p=o({__name:"index",setup(a){return t().fetchAnalysesServices({first:void 0,after:"",text:"",sortBy:["name"]}),(c,_)=>{const e=s("router-view");return r(),n(e)}}});export{p as default};

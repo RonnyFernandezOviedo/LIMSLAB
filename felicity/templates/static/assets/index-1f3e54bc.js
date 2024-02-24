@@ -1,1 +1,0 @@
-import{d as n,o,N as t,u as _,z as r,A as a}from"./index-b75e268d.js";const d=n({__name:"index",setup(s){const e=r(()=>a(()=>import("./Inventory-c8b52f57.js"),["assets/Inventory-c8b52f57.js","assets/index-b75e268d.js","assets/index-a964bbb1.css","assets/inventory.mutations-d87d274b.js"]));return(c,p)=>(o(),t(_(e)))}});export{d as default};
