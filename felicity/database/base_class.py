@@ -10,7 +10,7 @@ from sqlalchemy import update
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import func
 from sqlalchemy.sql.expression import bindparam
-from sqlalchemy_mixins import AllFeaturesMixinAsync, smart_query, 
+from sqlalchemy_mixins import AllFeaturesMixinAsync, smart_query
 
 from core.uid_gen import get_flake_uid 
 from database.paginator.cursor import EdgeNode, PageCursor, PageInfo
