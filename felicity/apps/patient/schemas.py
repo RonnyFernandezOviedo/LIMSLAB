@@ -15,30 +15,31 @@ from apps.common.schemas import BaseAuditModel
 
 
 class PatientBase(BaseAuditModel):
-    client_patient_id: str | None = None
+    #client_patient_id: str | None = None
     client_uid: str | None = None
     patient_id: str | None = None
     first_name: str | None = None
     middle_name: str | None = None
     last_name: str | None = None
-    gender: str | None = None
-    age: int | None = None
+    #gender: str | None = None
+    #age: int | None = None
     date_of_birth: datetime | None = None
     age_dob_estimated: bool | None = None
     phone_mobile: str | None = None
-    phone_home: str | None = None
-    consent_sms: bool | None = None
-    email: Optional[EmailStr] = None
+    #direccion: str | None = None#by ronny
+    #phone_home: str | None = None
+    #consent_sms: bool | None = None
+    #email: Optional[EmailStr] = None
     internal_use: bool | None = False
     active: bool | None = None
-    district_uid: str | None = None
-    province_uid: str | None = None
-    country_uid: str | None = None
+    #district_uid: str | None = None
+    #province_uid: str | None = None
+    #country_uid: str | None = None
 
 
 # Properties to receive via API on creation
 class PatientCreate(PatientBase):
-    client_patient_id: str
+    #client_patient_id: str
     first_name: str
     last_name: str
     client_uid: str

@@ -13,7 +13,10 @@ export const GET_ALL_CLIENTS = gql`
             items {
                 uid
                 name
-                code
+                email
+                phoneMobile
+                clienteDireccion
+                clienteId
                 district {
                     uid
                     name
@@ -36,7 +39,9 @@ export const SEARCH_CLIENTS = gql`
         clientSearch(queryString: $queryString) {
             uid
             name
-            code
+            email
+            phoneMobile
+            clienteDireccion
             district {
                 uid
                 name
@@ -71,7 +76,10 @@ export const GET_CLIENT_BY_UID = gql`
         clientByUid(uid: $uid) {
             uid
             name
-            code
+            email
+            phoneMobile
+            clienteDireccion
+            clienteId
             districtUid
             district {
                 uid

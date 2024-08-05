@@ -35,7 +35,7 @@ const updatePatient = (res: IPatient) => {
   <!-- Patient Edit Form Modal -->
   <modal v-if="showModal" @close="showModal = false">
     <template v-slot:header>
-      <h3>Patient Form</h3>
+      <h3>Actulizar Solicitud</h3>
     </template>
 
     <template v-slot:body>

@@ -1,0 +1,384 @@
+<script setup lang="ts">
+import VueMultiselect from "vue-multiselect";
+import { reactive, computed, onMounted, PropType, toRefs, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { IPatient } from "../../models/patient";
+import { ADD_PATIENT, UPDATE_PATIENT } from "../../graphql/operations/patient.mutations";
+
+import { useClientStore, useLocationStore, usePatientStore } from "../../stores";
+import { useApiUtil } from "../../composables";
+import { IClient } from "../../models/client";
+import { IPatientIdentificationForm } from "../../models/patient";
+import { isNullOrWs } from "../../utils/helpers";
+import dayjs from "dayjs";
+import { useField, useForm } from "vee-validate";
+import { object, string, boolean, number, date } from "yup";
+
+const props = defineProps({
+  patient: Object as PropType<IPatient>,
+  navigate: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(["close"]);
+
+let clientStore = useClientStore();
+let locationsStore = useLocationStore();
+let patientStore = usePatientStore();
+const { withClientMutation } = useApiUtil();
+
+let router = useRouter();
+let route = useRoute();
+
+const state = reactive({
+  genders: ["Male", "Female"] as string[],
+  createAction: true,
+  countries: computed(() => locationsStore.getCountries),
+  provinces: computed(() => locationsStore.getProvinces),
+  districts: computed(() => locationsStore.getDistricts),
+  clients: computed<IClient[]>(() => clientStore.getClients),
+});
+
+let clientParams = reactive({
+  first: undefined,
+  after: "",
+  text: "",
+  sortBy: ["name"],
+  filterAction: false,
+});
+
+onMounted(async () => {
+  await locationsStore.fetchCountries();
+  await clientStore.fetchClients(clientParams);
+  if (props.patient?.countryUid) {
+    await locationsStore.filterProvincesByCountry(props.patient?.countryUid)
+  }
+  if (props.patient?.provinceUid) {
+    await locationsStore.filterDistrictsByProvince(props.patient?.provinceUid)
+  }
+  await patientStore.fetchIdentifications();
+});
+
+// Patient
+const { patient, navigate } = toRefs(props);
+
+const estimateYears = ref(0);
+const estimateMonths = ref(0);
+const estimateDays = ref(0);
+
+const calculateAge = () => {
+  var now = (new Date()).getFullYear();
+  if (dateOfBirth.value) {
+    const born = new Date(dateOfBirth.value as any).getFullYear()
+    age.value = now - born;
+  }
+}
+
+const patientSchema = object({
+  uid: number(),
+  clientPatientId: string().required("ID es requerido"),
+  patientId: string().nullable(),
+  firstName: string().required("Nombre es requerido"),
+  middleName: string().nullable(),
+  lastName: string().required("Apellido es requerido"),
+  client: object().required("Cliente es requerido"),
+  gender: string().required("Correo es requerido"),
+  age: number().nullable(),
+  dateOfBirth: date().nullable(),
+  ageDobEstimated: boolean().nullable(),
+  phoneHome: string().nullable(),
+  phoneMobile: string().nullable(),
+  consentSms: boolean().nullable(),
+  districtUid: number().nullable(),
+  provinceUid: number().nullable(),
+  countryUid: number().nullable(),
+  direccion:string().nullable(),//add by ronny
+});
+
+const { handleSubmit, errors } = useForm({
+  validationSchema: patientSchema,
+  initialValues: {
+    uid: patient?.value?.uid,
+    clientPatientId: patient?.value?.clientPatientId || (route?.query?.cpid as string),
+    patientId: patient?.value?.patientId,
+    firstName: patient?.value?.firstName,
+    middleName: patient?.value?.middleName,
+    lastName: patient?.value?.lastName,
+    client: patient?.value?.client,
+    gender: patient?.value?.gender,
+    age: patient?.value?.age,
+    dateOfBirth: !isNullOrWs(patient?.value?.dateOfBirth)
+      ? (new Date(patient?.value?.dateOfBirth!).toISOString().split("T")[0] as any)
+      : undefined,
+    ageDobEstimated: patient?.value?.ageDobEstimated,
+    phoneHome: patient?.value?.phoneHome,
+    phoneMobile: patient?.value?.phoneMobile,
+    direccion:patient?.value?.direccion, //add by ronny
+    consentSms: patient?.value?.consentSms,
+    districtUid: patient?.value?.districtUid,
+    provinceUid: patient?.value?.provinceUid,
+    countryUid: patient?.value?.countryUid,
+    identifications: patient?.value?.identifications ?? [],
+  } as any,
+});
+
+const { value: clientPatientId } = useField("clientPatientId");
+const { value: firstName } = useField("firstName");
+const { value: middleName } = useField("middleName");
+const { value: lastName } = useField("lastName");
+const { value: client } = useField<IClient>("client");
+const { value: gender } = useField("gender");
+const { value: age } = useField("age");
+const { value: dateOfBirth } = useField("dateOfBirth");
+const { value: ageDobEstimated } = useField<boolean>("ageDobEstimated");
+const { value: phoneMobile } = useField("phoneMobile");
+const { value: direccion } = useField("direccion");
+const { value: consentSms } = useField<boolean>("consentSms");
+const { value: districtUid } = useField<string>("districtUid");
+const { value: provinceUid } = useField<string>("provinceUid");
+const { value: countryUid } = useField<string>("countryUid");
+const { value: identifications } = useField<IPatientIdentificationForm[]>("identifications");
+
+const submitPatientForm = handleSubmit((values) => {
+  if (!values.uid) addPatient(values as IPatient);
+  if (values.uid) updatePatient(values as IPatient);
+});
+
+//
+function addPatient(payload: IPatient) {
+  withClientMutation(
+    ADD_PATIENT,
+    {
+      payload: {
+        clientPatientId: payload.clientPatientId,
+        firstName: payload.firstName,
+        middleName: payload.middleName,
+        lastName: payload.lastName,
+        age: payload.age,
+        gender: payload.gender,
+        dateOfBirth: payload.dateOfBirth,
+        ageDobEstimated: payload.ageDobEstimated,
+        clientUid: payload.client.uid,
+        phoneMobile: payload.phoneMobile,
+        consentSms: payload.consentSms,
+        countryUid: payload.countryUid,
+        provinceUid: payload.provinceUid,
+        direccion: payload.direccion,
+        districtUid: payload.districtUid,
+        identifications: payload.identifications
+      },
+    },
+    "createPatient"
+  ).then((result) => {
+    patientStore.addPatient(result);
+    emit("close", result);
+    if (navigate.value === true)
+      router.push({ name: "patient-detail", params: { patientUid: result.uid } });
+  });
+}
+
+function updatePatient(payload: IPatient) {
+  withClientMutation(
+    UPDATE_PATIENT,
+    {
+      uid: payload.uid,
+      payload: {
+        firstName: payload.firstName,
+        middleName: payload.middleName,
+        lastName: payload.lastName,
+        dateOfBirth: payload.dateOfBirth,
+        clientUid: payload.client.uid,
+        countryUid: payload.countryUid,
+        provinceUid: payload.provinceUid,
+        districtUid: payload.districtUid,
+        identifications: payload.identifications?.map(id => ({ identificationUid: id.identificationUid, value: id.value }))
+      },
+    },
+    "updatePatient"
+  ).then((result) => {
+    patientStore.updatePatient(result);
+    emit("close", result);
+  });
+}
+
+// Provinces
+function getProvinces(event: any) {
+  locationsStore.filterProvincesByCountry(countryUid.value);
+}
+
+// Districts
+function getDistricts(event: any) {
+  locationsStore.filterDistrictsByProvince(provinceUid.value);
+}
+
+// Extra Patient Identifiers
+const addIdentifier = () => {
+  identifications.value.push({ identificationUid: "12122", value: "" })
+}
+const removeIdentifier = (index: number) => {
+  identifications.value.splice(index, 1)
+}
+</script>
+
+<template>
+  <form @submit.prevent="submitPatientForm" class="border-2 border-gray-900 border-dotted rounded-sm px-4 py-8"
+    autocomplete="off">
+    <label class="flex whitespace-nowrap w-full">
+      <span class="text-gray-700 w-4/12">Codigo Cliente</span>
+      <div class="w-full">
+        <input class="form-input mt-1 block w-full" v-model="clientPatientId" placeholder="Codigo Cliente" />
+        <div class="text-orange-600 w-4/12">{{ errors.clientPatientId }}</div>
+      </div>
+    </label>
+
+    <label class="flex whitespace-nowrap w-full">
+      <span class="text-gray-700 w-4/12">Primer Nombre</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full" v-model="firstName" placeholder="Primer Nombre" />
+        <div class="text-orange-600 w-4/12">{{ errors.firstName }}</div>
+      </div>
+    </label>
+
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Segundo Nombre</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full" v-model="middleName" placeholder="Segundo Nombre" />
+        <div class="text-orange-600 w-4/12">{{ errors.middleName }}</div>
+      </div>
+    </label>
+
+    <label class="flex whitespace-nowrap w-full">
+      <span class="text-gray-700 w-4/12">Apellido</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full" v-model="lastName" placeholder="Apellido" />
+        <div class="text-orange-600 w-4/12">{{ errors.lastName }}</div>
+      </div>
+    </label>
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Fecha Creacion</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full disabled:bg-slate-200" type="date" v-model="dateOfBirth"
+          placeholder="Date of Birth" :disabled="ageDobEstimated" @change="calculateAge()" @keyup="calculateAge()" />
+        <div class="text-orange-600 w-4/12">{{ errors.dateOfBirth }}</div>
+      </div>
+    </label>
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Email</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full" v-model="gender" placeholder="Email" />
+        <div class="text-orange-600 w-4/12">{{ errors.gender }}</div>
+      </div>
+    </label>
+
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Telefono</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full" v-model="phoneMobile" placeholder="Numero telefono" />
+        <div class="text-orange-600 w-4/12">{{ errors.phoneMobile }}</div>
+      </div>
+    </label>
+
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Direccion</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full" v-model="direccion" placeholder="Direccion" />
+        <div class="text-orange-600 w-4/12">{{ errors.direccion }}</div>
+      </div>
+    </label>
+
+
+
+
+    <!-- other identifiers: passport, client pid, national id -->
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Cliente</span>
+      <div class="w-full">
+        <VueMultiselect placeholder="Selecione el cliente" v-model="client" :options="state.clients"
+          :searchable="true" label="name" track-by="uid">
+        </VueMultiselect>
+        <div class="text-orange-600 w-4/12">{{ errors.client }}</div>
+      </div>
+    </label>
+
+    <label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12 flex justify-between items-center">
+        <span class="mr-4">Extra Ids:</span>
+        <div>
+          <span
+            class="relative px-1 mr-2 mt-4 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none"
+            @click="addIdentifier()">
+            Agregar
+          </span>
+        </div>
+      </span>
+      <div class="w-full border-gray-200">
+        <div class="flex justify-around items-center  w-full" v-for="(identication, index) of identifications">
+          <span>Identificacion</span>
+          <select class="form-select mt-1" v-model="identication.identificationUid">
+            <option></option>
+            <option v-for="identifier of patientStore.identifications" :key="identifier.uid" :value="identifier.uid">
+              {{ identifier.name }}
+            </option>
+          </select>
+          <span>Valor
+          </span>
+          <input type="text" class="form-input text-sky-800" v-model="identication.value" />
+          <span class="p-2 text-red-800" @click.prevent="removeIdentifier(index)">X</span>
+        </div>
+      </div>
+    </label>
+
+    <hr class="my-2" />
+
+    <div class="grid grid-cols-3 gap-x-4 mb-4">
+      <div class="col-span-1">
+        <label class="flex gap-x-2 items-center whitespace-nowrap w-full">
+          <span class="text-gray-700 w-4/12">Pais</span>
+          <select class="form-select mt-1 w-full" v-model="countryUid" @change="getProvinces($event)">
+            <option :value="null"></option>
+            <option v-for="country in state.countries" :key="country.uid" :value="country.uid">
+              {{ country.name }}
+            </option>
+          </select>
+        </label>
+        <div class="text-orange-600 w-4/12">{{ errors.countryUid }}</div>
+      </div>
+
+      <div class="col-span-1">
+        <label class="flex gap-x-2 items-center whitespace-nowrap col-span-1 w-full">
+          <span class="text-gray-700 w-4/12">Provincia</span>
+          <select class="form-select mt-1 w-full" v-model="provinceUid" @change="getDistricts($event)">
+            <option :value="null"></option>
+            <option v-for="province in state.provinces" :key="province.uid" :value="province.uid">
+              {{ province.name }}
+            </option>
+          </select>
+        </label>
+        <div class="text-orange-600 w-4/12">{{ errors.provinceUid }}</div>
+      </div>
+
+      <div class="col-span-1">
+        <label class="flex gap-x-2 items-center whitespace-nowrap col-span-1 w-full">
+          <span class="text-gray-700 w-4/12">Districto</span>
+          <select class="form-select mt-1 w-full" v-model="districtUid">
+            <option :value="null"></option>
+            <option v-for="district in state.districts" :key="district.uid" :value="district.uid">
+              {{ district.name }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="text-orange-600 w-4/12">{{ errors.districtUid }}</div>
+    </div>
+
+    <hr />
+    <button type="submit"
+      class="-mb-4 w-1/5 border border-sky-800 bg-sky-800 text-white rounded-sm px-4 py-2 m-2 transition-colors duration-500 ease select-none hover:bg-sky-800 focus:outline-none focus:shadow-outline">
+      Crear Solcitud
+    </button>
+  </form>
+</template>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

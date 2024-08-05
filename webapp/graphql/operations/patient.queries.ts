@@ -12,19 +12,20 @@ export const GET_ALL_PATIENTS = gql`
             }
             items {
                 uid
-                clientPatientId
                 patientId
                 firstName
                 middleName
                 lastName
-                age
-                gender
                 dateOfBirth
-                ageDobEstimated
                 clientUid
+                createdAt
                 client {
                     uid
                     name
+                    clienteId
+                    email
+                    phoneMobile
+                    clienteDireccion
                     district {
                         uid
                         name
@@ -37,10 +38,8 @@ export const GET_ALL_PATIENTS = gql`
                             }
                         }
                     }
+
                 }
-                phoneHome
-                phoneMobile
-                consentSms
                 identifications {
                     uid
                     value
@@ -49,21 +48,6 @@ export const GET_ALL_PATIENTS = gql`
                         uid
                         name
                     }
-                }
-                countryUid
-                country {
-                    uid
-                    name
-                }
-                provinceUid
-                province {
-                    uid
-                    name
-                }
-                districtUid
-                district {
-                    uid
-                    name
                 }
             }
         }
@@ -74,18 +58,15 @@ export const SEARCH_PATIENTS = gql`
     query searchPatients($queryString: String!) {
         patientSearch(queryString: $queryString) {
             uid
-            clientPatientId
             patientId
             firstName
             middleName
             lastName
-            age
-            gender
             dateOfBirth
-            ageDobEstimated
             client {
                 uid
                 name
+                clienteId
                 district {
                     name
                     province {
@@ -93,9 +74,6 @@ export const SEARCH_PATIENTS = gql`
                     }
                 }
             }
-            phoneHome
-            phoneMobile
-            consentSms
             identifications {
                 uid
                 value
@@ -104,21 +82,6 @@ export const SEARCH_PATIENTS = gql`
                     uid
                     name
                 }
-            }
-            countryUid
-            country {
-                uid
-                name
-            }
-            provinceUid
-            province {
-                uid
-                name
-            }
-            districtUid
-            district {
-                uid
-                name
             }
         }
     }
@@ -128,28 +91,32 @@ export const GET_PATIENT_BY_UID = gql`
     query getPatientByUid($uid: String!) {
         patientByUid(uid: $uid) {
             uid
-            clientPatientId
             patientId
             firstName
             middleName
             lastName
-            age
-            gender
             dateOfBirth
-            ageDobEstimated
+            createdAt
             client {
                 uid
                 name
+                clienteId
+                email
+                phoneMobile
+                clienteDireccion
                 district {
+                    uid
                     name
                     province {
+                        uid
                         name
+                        country {
+                            uid
+                            name
+                        }
                     }
                 }
             }
-            phoneHome
-            phoneMobile
-            consentSms
             identifications {
                 uid
                 value
@@ -158,21 +125,6 @@ export const GET_PATIENT_BY_UID = gql`
                     uid
                     name
                 }
-            }
-            countryUid
-            country {
-                uid
-                name
-            }
-            provinceUid
-            province {
-                uid
-                name
-            }
-            districtUid
-            district {
-                uid
-                name
             }
         }
     }

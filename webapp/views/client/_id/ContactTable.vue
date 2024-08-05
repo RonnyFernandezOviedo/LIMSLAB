@@ -39,6 +39,7 @@ function addClientContact() {
       payload: {
         clientUid: router.query.clientUid!,
         firstName: contact.value.firstName,
+        lastName:contact.value.lastName,
         mobilePhone: contact.value.mobilePhone,
         email: contact.value.email
       }
@@ -55,6 +56,7 @@ function editClientContact() {
       payload: {
         clientUid: router.query.clientUid!,
         firstName: contact.value.firstName,
+        lastName:contact.value.lastName,
         mobilePhone: contact.value.mobilePhone,
         email: contact.value.email
       }
@@ -65,7 +67,7 @@ function editClientContact() {
 
 function FormManager(create: boolean, obj: IClientContact = {} as IClientContact) {
   createContact.value = create;
-  formTitle.value = (create ? "CREATE" : "EDIT") + " CONTACT";
+  formTitle.value = (create ? "CREAR" : "EDITAR") + " CONTACTO";
   showContactModal.value = true;
   if (create) {
     Object.assign(contact, {} as IClientContact);
@@ -92,7 +94,7 @@ function deleteClientContact(uid: string) {
   <div class="overflow-x-auto">
     <button v-show="shield.hasRights(shield.actions.CREATE, shield.objects.CLIENT)" @click="FormManager(true)"
       class="px-1 py-0 mb-4 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">
-      Add Contact
+      Agregar Contacto
     </button>
 
     <div
@@ -101,13 +103,13 @@ function deleteClientContact(uid: string) {
         <thead>
           <tr>
             <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">
-              Full Name
+              Nombre completo
             </th>
             <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">
               Email
             </th>
             <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">
-              Phone
+              Telefono
             </th>
             <th class="px-1 py-1 border-b-2 border-gray-300"></th>
           </tr>
@@ -133,18 +135,19 @@ function deleteClientContact(uid: string) {
               <button v-show="shield.hasRights(shield.actions.UPDATE, shield.objects.CLIENT)"
                 @click="FormManager(false, cont)"
                 class="px-2 py-1 mr-2 border-gray-500 border text-orange-500rounded-smtransition duration-300 hover:bg-gray-700 hover:text-white focus:outline-none">
-                Edit
-              </button> <button v-show="shield.hasRights(shield.actions.UPDATE, shield.objects.CLIENT)"
+                Editar
+              </button>
+               <button v-show="shield.hasRights(shield.actions.UPDATE, shield.objects.CLIENT)"
                 @click="deleteClientContact(cont?.uid!)"
                 class="px-2 py-1 mr-2 border-orange-500 border text-orange-500rounded-smtransition duration-300 hover:bg-orange-700 hover:text-white focus:outline-none">
-                Deactivate
+                Eliminar
               </button>
             </td>
           </tr>
         </tbody>
       </table>
       <div v-if="fetchingClientContacts" class="py-4 text-center">
-        <LoadingMessage message="Fetching client contacts ..." />
+        <LoadingMessage message="Recopilando contactos de clientes ..." />
       </div>
     </div>
   </div>
@@ -159,9 +162,14 @@ function deleteClientContact(uid: string) {
       <form action="post" class="p-1">
         <div class="grid grid-cols-2 gap-x-4 mb-4">
           <label class="block col-span-1 mb-2">
-            <span class="text-gray-700">Full Name</span>
+            <span class="text-gray-700">Nombre</span>
             <input class="form-input mt-1 block w-full" autocomplete="off" v-model="contact.firstName"
-              placeholder="Full Name ..." />
+              placeholder="Nombre completo..." />
+          </label>
+          <label class="block col-span-1 mb-2">
+            <span class="text-gray-700">Apellido</span>
+            <input class="form-input mt-1 block w-full" autocomplete="off" v-model="contact.lastName"
+              placeholder="Nombre completo..." />
           </label>
           <label class="block col-span-1 mb-2">
             <span class="text-gray-700">Email</span>
@@ -169,16 +177,16 @@ function deleteClientContact(uid: string) {
               placeholder="Email ..." />
           </label>
           <label class="block col-span-1 mb-2">
-            <span class="text-gray-700">Mobile Phone</span>
+            <span class="text-gray-700">Telefono</span>
             <input class="form-input mt-1 block w-full" autocomplete="off" v-model="contact.mobilePhone"
-              placeholder="Mobile Phone ..." />
+              placeholder="Telefono ..." />
           </label>
         </div>
 
         <hr />
         <button type="button" @click.prevent="saveForm()"
           class="-mb-4 w-full border border-sky-800 bg-sky-800 text-white rounded-sm px-4 py-2 m-2 transition-colors duration-500 ease select-none hover:bg-sky-800 focus:outline-none focus:shadow-outline">
-          Save Form
+          Guardar forma
         </button>
       </form>
     </template>

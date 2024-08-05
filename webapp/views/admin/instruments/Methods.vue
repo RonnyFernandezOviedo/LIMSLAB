@@ -31,7 +31,7 @@
   function FormManager(create: boolean, obj = {} as IMethod): void {
     formAction.value = create;
     showModal.value = true;
-    formTitle.value = (create ? 'CREAR' : 'EDITAR') + ' ' + "METODO DE ANALISIS";
+    formTitle.value = (create ? 'CREATE' : 'EDIT') + ' ' + "ANALYSES METHOD";
     if (create) {
       Object.assign(method, { ...{} as IMethod });
     } else {
@@ -57,9 +57,9 @@
     <div class="container w-full my-4">
       <hr>
       <button
-        class="px-2 py-1 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none"
+        class="px-2 py-1 border-sky-800 border text-sky-800 rounded-sm transition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none"
         @click="FormManager(true)"
-      > Agregar Metodo</button>
+      > Agregar metodo</button>
       <hr>
     </div>
     <hr />
@@ -70,7 +70,7 @@
             <thead>
             <tr>
                 <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Nombre</th>
-                <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Instrumento</th>
+                <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Instrumentos</th>
                 <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Analisis</th>
                 <th class="px-1 py-1 border-b-2 border-gray-300"></th>
             </tr>

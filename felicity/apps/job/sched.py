@@ -36,7 +36,7 @@ async def run_jobs_if_exists():
 
     jobs: list[job_models.Job] = await job_models.Job.fetch_sorted()
 
-    # logging.info(f"There are {len(jobs)} Jobs pending running.")
+   # logging.info(f"There are {len(jobs)} Jobs pending running.")
 
     if len(jobs) == 0:
         # felicity_pause_workforce()\

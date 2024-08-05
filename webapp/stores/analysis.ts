@@ -128,13 +128,30 @@ export const useAnalysisStore = defineStore('analysis', {
                 this.analysesServices = payload.analysisAll?.items;
             });
         },
+//remove by ronny
+        //async fetchAnalysesMappings(profileUid) {
+            //await withClientQuery(GET_ANALYSIS_MAPPINGS_BY_ANALYSIS, { uid: profileUid }, 'analysisMappingsByAnalysis').then(payload => (this.analysesMappings = payload));
+        //},
+        //addAnalysesMapping(payload) {
+           // this.analysesMappings?.unshift(payload);
+        //},
 
-        async fetchAnalysesMappings(profileUid) {
-            await withClientQuery(GET_ANALYSIS_MAPPINGS_BY_ANALYSIS, { uid: profileUid }, 'analysisMappingsByAnalysis').then(payload => (this.analysesMappings = payload));
+
+//add by ronny
+        AddAnalysisLimits(payload) {
+            this.analysesMapings?.forEach(service => {
+                if (service?.uid == payload?.analysisUid) {
+                    if (service?.analysisLimits) {
+                        service?.analysisLimits?.push(payload);
+                    } else {
+                        service!.analysisLimits = [payload];
+                    }
+                }
+            });
         },
-        addAnalysesMapping(payload) {
-            this.analysesMappings?.unshift(payload);
-        },
+
+
+
         updateAnalysesMapping(payload) {
             const index = this.analysesMappings.findIndex(x => x.uid === payload.uid);
             this.analysesMappings[index] = payload;

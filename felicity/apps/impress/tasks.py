@@ -37,6 +37,7 @@ async def impress_results(job_uid: str):
         user = user
         await utils.impress_samples(job.data, user)
         await job.change_status(new_status=job_states.FINISHED)
+        logger.info(f"starting notifying ....")
         await report_notifier.notify("Your results were successfully published", user)
     except Exception as e:
         await job.change_status(new_status=job_states.FAILED)
@@ -54,7 +55,7 @@ async def prepare_for_impress():
         [{"uid": uid, "status": states.sample.PUBLISHING} for uid in sample_uids]
     )
 
-    system_daemon: User = await User.get(email=settings.SYSTEM_DAEMONUSER_EMAIL)
+    system_daemon: User = await User.get(email=settings.SYSTEM_DAEMON_EMAIL)
 
     job_schema = job_schemas.JobCreate(
         action=actions.IMPRESS_REPORT,

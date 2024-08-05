@@ -9,6 +9,7 @@ import {
   usePatientStore,
 } from "../../stores";
 import {
+  IAnalysisCoding,
   IAnalysisProfile,
   IAnalysisRequest,
   IAnalysisService,
@@ -25,6 +26,9 @@ import { useApiUtil, useNotifyToast } from "../../composables";
 const LoadingMessage = defineAsyncComponent(
   () => import("../../components/Spinners/LoadingMessage.vue")
 )
+
+import { isNullOrWs } from "../../utils/helpers";//by ronny
+import { IPatient } from "../../models/patient";
 
 const sampleStore = useSampleStore();
 const patientStore = usePatientStore();
@@ -51,12 +55,18 @@ const clients = computed(() => clientStore.getClients);
 
 // const client = ref<IClient>({} as IClient);
 
-function getClientContacts(item: IClient): void {
-  if (ifNoValEmpty(item)) {
-    clientStore.fetchClientContacts(item?.uid);
-  }
-}
-const clientContacts = computed(() => clientStore.getClientContacts);
+//function getClientContacts(item: IClient): void {
+  //if (ifNoValEmpty(item)) {
+    //clientStore.fetchClientContacts(item?.uid);
+  //}
+//}
+
+clientStore.fetchClientContacts(patient.value?.client.uid);
+
+let clientContacts = computed(() => clientStore.getClientContacts);
+
+//const clientContacts = computed(() => clientStore.getClientContacts);
+
 
 // Sample Types
 sampleStore.fetchSampleTypes();
@@ -91,23 +101,27 @@ const arSaving = ref(false);
 const arSchema = object({
   clientRequestId: string().required("Cliente ID es requerido"),
   clinicalData: string().nullable(),
-  client: object().required("Cliente es requerido"),
+  //client: object().required("Cliente es requerido"),
   clientContactUid: number().required("Contacto de cliente es requerido"),
   samples: array().required().min(1, "Agregue al menos 1 muestra"),
   priority: number(),
+  dateCollected: string().nullable(),
 });
 
 const { handleSubmit, errors } = useForm({
   validationSchema: arSchema,
   initialValues: {
+    dateCollected: !isNullOrWs(patient?.value?.dateOfBirth)//by ronny
+      ? (new Date(patient?.value?.dateOfBirth!).toISOString().split("T")[0] as any)//by ronny
+      : undefined,
     priority: 0,
     samples: [],
   } as any,
 });
 
+
 const { value: clientRequestId } = useField("clientRequestId");
 const { value: clinicalData } = useField<string>("clinicalData");
-const { value: client } = useField<IClient>("client");
 const { value: clientContactUid } = useField("clientContactUid");
 const { value: priority } = useField("priority");
 const { value: samples } = useField<ISample[]>("samples");
@@ -117,11 +131,11 @@ const submitARForm = handleSubmit((values) => {
 
   for (let sample of values.samples || []) {
     if (typeof sample?.sampleType !== "string") {
-      swalError("Samples must have sample types");
+      swalError("Debe selecionar tipo de muestra");
       return;
     }
     if (sample?.analyses?.length <= 0 && sample?.profiles?.length <= 0) {
-      swalError("Samples must have either profiles/analyses or both");
+      swalError("La muestra debe tener un perfil de analsis /analisis o ambos");
       return;
     }
   }
@@ -133,11 +147,13 @@ const submitARForm = handleSubmit((values) => {
 function addAnalysesRequest(request: IAnalysisRequest): void {
   const payload = {
     patientUid: patient.value?.uid,
+    clientUid: patient.value?.client.uid,
     clientRequestId: request.clientRequestId,
     clinicalData: request.clinicalData,
-    clientUid: client?.value?.uid,
     clientContactUid: request.clientContactUid,
     samples: request.samples,
+    priority: request.priority,
+    //dateCollected: request.dateCollected,
   };
   withClientMutation(ADD_ANALYSIS_REQUEST, { payload }, "createAnalysisRequest")
     .then((result) => {
@@ -152,6 +168,7 @@ function addAnalysesRequest(request: IAnalysisRequest): void {
 function addSample(): void {
   const sample = {
     sampleType: {} as ISampleType,
+    dateCollected:"",
     profiles: [] as IAnalysisProfile[],
     analyses: [] as IAnalysisService[],
   } as ISample;
@@ -184,15 +201,37 @@ function removeSample(index: number): void {
           </div>
         </label>
 
-        <label class="flex whitespace-nowrap mb-2 w-full">
+
+         <!-- date of collected sample by Ronny -->
+
+         <!--<label class="flex whitespace-nowrap mb-2 w-full">
+      <span class="text-gray-700 w-4/12">Fecha recoleccion</span>
+      <div class="w-full">
+        <input class="form-input mt-1 w-full disabled:bg-slate-200" type="date" v-model="dateCollected"
+          placeholder="Fecha de recoleccion" />
+        <div class="text-orange-600 w-4/12">{{ errors.dateCollected }}</div>
+      </div>
+    </label>-->
+
+    <!--<label class="flex whitespace-nowrap mb-2 w-full">
+                <span class="text-gray-700 w-4/12">Fecha recoleccion</span>
+                <div class="w-full">
+                <input type="datetime-local" class="form-input mt-1 block w-full" v-model="dateCollected" placeholder="Fecha de recoleccion"/>
+                <div class="text-orange-600 w-4/12">{{ errors.dateCollected }}</div>
+              </div> 
+    </label>-->
+
+
+
+
+        <!-- <label class="flex whitespace-nowrap mb-2 w-full">
           <span class="text-gray-700 w-4/12">Cliente</span>
           <div class="w-full">
-            <VueMultiselect placeholder="Select a Client" v-model="client" :options="clients" :searchable="true"
+            <VueMultiselect placeholder="Seleccione un Cliente" v-model="client" :options="clients" :searchable="true"
               label="name" track-by="uid" @select="getClientContacts">
             </VueMultiselect>
           </div>
-        </label>
-
+        </label>-->
         <label class="flex whitespace-nowrap mb-2 w-full">
           <span class="text-gray-700 w-4/12">Contacto de Cliente</span>
           <div class="w-full">
@@ -240,6 +279,14 @@ function removeSample(index: number): void {
                   </option>
                 </select>
               </label>
+
+              <label class="flex flex-col whitespace-nowrap mb-2">
+                <span class="text-gray-700">Date Collected</span>
+                <input type="datetime-local" class="form-input mt-1 block w-full" v-model="sample.dateCollected" />
+              </label>
+
+
+
 
               <label class="flex flex-col whitespace-nowrap mb-2">
                 <span class="text-gray-700">Perfil de Analisis</span>

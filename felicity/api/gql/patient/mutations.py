@@ -28,25 +28,24 @@ class PatientidentificationInput:
 
 @strawberry.input
 class PatientInputType:
-    client_patient_id: str
+   # client_patient_id: str
     first_name: str
     last_name: str
     client_uid: str
-    gender: str
-    middle_name: str | None = None
-    age: int | None = None
-    date_of_birth: datetime | None = None
+    #gender: str
+    #middle_name: str | None = None
+    #age: int | None = None
+    #date_of_birth: datetime | None = None
     age_dob_estimated: bool | None = False
-    phone_mobile: str | None = None
-    phone_home: str | None = None
-    consent_sms: bool | None = False
+    #phone_mobile: str | None = None
+    #phone_home: str | None = None
+    #consent_sms: bool | None = False
     internal_use: bool | None = False
-    country_uid: str | None = None
-    province_uid: str | None = None
+    #country_uid: str | None = None
+    #province_uid: str | None = None
     district_uid: str | None = None
-    identifications: Optional[List[PatientidentificationInput]] = field(
-        default_factory=list
-    )
+    #identifications: Optional[List[PatientidentificationInput]] = field(default_factory=list)
+    #direccion: str | None = None
 
 
 IdentificationResponse = strawberry.union(
@@ -126,18 +125,13 @@ class PatientMutations:
             return auth_error
 
         if (
-            not payload.client_patient_id
-            or not payload.first_name
+            not payload.first_name
             or not payload.last_name
             or not payload.client_uid
         ):
             return OperationError(
                 error="Codigo de cliente, nombre,apellido, correo son requeridos"
             )
-
-        exists = await models.Patient.get(client_patient_id=payload.client_patient_id)
-        if exists:
-            return OperationError(error=f"Codigo de cliente ya existe")
 
         client = await client_models.Client.get(uid=payload.client_uid)
         if not client:
@@ -156,13 +150,13 @@ class PatientMutations:
         patient: models.Patient = await models.Patient.create(obj_in)
 
         # create identifications
-        for p_id in payload.identifications:
-            pid_in = schemas.PatientIdentificationCreate(
-                patient_uid=patient.uid,
-                identification_uid=p_id.identification_uid,
-                value=p_id.value,
-            )
-            await models.PatientIdentification.create(pid_in)
+        #for p_id in payload.identifications:
+            #pid_in = schemas.PatientIdentificationCreate(
+               # patient_uid=patient.uid,
+                #identification_uid=p_id.identification_uid,
+                #value=p_id.value,
+            #)
+            #await models.PatientIdentification.create(pid_in)
 
         return PatientType(**patient.marshal_simple())
 
@@ -199,41 +193,5 @@ class PatientMutations:
 
         obj_in = schemas.PatientUpdate(**patient.to_dict())
         patient = await patient.update(obj_in)
-
-        # update identifications
-        update_identification_uids = [
-            id.identification_uid for id in payload.identifications
-        ]
-        identifications = await models.PatientIdentification.get_all(
-            patient_uid=patient.uid
-        )
-        identifications_uids = [id.uid for id in identifications]
-
-        for identification in identifications:
-            # deleted
-            if not identification.uid in update_identification_uids:
-                await identification.delete()
-            else:  # update
-                update_identification = list(
-                    filter(
-                        lambda x: x.identification_uid == identification.uid,
-                        payload.identifications,
-                    )
-                )[0]
-                id_update_in = schemas.PatientIdentificationUpdate(
-                    patient_uid=patient.uid, **id_update_in.to_dict()
-                )
-                identification = await identification.update(id_update_in)
-
-        # new
-        for _pid in payload.identifications:
-            if not _pid.identification_uid in identifications_uids:
-                pid_in = schemas.PatientIdentificationCreate(
-                    patient_uid=patient.uid,
-                    identification_uid=_pid.identification_uid,
-                    value=_pid.value,
-                )
-                await models.PatientIdentification.create(pid_in)
-
         patient = await models.Patient.get(uid=patient.uid)
         return PatientType(**patient.marshal_simple())

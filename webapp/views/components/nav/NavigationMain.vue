@@ -22,8 +22,8 @@ onMounted(() => loadPreferedTheme());
 
 const userFullName = computed(
   () => `${authStore.auth?.user?.firstName} ${authStore.auth?.user?.lastName}`
-);
 
+);
 const showNotifications = (val) => notificationStore.showNotifications(val);
 const showErrors = ref(false)
 </script>

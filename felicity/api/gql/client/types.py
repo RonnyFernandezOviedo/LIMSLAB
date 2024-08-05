@@ -11,7 +11,7 @@ from api.gql.user.types import UserAuthType, UserType
 class ClientType:
     uid: str
     name: str
-    code: str
+    cliente_id: str | None
     district_uid: str | None
     district: Optional[DistrictType]
     province_uid: str | None
@@ -31,6 +31,8 @@ class ClientType:
     updated_by_uid: str | None
     updated_by: UserType | None
     updated_at: datetime | None
+    cliente_direccion: str | None
+  
 
 
 @strawberry.type

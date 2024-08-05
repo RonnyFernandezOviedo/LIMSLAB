@@ -145,11 +145,11 @@
             />
           </label>
           <label class="block col-span-1 mb-2">
-            <span class="text-gray-700">keyword</span>
+            <span class="text-gray-700">Codigo-Equipo</span>
             <input
               class="form-input mt-1 block w-full"
               v-model="instrument.keyword"
-              placeholder="Keyword ..."
+              placeholder="Codigo ..."
             />
           </label>
           <label class="block col-span-1 mb-2" >

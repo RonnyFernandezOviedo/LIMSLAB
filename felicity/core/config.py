@@ -61,10 +61,10 @@ class Settings(BaseSettings):
     TIMEZONE_AWARE: bool = False
     TIMEZONE_REGION: str = "UTC"  # "Africa/Harare"
     TIMEZONE: Any = pytz.timezone(TIMEZONE_REGION)
-    POSTGRES_SERVER: str = getenv_value("POSTGRES_SERVER", "localhost")
-    POSTGRES_USER: str = getenv_value("POSTGRES_USER", "felicity")
-    POSTGRES_PASSWORD: str = getenv_value("POSTGRES_PASSWORD", "felicity")
-    POSTGRES_DB: str = getenv_value("POSTGRES_DB", "felicity_lims")
+    POSTGRES_SERVER: str = getenv_value("POSTGRES_SERVER", "ep-spring-forest-a4q0l1rz.us-east-1.pg.koyeb.app")#("POSTGRES_SERVER", "localhost")
+    POSTGRES_USER: str = getenv_value("POSTGRES_USER", "koyeb-adm")#"felicity"
+    POSTGRES_PASSWORD: str = getenv_value("POSTGRES_PASSWORD", "a9DSbGx2ImFq")#"felicity"
+    POSTGRES_DB: str = getenv_value("POSTGRES_DB", "koyebdb")#"felicity_lims"
     SQLALCHEMY_DATABASE_URI: str | None = None
     TESTING: bool = getenv_boolean("TESTING", False)
     RETAIN_TESTING_DB_DATA: bool = getenv_boolean("RETAIN_TESTING_DB_DATA", False)
@@ -130,7 +130,7 @@ class Settings(BaseSettings):
     SYSTEM_DAEMON_USERNAME: str = "system_daemon"
     SYSTEM_DAEMON_PASSWORD: str = "!System@Daemon#100"
     USERS_OPEN_REGISTRATION: bool = False
-    LOAD_SETUP_DATA: bool = getenv_boolean("LOAD_SETUP_DATA", True)
+    LOAD_SETUP_DATA: bool = getenv_boolean("LOAD_SETUP_DATA", False)
     SERVE_WEBAPP: bool = getenv_boolean("SERVE_WEBAPP", True)
     RUN_OPEN_TRACING: bool = getenv_boolean("RUN_OPEN_TRACING", False)
     OTLP_SPAN_EXPORT_URL: str = getenv_value(

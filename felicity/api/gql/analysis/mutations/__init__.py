@@ -12,6 +12,8 @@ from .analysis_other import (
     update_analysis_interim,
     update_analysis_specification,
     update_analysis_uncertainty,
+    create_analysis_mapping,
+    update_analysis_mapping,
 )
 from .analysis_profile import (
     create_profile,
@@ -42,8 +44,6 @@ from .analysis_result import (
 from .analysis_service import (
     create_analysis,
     update_analysis,
-    create_analysis_mapping,
-    update_analysis_mapping,
 )
 from .quality_control import (
     create_QC_level,

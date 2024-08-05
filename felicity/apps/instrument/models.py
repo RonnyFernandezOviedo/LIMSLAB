@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from apps import BaseAuditDBModel, DBModel
 from apps.common.models import IdSequence
 from apps.instrument import schemas
+from apps.analysis.models.analysis import analysis_method
 
 """
  Many to Many Link between Method and Instruments
@@ -24,11 +25,16 @@ class Method(BaseAuditDBModel):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     keyword = Column(String, nullable=True)
+    max = Column(String, nullable=True)
+    min = Column(String, nullable=True)
     instruments = relationship(
         "Instrument",
         secondary=method_instrument,
         back_populates="methods",
         lazy="selectin",
+    )
+    analyses = relationship(
+        "Analysis", secondary=analysis_method, back_populates="methods", lazy="selectin"
     )
 
     @classmethod
@@ -71,9 +77,7 @@ class Instrument(BaseAuditDBModel):
     name = Column(String, nullable=False)
     description = Column(String, nullable=True)
     keyword = Column(String, nullable=True)
-    instrument_type_uid = Column(
-        String, ForeignKey("instrument_type.uid"), nullable=True
-    )
+    instrument_type_uid = Column(String, ForeignKey("instrument_type.uid"), nullable=True )
     instrument_type = relationship("InstrumentType", lazy="selectin")
     supplier_uid = Column(String, ForeignKey("supplier.uid"), nullable=True)
     supplier = relationship("Supplier", backref="instruments", lazy="selectin")

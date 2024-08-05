@@ -204,9 +204,9 @@ router.beforeEach(async (to, from) => {
     }
 });
 
-function hasAccess(page: any) {
+ function hasAccess(page: any) {
     switch (page) {
-        case guards.pages.DASHBOARD:
+        case  guards.pages.DASHBOARD:
             return guards.canAccessPage(guards.pages.DASHBOARD);
 
         case guards.pages.PATIENTS:

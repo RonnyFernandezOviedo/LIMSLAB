@@ -9,6 +9,7 @@ from api.gql.setup.types import ManufacturerType, SupplierType
 from apps.instrument.models import Method
 
 
+
 @strawberry.type
 class InstrumentTypeType:
     uid: str
@@ -17,10 +18,10 @@ class InstrumentTypeType:
     #
     created_by_uid: str | None
     created_by: Optional["UserType"]
-    created_at: datetime | None
+    created_at: str | None
     updated_by_uid: str | None
     updated_by: Optional["UserType"]
-    updated_at: datetime | None
+    updated_at: str | None
 
 
 #  relay paginations
@@ -53,15 +54,17 @@ class InstrumentType:
     #
     created_by_uid: str | None
     created_by: Optional["UserType"]
-    created_at: datetime | None
+    created_at: str | None
     updated_by_uid: str | None
     updated_by: Optional["UserType"]
-    updated_at: datetime | None
-    # methods: Optional[List["MethodType"]] = field(default_factory=list)
-    
+    updated_at: str | None
+
+    methods: Optional[List["MethodType"]] = field(default_factory=list)
+
     @strawberry.field
     async def methods(self, info) -> Optional[List["MethodType"]]:
-        return await Method.get(instruments___uid=self.uid)
+        m = await Method.get(instruments___uid=self.uid)
+        return MethodType(**m) if m else None
 
 
 #  relay paginations
@@ -80,10 +83,42 @@ class InstrumentCursorPage:
 
 
 @strawberry.type
+class LaboratoryInstrumentType:
+    uid: str
+    instrument_uid: str | None = None
+    instrument: InstrumentType | None = None
+    lab_name: str | None = None
+    serial_number: str | None = None
+    date_commissioned: datetime | None = None
+    date_decommissioned: datetime | None = None
+    #
+    created_by_uid: str | None
+    created_by: Optional["UserType"]
+    created_at: str | None
+    updated_by_uid: str | None
+    updated_by: Optional["UserType"]
+    updated_at: str | None
+
+
+@strawberry.type
+class LaboratoryInstrumentEdge:
+    cursor: str
+    node: LaboratoryInstrumentType
+
+
+@strawberry.type
+class LaboratoryInstrumentCursorPage:
+    page_info: PageInfo
+    edges: Optional[List[LaboratoryInstrumentEdge]]
+    items: Optional[List[LaboratoryInstrumentType]]
+    total_count: int
+
+
+@strawberry.type
 class InstrumentCalibrationType:
     uid: str
-    instrument_uid: str
-    instrument: InstrumentType | None
+    laboratory_instrument_uid: str
+    laboratory_instrument: LaboratoryInstrumentType | None
     calibration_id: str
     date_reported: datetime
     report_id: str
@@ -93,13 +128,20 @@ class InstrumentCalibrationType:
     notes_before: str
     work_done: str
     remarks: str
+    #
+    created_by_uid: str | None
+    created_by: Optional["UserType"]
+    created_at: str | None
+    updated_by_uid: str | None
+    updated_by: Optional["UserType"]
+    updated_at: str | None
 
 
 @strawberry.type
 class CalibrationCertificateType:
     uid: str
-    instrument_uid: str
-    instrument: InstrumentType | None
+    laboratory_instrument_uid: str
+    laboratory_instrument: LaboratoryInstrumentType | None
     certificate_code: str
     internal: bool
     issuer: str
@@ -109,7 +151,13 @@ class CalibrationCertificateType:
     performed_by: str
     approved_by: str
     remarks: str
-
+    #
+    created_by_uid: str | None
+    created_by: Optional["UserType"]
+    created_at: str | None
+    updated_by_uid: str | None
+    updated_by: Optional["UserType"]
+    updated_at: str | None
 
 @strawberry.type
 class MethodType:
@@ -117,13 +165,15 @@ class MethodType:
     name: str | None
     description: str | None
     keyword: str | None
+    min: str | None
+    max: str | None
     #
     created_by_uid: str | None
     created_by: Optional["UserType"]
-    created_at: datetime | None
+    created_at: str | None
     updated_by_uid: str | None
     updated_by: Optional["UserType"]
-    updated_at: datetime | None
+    updated_at: str | None
     instruments: Optional[List["InstrumentType"]] = field(default_factory=list)
 
 

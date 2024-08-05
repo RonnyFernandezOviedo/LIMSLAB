@@ -193,6 +193,8 @@ class MethodBase(BaseModel):
     description: str = None
     keyword: str = None
     instruments: Optional[List[Instrument]] = []
+    max: str = None
+    min: str = None
 
 
 # Properties to receive via API on creation

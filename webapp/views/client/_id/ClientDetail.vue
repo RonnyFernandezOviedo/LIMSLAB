@@ -7,8 +7,8 @@ import tabLogs from "../../components/AuditLog.vue";
 
 const clientStore = useClientStore();
 
-let currentTab = ref("samples");
-const tabs = ["samples", "contacts", "logs"];
+let currentTab = ref("Muestras");
+const tabs = ["Muestras", "Contactos", "logs"];
 let currentTabComponent = computed(() => "tab-" + currentTab.value);
 
 let client = computed(() => clientStore.getClient);
@@ -28,8 +28,8 @@ let client = computed(() => clientStore.getClient);
     </nav>
 
     <div class="pt-4">
-      <tab-samples v-if="currentTab === 'samples'" />
-      <tab-contacts v-if="currentTab === 'contacts'" :clientUid="client?.uid" />
+      <tab-samples v-if="currentTab === 'Muestras'" />
+      <tab-contacts v-if="currentTab === 'Contactos'" :clientUid="client?.uid" />
       <tab-logs v-if="currentTab === 'logs'" targetType="client" :targetId="client?.uid" />
     </div>
   </section>

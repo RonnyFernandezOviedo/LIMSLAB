@@ -8,10 +8,14 @@ import { defineAsyncComponent } from "vue";
 const LoadingMessage = defineAsyncComponent(
   () => import("../../components/Spinners/LoadingMessage.vue")
 )
+import { useClientStore } from "../../stores";
+
+const clientStore = useClientStore();
 
 const route = useRoute();
 const patientStore = usePatientStore();
 const { patient, fetchingPatient } = storeToRefs(patientStore);
+const { client } = storeToRefs(clientStore);
 
 const emit = defineEmits(["editPatient"]);
 const editPatient = (patient) => {
@@ -24,22 +28,22 @@ const editPatient = (patient) => {
     <div v-if="fetchingPatient" class="py-4 text-center">
       <LoadingMessage message="Obteniendo informacion de Solicitud ..." />
     </div>
-    <div class="grid grid-cols-12 gap-3" v-else>
+    <div class="grid grid-cols-10 gap-3" v-else>
       <!-- Meta Column -->
       <div class="sm:col-span-2 text-center hidden sm:block">
-        <div class="inline-block font-bold text-medium mb-2">
+         <!-- A<div class="inline-block font-bold text-medium mb-2">
           {{ patient?.patientId }}
-        </div>
+        </div>-->
         <!-- Age -->
         <div class="flex flex-col items-center justify-center mx-auto py-2 w-4/5 2lg:w-3/5 rounded-sm bg-sky-800">
-          <div class="inline-block font-semibold text-white text-sm lg:text-md">
-            {{ patient?.gender }}
+          <div class="inline-block font-bold text-white text-sm lg:text-md">
+            Solicitud
           </div>
           <div class="inline-block font-bold text-2xl text-white my-2">
-            {{ patient?.age }}
+            {{ patient?.patientId}}
           </div>
           <div class="inline-block font-semibold text-white text-sm lg:text-md">
-            Yrs Old
+            {{ parseDate(patient?.createdAt, false) }}
           </div>
         </div>
       </div>
@@ -68,15 +72,37 @@ const editPatient = (patient) => {
 
         <div class="grid grid-cols-3 gap-x-8 mt-2">
 
+          <div class="col-span-1 mr-2">
+            <h1 class="uppercase text-sm font-semibold">Informacion Cliente</h1>
+            <hr class="my-1">
+            <!-- Identifiers -->
+            <div class="flex justify-between items-center mt-2">
+              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">Codigo Cliente:
+              </span>
+              <span class="text-gray-600 text-sm md:text-md">
+                {{ patient?.client?.clienteId }}</span>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">Telefono:
+              </span>
+              <span class="text-gray-600 text-sm md:text-md">
+                {{ patient?.client?.phoneMobile }}</span>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">Correo:
+              </span>
+              <span class="text-gray-600 text-sm md:text-md">
+                {{ patient?.client?.email }}</span>
+            </div>
+          </div>
           <div class="col-span-1">
-            <h1 class="uppercase text-sm font-semibold">informacion cliente</h1>
+            <h1 class="uppercase text-sm font-semibold">Region</h1>
             <hr class="my-1">
             <!-- Client Details -->
             <div class="flex justify-between items-center mt-2">
               <span class="text-gray-800 text-sm font-semibold">Pais</span>
               <span class="text-gray-600 text-sm md:text-md">{{
-                patient?.client?.district?.province?.country?.name
-              }}</span>
+                patient?.client.district.province?.country?.name}}</span>
             </div>
             <div class="flex justify-between items-center mt-2">
               <span class="text-gray-800 text-sm font-semibold">Provincia:</span>
@@ -93,59 +119,13 @@ const editPatient = (patient) => {
           </div>
 
           <div class="col-span-1">
-            <h1 class="uppercase text-sm font-semibold">Contacto</h1>
+            <h1 class="uppercase text-sm font-semibold">Direccion exacta</h1>
             <hr class="my-1">
-            <!-- Contacts Details -->
             <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-800 text-sm font-semibold">Nombre</span>
-              <span class="text-gray-600 text-sm md:text-md">{{ patient?.firstName?.toUpperCase() }} {{
-                patient?.lastName?.toUpperCase()
-              }}</span>
-            </div>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-800 text-sm font-semibold">Distrito:</span>
-              <span class="text-gray-600 text-sm md:text-md">{{
-                patient?.district.name
-              }}</span>
-            </div>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-800 text-sm font-semibold">Provincia: </span>
-              <span class="text-gray-600 text-sm md:text-md">{{
-                patient?.province?.name
-              }}</span>
+              <span class="text-gray-600 text-sm md:text-md">{{patient?.client.clienteDireccion}}</span>
             </div>
           </div>
 
-          <div class="col-span-1 mr-2">
-            <h1 class="uppercase text-sm font-semibold">Informacion</h1>
-            <hr class="my-1">
-            <!-- Identifiers -->
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">Contacto Cliente ID:
-              </span>
-              <span class="text-gray-600 text-sm md:text-md">
-                {{ patient?.clientPatientId }}</span>
-            </div>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">Telefono:
-              </span>
-              <span class="text-gray-600 text-sm md:text-md">
-                {{ patient?.phoneMobile }}</span>
-            </div>
-            <div class="flex justify-between items-center mt-2">
-              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">Correo:
-              </span>
-              <span class="text-gray-600 text-sm md:text-md">
-                {{ patient?.gender }}</span>
-            </div>
-            <div class="flex justify-between items-center mt-2" v-for="identification in patient?.identifications" :key="identification.uid">
-              <span class="text-gray-800 whitespace-nowrap text-sm font-semibold">{{ identification?.identification?.name
-              }}:
-              </span>
-              <span class="text-gray-600 text-sm md:text-md">
-                {{ identification?.value }}</span>
-            </div>
-          </div>
 
         </div>
       </div>

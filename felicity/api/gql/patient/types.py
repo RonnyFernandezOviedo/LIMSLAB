@@ -40,7 +40,7 @@ class PatientIdentificationType:
 @strawberry.type
 class PatientType:
     uid: str
-    client_patient_id: str
+    #client_patient_id: str
     patient_id: str
     client_uid: str
     client: Optional[ClientType]
@@ -53,6 +53,7 @@ class PatientType:
     age_dob_estimated: bool
     phone_mobile: str | None
     phone_home: str | None
+    direccion: str | None
     consent_sms: bool
     email: str | None
     internal_use: bool

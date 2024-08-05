@@ -41,20 +41,20 @@ ProfilesServiceResponse = strawberry.union(
     description="",
 )
 
-AnalysisMappingResponse = strawberry.union(
-    "AnalysisMappingResponse",
-    (a_types.AnalysisMappingType, OperationError),  # noqa
-    description="Union of possible outcomes when adding a new notice",
-)
+#AnalysisMappingResponse = strawberry.union(
+ #   "AnalysisMappingResponse",
+ #   (a_types.AnalysisMappingType, OperationError),  # noqa
+ #   description="Union of possible outcomes when adding a new notice",
+#)
 
 
-@strawberry.input
-class AnalysisMappingInputType:
-    analysis_uid: str
-    coding_standard_uid: str
-    name: str
-    code: str
-    description: str | None = None
+#@strawberry.input
+#class AnalysisMappingInputType:
+ #   analysis_uid: str
+  #  sample_type_uid: str
+   # name: str
+    #code: str
+    #description: str | None = None
 
 
 @strawberry.mutation(permission_classes=[IsAuthenticated])
@@ -156,58 +156,58 @@ async def update_analysis(
     return a_types.AnalysisWithProfiles(**{**analysis.marshal_simple(), "profiles": profiles})
 
 
-@strawberry.mutation(permission_classes=[IsAuthenticated])
-async def create_analysis_mapping(
-        info, payload: AnalysisMappingInputType
-) -> AnalysisMappingResponse:
-    is_authenticated, felicity_user = await auth_from_info(info)
-    verify_user_auth(
-        is_authenticated,
-        felicity_user,
-        "Only Authenticated user can create analysiss mappigs",
-    )
+#@strawberry.mutation(permission_classes=[IsAuthenticated])
+#async def create_analysis_mapping(
+ #       info, payload: AnalysisMappingInputType
+#) -> AnalysisMappingResponse:
+ #   is_authenticated, felicity_user = await auth_from_info(info)
+  #  verify_user_auth(
+   #     is_authenticated,
+    #    felicity_user,
+    #    "Only Authenticated user can create analysiss mappigs",
+    #)
+    #exists = await analysis_models.AnalysisCoding.get(sample_type_uid=payload.sample_type_uid)
 
-    exists = await analysis_models.AnalysisCoding.get(code=payload.code)
-    if exists:
-        return OperationError(error=f"Mapping: {payload.code} already exists")
+    #if exists:
+        #return OperationError(error=f"Mapping: {payload.sample_type_uid} already exists")
 
-    incoming = {
-        "created_by_uid": felicity_user.uid,
-        "updated_by_uid": felicity_user.uid,
-    }
-    for k, v in payload.__dict__.items():
-        incoming[k] = v
+    #incoming = {
+       # "created_by_uid": felicity_user.uid,
+       # "updated_by_uid": felicity_user.uid,
+    #}
+    #for k, v in payload.__dict__.items():
+        #incoming[k] = v
 
-    obj_in = schemas.AnalysisCodingCreate(**incoming)
-    analysis_mapping: analysis_models.AnalysisCoding = (
-        await analysis_models.AnalysisCoding.create(obj_in)
-    )
-    return a_types.AnalysisMappingType(**analysis_mapping.marshal_simple())
+   # obj_in = schemas.AnalysisCodingCreate(**incoming)
+   # analysis_mapping: analysis_models.AnalysisCoding = (
+      #  await analysis_models.AnalysisCoding.create(obj_in)
+   # )
+   # return a_types.AnalysisMappingType(**analysis_mapping.marshal_simple())
 
 
-@strawberry.mutation(permission_classes=[IsAuthenticated])
-async def update_analysis_mapping(
-        info, uid: str, payload: AnalysisMappingInputType
-) -> AnalysisMappingResponse:
-    is_authenticated, felicity_user = await auth_from_info(info)
-    verify_user_auth(
-        is_authenticated,
-        felicity_user,
-        "Only Authenticated user can update analysis mappings",
-    )
+#@strawberry.mutation(permission_classes=[IsAuthenticated])
+#async def update_analysis_mapping(
+      #  info, uid: str, payload: AnalysisMappingInputType
+#) -> AnalysisMappingResponse:
+#    is_authenticated, felicity_user = await auth_from_info(info)
+ #   verify_user_auth(
+ #       is_authenticated,
+ #       felicity_user,
+ #       "Only Authenticated user can update analysis mappings",
+ #   )
 
-    analysis_mapping = await analysis_models.AnalysisCoding.get(uid=uid)
-    if not analysis_mapping:
-        return OperationError(error=f"Coding with uid {uid} does not exist")
+ #   analysis_mapping = await analysis_models.AnalysisCoding.get(uid=uid)
+ #   if not analysis_mapping:
+ #       return OperationError(error=f"Coding with uid {uid} does not exist")
 
-    st_data = analysis_mapping.to_dict()
-    for field in st_data:
-        if field in payload.__dict__:
-            try:
-                setattr(analysis_mapping, field, payload.__dict__[field])
-            except Exception as e:
-                logger.warning(e)
-
-    analysis_mapping_in = schemas.AnalysisCodingUpdate(**analysis_mapping.to_dict())
-    analysis_mapping = await analysis_mapping.update(analysis_mapping_in)
-    return a_types.AnalysisMappingType(**analysis_mapping.marshal_simple())
+ #   st_data = analysis_mapping.to_dict()
+ #   for field in st_data:
+ #       if field in payload.__dict__:
+ #           try:
+#               setattr(analysis_mapping, field, payload.__dict__[field])
+#           except Exception as e:
+#                logger.warning(e)
+#
+#    analysis_mapping_in = schemas.AnalysisCodingUpdate(**analysis_mapping.to_dict())
+#    analysis_mapping = await analysis_mapping.update(analysis_mapping_in)
+#    return a_types.AnalysisMappingType(**analysis_mapping.marshal_simple())

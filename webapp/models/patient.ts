@@ -1,4 +1,4 @@
-import { IDistrict, IProvince } from './location';
+import { IDistrict, IProvince,ILocation } from './location';
 import { IClient } from './client';
 
 export interface IIdentification {
@@ -16,20 +16,13 @@ export interface IPatientIdentification {
 
 export interface IPatient {
     uid: string;
-    clientPatientId: string;
     patientId: string;
     firstName: string;
     middleName: string;
     lastName: string;
     client: IClient;
     clientUid: string;
-    gender: string;
-    age: number;
     dateOfBirth: Date;
-    ageDobEstimated: boolean;
-    phoneHome: string;
-    phoneMobile: string;
-    consentSms: boolean;
     district: IDistrict;
     districtUid: string;
     province: IProvince;
@@ -37,6 +30,7 @@ export interface IPatient {
     country: IDistrict;
     countryUid: string;
     identifications: IPatientIdentification[];
+    createdAt: Date;
 }
 
 export interface IPatientIdentificationForm {

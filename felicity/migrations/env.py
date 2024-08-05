@@ -52,10 +52,10 @@ def run_migrations_offline():
 
 
 def get_async_url():
-    user = os.getenv("POSTGRES_USER", "felicity")
-    password = os.getenv("POSTGRES_PASSWORD", "felicity")
-    server = os.getenv("POSTGRES_SERVER", "localhost")  # felicity_db
-    db = os.getenv("POSTGRES_DB", "felicity_lims")
+    user = os.getenv("POSTGRES_USER", "koyeb-adm")
+    password = os.getenv("POSTGRES_PASSWORD", "a9DSbGx2ImFq")
+    server = os.getenv("POSTGRES_SERVER", "ep-spring-forest-a4q0l1rz.us-east-1.pg.koyeb.app")  # felicity_db
+    db = os.getenv("POSTGRES_DB", "koyebdb")
     return f"postgresql+asyncpg://{user}:{password}@{server}/{db}"
 
 

@@ -75,7 +75,7 @@ async def create_clients() -> None:
             if not client:
                 cl_in = client_schemas.ClientCreate(
                     name=_cl.get("name"),
-                    code=_cl.get("code"),
+                    #code=_cl.get("code"),
                     district_uid=district.uid,
                     province_uid=district.province_uid,
                 )

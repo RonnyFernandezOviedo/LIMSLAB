@@ -12,14 +12,13 @@ from api.gql.instrument.types import (
     InstrumentType,
     InstrumentTypeType,
     MethodType,
+    LaboratoryInstrumentType,
 )
 from apps.analysis.models import analysis as analysis_models
 from apps.instrument import models, schemas
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 InstrumentTypeResponse = strawberry.union(
     "InstrumentTypeResponse",
@@ -28,6 +27,11 @@ InstrumentTypeResponse = strawberry.union(
 )
 InstrumentResponse = strawberry.union(
     "InstrumentResponse", (InstrumentType, OperationError), description=""  # noqa
+)
+LaboratoryInstrumentResponse = strawberry.union(
+    "LaboratoryInstrumentResponse",
+    (LaboratoryInstrumentType, OperationError),
+    description="",  # noqa
 )
 MethodResponse = strawberry.union(
     "MethodResponse", (MethodType, OperationError), description=""  # noqa
@@ -62,20 +66,31 @@ class InstrumentInputType:
 
 
 @strawberry.input
+class LaboratoryInstrumentInputType:
+    instrument_uid: str
+    lab_name: str
+    serial_number: str | None = None
+    date_commissioned: datetime | None = None
+    date_decommissioned: datetime | None = None
+
+
+@strawberry.input
 class MethodInputType:
     name: str
     instruments: Optional[List[str]] = field(default_factory=list)
     analyses: Optional[List[str]] = field(default_factory=list)
     keyword: str | None = None
     description: str | None = ""
+    max: str
+    min: str
 
 
 @strawberry.input
 class InstrumentCalibrationInput:
-    instrument_uid: str
+    laboratory_instrument_uid: str
     date_reported: datetime | None
-    start_date: datetime | None
-    end_date: datetime | None
+    start_date: str | None
+    end_date: str | None
     calibration_id: str | None = ""
     report_id: str | None = ""
     performed_by: str | None = ""
@@ -86,16 +101,27 @@ class InstrumentCalibrationInput:
 
 @strawberry.input
 class CalibrationCertificateInput:
-    instrument_uid: str
+    laboratory_instrument_uid: str
     date_issued: datetime | None
-    valid_from_date: datetime | None
-    valid_to_date: datetime | None
+    valid_from_date: str | None
+    valid_to_date: str | None
     certificate_code: str | None = ""
     issuer: str | None = ""
     performed_by: str | None = ""
     approved_by: str | None = ""
     remarks: str | None = ""
     internal: bool = True
+
+
+@strawberry.input
+class InstrumentCompetenceInput:
+    instrument_uid: str
+    description: str
+    user_uid: str
+    issue_date: datetime
+    expiry_date: datetime
+    internal: bool
+    competence: str
 
 
 @strawberry.type
@@ -210,6 +236,58 @@ class InstrumentMutations:
         obj_in = schemas.InstrumentUpdate(**instrument.to_dict())
         instrument = await instrument.update(obj_in)
         return InstrumentType(**instrument.marshal_simple())
+
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
+    async def create_laboratory_instrument(
+        self, info, payload: LaboratoryInstrumentInputType
+    ) -> LaboratoryInstrumentResponse:  # noqa
+        instrument = await models.Instrument.get(uid=payload.instrument_uid)
+        if not instrument:
+            return OperationError(
+                error=f"Choice instrument not found: {payload.instrument_uid}"
+            )
+
+        incoming: dict = dict()
+        for k, v in payload.__dict__.items():
+            incoming[k] = v
+
+        obj_in = schemas.LaboratoryInstrumentCreate(**incoming)
+        laboratory_instrument: models.LaboratoryInstrument = (
+            await models.LaboratoryInstrument.create(obj_in)
+        )
+        return LaboratoryInstrumentType(**laboratory_instrument.marshal_simple())
+
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
+    async def update_laboratory_instrument(
+        self, info, uid: str, payload: LaboratoryInstrumentInputType
+    ) -> LaboratoryInstrumentResponse:  # noqa
+
+        if not uid:
+            return OperationError(error="No uid provided to identity instrument")
+
+        taken = await models.LaboratoryInstrument.get(lab_name=payload.lab_name)
+        if taken and taken.uid != uid:
+            return OperationError(
+                error=f"Provided lab_name already assigned to another instrument"
+            )
+
+        instrument = await models.LaboratoryInstrument.get(uid=uid)
+        if not instrument:
+            return OperationError(
+                error=f"instrument with uid {uid} not found. Cannot update obj ..."
+            )
+
+        obj_data = instrument.to_dict()
+        for field in obj_data:
+            if field in payload.__dict__:
+                try:
+                    setattr(instrument, field, payload.__dict__[field])
+                except Exception as e:
+                    logger.warning(e)
+
+        obj_in = schemas.LaboratoryInstrumentUpdate(**instrument.to_dict())
+        instrument = await instrument.update(obj_in)
+        return LaboratoryInstrumentType(**instrument.marshal_simple())
 
     @strawberry.mutation(permission_classes=[IsAuthenticated])
     async def create_instrument_caliberation(
@@ -403,10 +481,10 @@ class InstrumentMutations:
             if _inst not in inst_uids:
                 instrument = await models.Instrument.get(uid=_inst)
                 method.instruments.append(instrument)
-        method = await method.save()
+        method = await method.save_async()
 
         # manage analyses
-        all_analyses = await analysis_models.Analysis.all()
+        all_analyses = await analysis_models.Analysis.all_async()
         analyses = set()
         for analysis in all_analyses:
             for _meth in analysis.methods:
@@ -421,7 +499,7 @@ class InstrumentMutations:
                 for _method in analysis.methods:
                     if _method.uid == method.uid:
                         analysis.methods.remove(_method)
-                        await analysis.save()
+                        await analysis.save_async()
 
         for _anal in payload.analyses:
             if _anal not in an_uids:

@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @strawberry.type
 class ClientQuery:
-    @strawberry.field(permission_classes=[IsAuthenticated])
+    @strawberry.field
     async def client_all(
         self,
         info: Info,
@@ -42,7 +42,6 @@ class ClientQuery:
         if has_value_or_is_truthy(text):
             arg_list = [
                 "name__ilike",
-                "code__ilike",
                 "email__ilike",
                 "email_cc__ilike",
                 "province___name__ilike",
@@ -77,8 +76,8 @@ class ClientQuery:
         return await models.Client.get(uid=uid)
 
     @strawberry.field(permission_classes=[IsAuthenticated])
-    async def client_by_code(self, info, code: str) -> ClientType:
-        return await models.Client.get(code=code)
+    async def client_by_code(self, info, cliente_id: str) -> ClientType:
+        return await models.Client.get(cliente_id=cliente_id)
 
     @strawberry.field(permission_classes=[IsAuthenticated])
     async def clients_by_name(self, info, name: str) -> List[ClientType]:
@@ -88,7 +87,7 @@ class ClientQuery:
 
     @strawberry.field(permission_classes=[IsAuthenticated])
     async def client_search(self, info, query_string: str) -> List[ClientType]:
-        filters = ["name__ilike", "code__ilike"]
+        filters = ["name__ilike"]
         combined = set()
         for _filter in filters:
             arg = dict()

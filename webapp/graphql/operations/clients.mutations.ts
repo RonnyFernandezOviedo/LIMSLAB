@@ -7,8 +7,10 @@ export const ADD_CLIENT = gql`
                 __typename
                 uid
                 name
-                code
                 districtUid
+                email
+                phoneMobile
+                clienteDireccion
                 district {
                     uid
                     name
@@ -39,7 +41,9 @@ export const EDIT_CLIENT = gql`
                 __typename
                 uid
                 name
-                code
+                email
+                phoneMobile
+                clienteDireccion
                 districtUid
                 district {
                     uid
@@ -113,6 +117,23 @@ export const EDIT_CLIENT_CONTACT = gql`
 export const DELETE_CLIENT_CONTACT = gql`
     mutation deleteClientContact($uid: String!) {
         deleteClientContact(uid: $uid) {
+            ... on DeletedItem {
+                uid
+            }
+
+            ... on OperationError {
+                __typename
+                error
+                suggestion
+            }
+        }
+    }
+`;
+
+
+export const DELETE_CLIENT = gql`
+    mutation deleteClientContact($uid: String!) {
+        deleteClient(uid: $uid) {
             ... on DeletedItem {
                 uid
             }

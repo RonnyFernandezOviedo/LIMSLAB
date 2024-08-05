@@ -16,7 +16,7 @@ export const parseDate = function (str: any, withTime=true) {
     let date = dayjs(str);
     if (date.isValid()) {
         if(withTime) return date.format('D MMMM YYYY, h:mm:ss a');
-        return date.format('D MMMM YYYY')
+        return date.format('D-MM-YYYY, h:mm a')
     }
     return str ?? "---";
 };

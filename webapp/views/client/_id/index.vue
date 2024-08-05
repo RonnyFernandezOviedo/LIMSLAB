@@ -4,7 +4,7 @@ import modal from '../../../components/SimpleModal.vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue';
-import { ADD_CLIENT, EDIT_CLIENT } from '../../../graphql/operations/clients.mutations';
+import { ADD_CLIENT, EDIT_CLIENT, DELETE_CLIENT } from '../../../graphql/operations/clients.mutations';
 import { useLocationStore, useClientStore } from '../../../stores';
 import { IClient } from '../../../models/client';
 import { useApiUtil } from '../../../composables'
@@ -40,7 +40,7 @@ function getDistricts(event: Event) {
 
 function FormManager(create: boolean, obj: IClient = {} as IClient) {
   createItem.value = create;
-  formTitle.value = `${create ? 'CREATE' : 'EDIT'} CLIENT`;
+  formTitle.value = `${create ? 'CREATE' : 'EDITAR'} CLIENTE`;
   showClientModal.value = true;
   if (create) {
     form.value = {} as IClient;
@@ -52,7 +52,7 @@ function FormManager(create: boolean, obj: IClient = {} as IClient) {
 }
 
 function addClient() {
-  withClientMutation(ADD_CLIENT, { payload: { name: form?.value?.name, code: form?.value?.code, districtUid: form?.value?.districtUid } }, "createClient")
+  withClientMutation(ADD_CLIENT, { payload: { name: form?.value?.name, districtUid: form?.value?.districtUid, email:form?.value?.email, phoneMobile: form?.value?.mobilePhone, clienteDireccion: form?.value?.clienteDireccion, } }, "createClient")
     .then((res) => clientStore.addClient(res));
 }
 
@@ -61,8 +61,10 @@ function editClient() {
     uid: form?.value?.uid,
     payload: {
       name: form?.value?.name,
-      code: form?.value?.code,
-      districtUid: form?.value?.districtUid
+      districtUid: form?.value?.districtUid,
+      email: form?.value?.email,
+      phoneMobile: form?.value?.mobilePhone,
+      clienteDireccion: form?.value?.clienteDireccion,
     }
   }, "updateClient")
     .then((result) => clientStore.updateClient(result));
@@ -73,6 +75,12 @@ function saveForm() {
   if (!createItem.value) editClient();
   showClientModal.value = false;
   form.value = {} as IClient;
+}
+
+function deleteClient(uid: string) {
+  withClientMutation(DELETE_CLIENT, { uid },
+    "deleteClient"
+  ).then((res) => clientStore.deleteClient(res?.uid));
 }
 
 </script>
@@ -108,16 +116,24 @@ function saveForm() {
                 <div class="col-span-1">
                   <!-- Client Details -->
                   <div class="flex">
-                    <span class="text-gray-800 text-sm font-medium w-16">Provincia:</span>
-                    <span class="text-gray-600 text-sm md:text-md">{{ client?.name }}</span>
+                    <span class="text-gray-800 text-sm font-medium w-20">Codigo:</span>
+                    <span class="text-gray-600 text-sm md:text-md">{{client?.clienteId}}</span>
                   </div>
                   <div class="flex">
-                    <span class="text-gray-800 text-sm font-medium w-16">Distrito:</span>
+                    <span class="text-gray-800 text-sm font-medium w-20">Pais:</span>
+                    <span class="text-gray-600 text-sm md:text-md">{{ client?.district.province?.country?.name }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-gray-800 text-sm font-medium w-20">Provincia:</span>
+                    <span class="text-gray-600 text-sm md:text-md">{{ client?.district.province?.name }}</span>
+                  </div>
+                  <div class="flex">
+                    <span class="text-gray-800 text-sm font-medium w-20">Distrito:</span>
                     <span class="text-gray-600 text-sm md:text-md">{{ client?.district?.name }}</span>
                   </div>
                   <div class="flex">
-                    <span class="text-gray-800 text-sm font-medium w-16">Codigo:</span>
-                    <span class="text-gray-600 text-sm md:text-md">{{ client?.code }}</span>
+                    <span class="text-gray-800 text-sm font-medium w-20">Direccion:</span>
+                    <span class="text-gray-600 text-sm md:text-md">{{ client?.clienteDireccion}}</span>
                   </div>
                 </div>
                 <div class="col-span-1">
@@ -128,7 +144,7 @@ function saveForm() {
                   </div>
                   <div class="flex">
                     <span class="text-gray-800 text-sm font-medium w-16">Telefono:</span>
-                    <span class="text-gray-600 text-sm md:text-md">{{ client?.mobilePhone }}</span>
+                    <span class="text-gray-600 text-sm md:text-md">{{ client?.phoneMobile }}</span>
                   </div>
                 </div>
               </div>
@@ -154,12 +170,16 @@ function saveForm() {
 
         <div class="grid grid-cols-2 gap-x-4 mb-4">
           <label class="block col-span-1 mb-2">
-            <span class="text-gray-700">Name</span>
-            <input class="form-input mt-1 block w-full" v-model="form.name" placeholder="Name ..." />
+            <span class="text-gray-700">Nombre</span>
+            <input class="form-input mt-1 block w-full" v-model="form.name" placeholder="Nombre ..." />
           </label>
           <label class="block col-span-1 mb-2">
-            <span class="text-gray-700">Code</span>
-            <input class="form-input mt-1 block w-full" v-model="form.code" placeholder="Code ..." />
+            <span class="text-gray-700">Email</span>
+            <input class="form-input mt-1 block w-full" v-model="form.email" placeholder="Email..." />
+          </label>
+          <label class="block col-span-1 mb-2">
+            <span class="text-gray-700">Telefono</span>
+            <input class="form-input mt-1 block w-full" v-model="form.mobilePhone" placeholder="Telefono ..." />
           </label>
         </div>
 
@@ -191,11 +211,15 @@ function saveForm() {
             </select>
           </label>
         </div>
+        <label class="block col-span-1 mb-2">
+            <span class="text-gray-700">Direccion exacta</span>
+            <input class="form-input mt-1 block w-full" v-model="form.clienteDireccion" placeholder="Telefono ..." />
+          </label>
 
         <hr />
         <button type="button" @click.prevent="saveForm()"
           class="-mb-4 w-full border border-sky-800 bg-sky-800 text-white rounded-sm px-4 py-2 m-2 transition-colors duration-500 ease select-none hover:bg-sky-800 focus:outline-none focus:shadow-outline">
-          Save Form
+          Guardar formato
         </button>
       </form>
     </template>

@@ -56,9 +56,6 @@ function profileAnalysesText(profiles: any[], analyses: any[]): string {
               ID Muestra Cliente
             </th>
             <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">
-              Codigo Cliente
-            </th>
-            <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">
               Cliente
             </th>
             <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">
@@ -102,12 +99,7 @@ function profileAnalysesText(profiles: any[], analyses: any[]): string {
               </div>
             </td>
             <td class="px-1 py-1 whitespace-no-wrap border-b border-gray-500">
-              <div class="text-sm leading-5 text-sky-800">
-                {{ request.patient?.clientPatientId }}
-              </div>
-            </td>
-            <td class="px-1 py-1 whitespace-no-wrap border-b border-gray-500">
-              <div class="text-sm leading-5 text-sky-800">{{ request.client?.name }}</div>
+              <div class="text-sm leading-5 text-sky-800">{{ request.patient?.client.name }}</div>
             </td>
             <td class="px-1 py-1 whitespace-no-wrap border-b border-gray-500">
               <div class="text-sm leading-5 text-sky-800">
@@ -129,7 +121,7 @@ function profileAnalysesText(profiles: any[], analyses: any[]): string {
                 name: 'sample-detail',
                 params: { patientUid: request.patient?.uid, sampleUid: sample?.uid },
               }"
-                class="px-2 py-1 mr-2 border-sky-800 border text-sky-800 rounded-sm transition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">View</router-link>
+                class="px-2 py-1 mr-2 border-sky-800 border text-sky-800 rounded-sm transition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">Ver</router-link>
             </td>
           </tr>
         </tbody>

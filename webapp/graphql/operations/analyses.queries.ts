@@ -109,13 +109,6 @@ export const GET_ALL_ANALYSES_SERVICES = gql`
                     instrumentUid
                     methodUid
                 }
-                correctionFactors {
-                    uid
-                    factor
-                    analysisUid
-                    instrumentUid
-                    methodUid
-                }
                 interims {
                     uid
                     key
@@ -153,6 +146,13 @@ export const GET_ALL_ANALYSES_SERVICES = gql`
                     uid
                     name
                 }
+                analysisLimits {
+                    uid
+                    name
+                    code
+                    sampleTypeUid
+                }
+
             }
         }
     }
@@ -288,13 +288,6 @@ export const GET_ALL_ANALYSES_PROFILES_AND_SERVICES = gql`
                     instrumentUid
                     methodUid
                 }
-                correctionFactors {
-                    uid
-                    factor
-                    analysisUid
-                    instrumentUid
-                    methodUid
-                }
                 interims {
                     uid
                     key
@@ -326,6 +319,12 @@ export const GET_ALL_ANALYSES_PROFILES_AND_SERVICES = gql`
                 profiles {
                     uid
                     name
+                }
+                analysisLimits {
+                    uid
+                    name
+                    code
+                    sampleTypeUid
                 }
             }
         }
@@ -417,17 +416,11 @@ export const GET_ALL_SAMPLES = gql`
                         uid
                         firstName
                         lastName
-                        clientPatientId
-                        gender
                         dateOfBirth
-                        age
-                        ageDobEstimated
-                        consentSms
                     }
                     client {
                         uid
                         name
-                        code
                         district {
                             name
                             province {
@@ -538,12 +531,11 @@ export const GET_ANALYSIS_REQUESTS_BY_PATIENT_UID = gql`
                 uid
                 firstName
                 lastName
-                clientPatientId
-                gender
                 dateOfBirth
-                age
-                ageDobEstimated
-                consentSms
+                client {
+                    uid
+                    name
+                }
             }
             client {
                 uid
@@ -615,11 +607,7 @@ export const GET_ANALYSIS_REQUESTS_BY_CLIENT_UID = gql`
                 uid
                 firstName
                 lastName
-                clientPatientId
-                gender
                 dateOfBirth
-                age
-                ageDobEstimated
                 consentSms
             }
             client {
@@ -827,12 +815,7 @@ export const GET_SAMPLE_BY_UID = gql`
                     uid
                     firstName
                     lastName
-                    clientPatientId
-                    gender
                     dateOfBirth
-                    age
-                    ageDobEstimated
-                    consentSms
                 }
                 client {
                     uid

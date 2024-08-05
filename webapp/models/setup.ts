@@ -66,6 +66,8 @@ export interface IInstrument {
 export interface IMethod {
     uid?: string;
     name?: string;
+    min?: string;
+    max?: string;
     keyword?: string;
     description?: string;
     instruments?: number[] | IInstrument[];
@@ -82,4 +84,8 @@ export interface IUnit {
     uid?: string;
     name?: string;
     isSiUnit?: boolean;
+}
+export interface ISampleType {
+    uid?: string;
+    name?: string;
 }

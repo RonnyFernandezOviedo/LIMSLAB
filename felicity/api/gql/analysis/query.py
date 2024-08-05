@@ -25,7 +25,7 @@ class AnalysisQuery:
     @strawberry.field(permission_classes=[IsAuthenticated])
     async def coding_standard_all(self, info) -> List[a_types.CodingStandardType]:
         return await a_models.CodingStandard.all()
-
+    
     @strawberry.field(permission_classes=[IsAuthenticated])
     async def sample_type_all(self, info) -> List[a_types.SampleTypeTyp]:
         return await a_models.SampleType.all()

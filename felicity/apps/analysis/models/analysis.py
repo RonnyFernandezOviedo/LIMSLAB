@@ -65,6 +65,7 @@ class SampleType(BaseAuditDBModel):
     internal_use = Column(Boolean(), default=False)  # e.g QC Sample
     abbr = Column(String, nullable=False)
 
+
     @classmethod
     async def create(cls, obj_in: schemas.SampleTypeCreate) -> schemas.SampleType:
         data = cls._import(obj_in)
@@ -283,11 +284,10 @@ class Analysis(BaseAuditDBModel):
         "Instrument", secondary=analysis_instrument, backref="analyses", lazy="selectin"
     )
     methods = relationship(
-        "Method", secondary=analysis_method, backref="analyses", lazy="selectin"
+        "Method", secondary=analysis_method, back_populates="analyses", lazy="selectin"
     )
     interims = relationship("AnalysisInterim", backref="analysis", lazy="selectin")
-    correction_factors = relationship(
-        "AnalysisCorrectionFactor", backref="analysis", lazy="selectin"
+    correction_factors = relationship("AnalysisCorrectionFactor", backref="analysis", lazy="selectin"
     )
     specifications = relationship(
         "AnalysisSpecification", backref="analysis", lazy="selectin"
@@ -298,6 +298,9 @@ class Analysis(BaseAuditDBModel):
     uncertainties = relationship(
         "AnalysisUncertainty", backref="analysis", lazy="selectin"
     )
+    #add by ronny
+    analysis_limits = relationship("AnalysisCoding", backref="analysis", lazy="selectin")
+
     result_options = relationship("ResultOption", backref="analyses", lazy="selectin")
     category_uid = Column(String, ForeignKey("analysis_category.uid"))
     category = relationship(AnalysisCategory, backref="analyses", lazy="selectin")
@@ -329,11 +332,14 @@ class AnalysisCoding(BaseAuditDBModel):
     __tablename__ = "analysis_coding"
 
     analysis_uid = Column(String, ForeignKey("analysis.uid"), nullable=True)
-    analysis = relationship("Analysis", lazy="selectin")
-    coding_standard_uid = Column(
-        String, ForeignKey("coding_standard.uid"), nullable=True
-    )
+    #analysis = relationship("Analysis", lazy="selectin")
+    
+    coding_standard_uid = Column(String, ForeignKey("coding_standard.uid"), nullable=True)
     coding_standard = relationship("CodingStandard", lazy="selectin")
+
+    sample_type_uid = Column(String, ForeignKey("sample_type.uid"), nullable=True)#By Ronny
+    sample_type = relationship("SampleType", lazy="selectin")#By Ronny
+ 
     name = Column(String, nullable=True)
     description = Column(String, nullable=True)
     code = Column(String, nullable=False)
@@ -887,7 +893,8 @@ class Sample(Auditable, BaseMPTT):
         return self
 
     async def print(self, printed_by):
-        if self.status == states.sample.PUBLISHED:
+        logger.info(f"estado xxxxxxxxxxxxxxxxxxxxxxxxxxx {self.status}: ....")
+        if self.status == states.sample.APPROVED:
             self.printed = True
             self.printed_by_uid = printed_by.uid
             self.date_printed = datetime.now()

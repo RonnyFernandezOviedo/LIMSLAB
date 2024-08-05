@@ -713,8 +713,11 @@ export const ADD_ANALYSIS_MAPPING = gql`
                 name
                 description
                 code
-                codingStandardUid
+                sampleTypeUid
                 codingStandard {
+                    name
+                }
+                sampleType {
                     name
                 }
                 analysisUid
@@ -738,6 +741,7 @@ export const EDIT_ANALYSIS_MAPPING = gql`
                 description
                 code
                 codingStandardUid
+                sampleTypeUid
                 codingStandard {
                     name
                 }
@@ -925,12 +929,7 @@ export const ADD_ANALYSIS_REQUEST = gql`
                     uid
                     firstName
                     lastName
-                    clientPatientId
-                    gender
                     dateOfBirth
-                    age
-                    ageDobEstimated
-                    consentSms
                 }
                 client {
                     uid

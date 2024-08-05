@@ -111,6 +111,9 @@ export const useClientStore = defineStore('client', {
         },
         deleteClientContact(uid: string) {
             this.clientContacts = this.clientContacts?.filter(item => (item.uid !== uid));            
+        },
+        deleteClient(uid: string) {
+            this.clients = this.clients?.filter(item => (item.uid !== uid));            
         }
     },
 });

@@ -63,7 +63,7 @@ class Patient(Auditable):
     __tablename__ = "patient"
 
     # Identification
-    client_patient_id = Column(String, index=True, unique=True, nullable=False)
+    #client_patient_id = Column(String, index=True, unique=True, nullable=True)
     patient_id = Column(String, index=True, unique=True, nullable=True)
     client_uid = Column(String, ForeignKey("client.uid"), nullable=True)
     client = relationship(Client, backref="patients", lazy="selectin")
@@ -71,7 +71,7 @@ class Patient(Auditable):
     first_name = Column(String, nullable=False)
     middle_name = Column(String, nullable=True)
     last_name = Column(String, nullable=False)
-    gender = Column(String, nullable=False)
+    gender = Column(String, nullable=True)
     age = Column(Integer, nullable=True)
     date_of_birth = Column(DateTime, nullable=True)
     age_dob_estimated = Column(Boolean(), default=False)
@@ -83,6 +83,7 @@ class Patient(Auditable):
     identifications: Mapped[List["PatientIdentification"]] = relationship(
         PatientIdentification, back_populates="patient", lazy="selectin"
     )
+    direccion = Column(String, nullable=True) #add by ronny
     # status
     internal_use = Column(Boolean(), default=False)  # e.g Test Patient
     active = Column(Boolean(), default=True)

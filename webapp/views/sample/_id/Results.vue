@@ -418,7 +418,7 @@ const retestResults = () =>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) &&
       state.can_reinstate
-    " key="reinstate" @click.prevent="reInstateResults" :color="'orange-600'">Re-Instegrar</FButton>
+    " key="reinstate" @click.prevent="reInstateResults" :color="'orange-600'">Re-instegrar</FButton>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) && state.can_submit
     " key="submit" @click.prevent="submitResults" :color="'orange-600'">Cargar</FButton>
@@ -432,6 +432,6 @@ const retestResults = () =>
     " key="verify" @click.prevent="approveResults" :color="'orange-600'">Verificar</FButton>
     <FButton v-show="
       shield.hasRights(shield.actions.UPDATE, shield.objects.RESULT) && state.can_retest
-    " key="retest" @click.prevent="retestResults" :color="'orange-600'">Re-Analizar</FButton>
+    " key="retest" @click.prevent="retestResults" :color="'orange-600'">Re-analizar</FButton>
   </section>
 </template>

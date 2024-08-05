@@ -315,8 +315,8 @@ class AnalysisCodingBase(BaseAuditModel):
 
     analysis_uid: str | None = None
     analysis: Analysis | None = None
-    coding_standard_uid: str | None = None
-    coding_standard: CodingStandard | None = None
+    sample_type_uid: str | None = None
+    sample_type: SampleType | None = None
     code: str | None
     name: str | None
     description: str | None
@@ -331,7 +331,7 @@ class AnalysisCodingBaseInDB(AnalysisCodingBase):
 # Properties to receive via API on creation
 class AnalysisCodingCreate(AnalysisCodingBase):
     analysis_uid: str
-    coding_standard_uid: str
+    sample_type_uid: str
 
 
 # Properties to receive via API on update
@@ -646,6 +646,7 @@ class SampleBase(BaseAuditModel):
     internal_use: bool | None = False
     due_date: datetime | None = None
     status: str | None = None
+    date_collected: datetime| None = None #add by ronny
 
 
 class SampleBaseInDB(SampleBase):
@@ -734,6 +735,7 @@ class AnalysisResultBase(BaseAuditModel):
     retest: bool | None = False
     reportable: bool | None = True
     reflex_level: int | None = None
+    coding_uid: str | None = None
 
 
 class AnalysisResultBaseInDB(AnalysisResultBase):

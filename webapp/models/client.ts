@@ -3,6 +3,10 @@ import { ILocation, IDistrict } from './location';
 export interface IClient extends ILocation {
     district: IDistrict;
     districtUid: string;
+    clienteDireccion: string;
+    clienteId?: string;
+    phoneMobile?: string;   
+
 }
 
 export interface IClientContact {

@@ -34,7 +34,7 @@
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-screen bg-sky-800 px-6">
+  <div class="flex justify-center items-center h-screen bg-sky-900 px-6">
     <div class="p-6 max-w-sm w-full bg-white shadow-md rounded-sm">
       <div class="flex justify-center items-center">
         <span class="text-gray-700 font-semibold text-2xl">Laboratorio</span>

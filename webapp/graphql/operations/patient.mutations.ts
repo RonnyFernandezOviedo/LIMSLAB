@@ -42,15 +42,11 @@ export const ADD_PATIENT = gql`
             ... on PatientType {
                 __typename
                 uid
-                clientPatientId
                 patientId
                 firstName
                 middleName
                 lastName
-                age
-                gender
                 dateOfBirth
-                ageDobEstimated
                 client {
                     uid
                     name
@@ -61,9 +57,6 @@ export const ADD_PATIENT = gql`
                         }
                     }
                 }
-                phoneHome
-                phoneMobile
-                consentSms
                 identifications {
                     uid
                     value
@@ -72,21 +65,6 @@ export const ADD_PATIENT = gql`
                         uid
                         name
                     }
-                }
-                countryUid
-                country {
-                    uid
-                    name
-                }
-                provinceUid
-                province {
-                    uid
-                    name
-                }
-                districtUid
-                district {
-                    uid
-                    name
                 }
             }
 
@@ -105,15 +83,10 @@ export const UPDATE_PATIENT = gql`
             ... on PatientType {
                 __typename
                 uid
-                clientPatientId
                 patientId
                 firstName
-                middleName
                 lastName
-                age
-                gender
                 dateOfBirth
-                ageDobEstimated
                 client {
                     uid
                     name
@@ -122,18 +95,6 @@ export const UPDATE_PATIENT = gql`
                         province {
                             name
                         }
-                    }
-                }
-                phoneHome
-                phoneMobile
-                consentSms
-                identifications {
-                    uid
-                    value
-                    identificationUid
-                    identification {
-                        uid
-                        name
                     }
                 }
                 countryUid

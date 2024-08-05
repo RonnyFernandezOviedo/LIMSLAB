@@ -7,6 +7,7 @@ from apps.setup.models import District, Province
 from apps.user import conf
 from apps.user.abstract import AbstractBaseUser
 from apps.user.models import UserAuth
+from apps.common.models import IdSequence
 
 
 class Client(Auditable):
@@ -15,7 +16,7 @@ class Client(Auditable):
     __tablename__ = "client"
 
     name = Column(String, nullable=False)
-    code = Column(String, index=True, unique=True, nullable=False)
+    cliente_id = Column(String, index=True, unique=True, nullable=True) #add by ronny
     district_uid = Column(String, ForeignKey("district.uid"), nullable=True)
     district = relationship(District, backref="clients", lazy="selectin")
     province_uid = Column(String, ForeignKey("province.uid"), nullable=True)
@@ -28,14 +29,14 @@ class Client(Auditable):
     consent_sms = Column(Boolean(), default=False)
     internal_use = Column(Boolean(), default=False)  # e.g Test Client
     active = Column(Boolean(), default=False)
+    cliente_direccion = Column(String, nullable=True)
 
     @classmethod
     async def create(cls, obj_in: schemas.ClientCreate) -> schemas.Client:
-        exist = await cls.get(code=obj_in.code)
-        if exist:
-            raise Exception(f"Client with code {obj_in.code} already Exists")
+
 
         data = cls._import(obj_in)
+        data["cliente_id"] = (await IdSequence.get_next_number(prefix="C", generic=True))[1]#add by ronny
         return await super().create(**data)
 
     async def update(self, obj_in: schemas.ClientUpdate) -> schemas.Client:

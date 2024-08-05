@@ -145,27 +145,6 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Gender",
-    value: "analysisRequest.patient.gender",
-    sortable: false,
-    sortBy: "asc",
-    hidden: true,
-  },
-  {
-    name: "Age",
-    value: "analysisRequest.patient.age",
-    sortable: false,
-    sortBy: "asc",
-    hidden: true,
-  },
-  {
-    name: "ID Contacto Cliente",
-    value: "analysisRequest.patient.clientPatientId",
-    sortable: false,
-    sortBy: "asc",
-    hidden: false,
-  },
-  {
     name: "Cliente",
     value: "analysisRequest.client.name",
     sortable: false,
@@ -180,20 +159,6 @@ const tableColumns = ref([
     hidden: true,
   },
   {
-    name: "Provincia",
-    value: "analysisRequest.client.district.province.name",
-    sortable: false,
-    sortBy: "asc",
-    hidden: true,
-  },
-  {
-    name: "Distrito",
-    value: "analysisRequest.client.district.name",
-    sortable: false,
-    sortBy: "asc",
-    hidden: true,
-  },
-  {
     name: "ID Muestra Cliente",
     value: "analysisRequest.clientRequestId",
     sortable: false,
@@ -201,7 +166,7 @@ const tableColumns = ref([
     hidden: true,
   },
   {
-    name: "Date Collected",
+    name: "Fecha-recoleccion",
     value: "dateCollected",
     sortable: false,
     sortBy: "asc",
@@ -218,7 +183,7 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Fecha Creacion",
+    name: "Fecha-creacion",
     value: "createdAt",
     sortable: false,
     sortBy: "asc",
@@ -242,7 +207,7 @@ const tableColumns = ref([
     hidden: false,
   },
   {
-    name: "Fecha received",
+    name: "Fecha-recibido",
     value: "dateReceived",
     sortable: false,
     sortBy: "asc",
@@ -259,7 +224,7 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Date Submitted",
+    name: "Fecha-envio",
     value: "dateSubmitted",
     sortable: false,
     sortBy: "asc",
@@ -276,7 +241,7 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Fecha-Verificacion",
+    name: "Fecha-verificacion",
     value: "dateVerified",
     sortable: false,
     sortBy: "asc",
@@ -293,7 +258,7 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Fecha-Publicacion",
+    name: "Fecha-publicacion",
     value: "datePublished",
     sortable: false,
     sortBy: "asc",
@@ -310,7 +275,7 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Fecha-Impresion",
+    name: "Fecha-impresion",
     value: "datePrinted",
     sortable: false,
     sortBy: "asc",
@@ -327,7 +292,7 @@ const tableColumns = ref([
     },
   },
   {
-    name: "Printed",
+    name: "Impreso",
     value: "printed",
     sortable: false,
     sortBy: "asc",
@@ -649,7 +614,7 @@ const recoverSamples_ = async () =>
           state.can_copy_to
         " @click.prevent="cloneSamples_()"
           class="px-2 py-1 mr-2 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">
-          Copy to New
+          Copiar a nueva
         </button>
         <button v-show="
           shield.hasRights(shield.actions.CANCEL, shield.objects.SAMPLE) &&

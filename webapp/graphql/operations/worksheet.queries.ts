@@ -149,7 +149,6 @@ export const GET_WORKSHEET_BY_UID = gql`
                             uid
                             firstName
                             lastName
-                            clientPatientId
                             patientId
                         }
                     }

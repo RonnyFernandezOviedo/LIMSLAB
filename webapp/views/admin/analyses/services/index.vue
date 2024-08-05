@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, reactive, computed, defineAsyncComponent } from 'vue';
+  import { ref, reactive, computed,toRefs, defineAsyncComponent } from 'vue';
   import { IAnalysisService } from '../../../../models/analysis';
   import { ADD_ANALYSIS_MAPPING, ADD_ANALYSIS_SERVICE, EDIT_ANALYSIS_MAPPING, EDIT_ANALYSIS_SERVICE  } from '../../../../graphql/operations/analyses.mutations';
   import { useSetupStore, useAnalysisStore, useSampleStore } from '../../../../stores';
@@ -16,9 +16,9 @@
   const ResultOptions = defineAsyncComponent(
     () => import('./ResultOptions.vue')
   )
-  const InterimFields = defineAsyncComponent(
-    () => import('./InterimFields.vue')
-  )
+  //const InterimFields = defineAsyncComponent(
+   // () => import('./InterimFields.vue')
+  //)
   const CorrectionFactor = defineAsyncComponent(
     () => import('./CorrectionFactor.vue')
   )
@@ -31,6 +31,9 @@
   const AnalysisSpecifications = defineAsyncComponent(
     () => import('./Specifications.vue')
   )
+  const AnalysisLimits = defineAsyncComponent(
+    () => import('./LimitsDefinition.vue')
+  )
 
 
 
@@ -38,8 +41,8 @@
   const sampleStore = useSampleStore()
   const  setupStore = useSetupStore()
   const { withClientMutation } = useApiUtil()
-  let currentTab = ref('general');
-  const tabs = ['general', 'uncertainities', 'result-options','interims','correction-factor', 'detection-limits', 'specifications', 'mappings', 'financials'];
+  let currentTab = ref('limites');
+  const tabs = ['limites','incertidumbre', 'opciones','factor-correccion', "limites-detecccion",'especificaciones', 'mappings']; //'interims', 'general', 'financials' remove by ronny
   
   let showModal = ref(false);
   let formTitle = ref('');
@@ -132,6 +135,8 @@
     showModal.value = false;
   }
 
+
+
 // Mapping
 analysisStore.fetchCodingStandards()
 const mappings = computed(() => analysisStore.analysesMapings?.filter(m => m.analysisUid === analysisService?.uid))
@@ -144,13 +149,18 @@ const mappingForm =  reactive({
   codingStandardUid: undefined,
   name: "",
   code: "",
-  description: ""
+  description: "",
+  sampleTypeUid: undefined
 })
+
+
+
 
 function addMapping(): void {
   const payload = {
     analysisUid: analysisService?.uid,
     codingStandardUid: mappingForm.codingStandardUid,
+    sampleTypeUid: mappingForm.sampleTypeUid,
     name: mappingForm.name,
     code: mappingForm.code,
     description: mappingForm.description,
@@ -166,6 +176,7 @@ function updateMapping(): void {
   const payload = {
     analysisUid: analysisService?.uid,
     codingStandardUid: mappingForm.codingStandardUid,
+    sampleTypeUid: mappingForm.sampleTypeUid,
     name: mappingForm.name,
     code: mappingForm.code,
     description: mappingForm.description,
@@ -350,29 +361,32 @@ function saveMappingForm(): void {
           <hr> 
           <input type="text">
         </div>
-        <div v-else-if="currentTab === 'uncertainities'">
+        <div v-else-if="currentTab === 'incertidumbre'">
           <analysis-uncertainty :analysis="analysisService" :analysisUid="analysisService?.uid"/>
         </div>
-        <div v-else-if="currentTab === 'correction-factor'">
+        <div v-else-if="currentTab === 'factor-correccion'">
           <correction-factor :analysis="analysisService" :analysisUid="analysisService?.uid"/>
         </div>
-        <div v-else-if="currentTab === 'result-options'">
+        <div v-else-if="currentTab === 'limites'">
+          <AnalysisLimits :analysis="analysisService" :analysisUid="analysisService?.uid"/>
+        </div>
+        <div v-else-if="currentTab === 'opciones'">
           <result-options :analysis="analysisService" :analysisUid="analysisService?.uid"/>
         </div>
-        <div v-else-if="currentTab === 'interims'">
+        <!--<div v-else-if="currentTab === 'interims'">
           <interim-fields :analysis="analysisService" :analysisUid="analysisService?.uid"/>
-        </div>
-        <div v-else-if="currentTab === 'detection-limits'">
+        </div>-->
+        <div v-else-if="currentTab === 'limites-detecccion'">
           <detection-limits :analysis="analysisService" :analysisUid="analysisService?.uid"/>
         </div>
-        <div v-else-if="currentTab === 'specifications'">
+        <div v-else-if="currentTab === 'especificaciones'">
           <analysis-specifications :analysis="analysisService" :analysisUid="analysisService?.uid"/>
         </div>
         <div v-if="currentTab == 'mappings'">
             <div class="flex justify-between items-center mb-2">
-              <h3>Concept Mappings</h3>
+              <h3>Limites</h3>
               <button @click="MappingFormManager(true)"
-                class="px-2 py-1 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">Add Mapping</button>
+                class="px-2 py-1 border-sky-800 border text-sky-800rounded-smtransition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">Agregar limites</button>
             </div>
             <hr />
             <div class="overflow-x-auto mt-4">
@@ -380,18 +394,18 @@ function saveMappingForm(): void {
                 <table class="min-w-full">
                     <thead>
                     <tr>
-                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Coding Standard</th>
-                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Name</th>
-                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Code</th>
-                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Description</th>
+                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Tipo de muestra</th>
+                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Limite-Min</th>
+                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Limite-Max</th>
+                        <th class="px-1 py-1 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-800 tracking-wider">Descripcion</th>
                         <th class="px-1 py-1 border-b-2 border-gray-300"></th>
                     </tr>
                     </thead>
                     <tbody class="bg-white">
-                    <tr v-for="mapp in mappings"  :key="mapp">
+                      <tr v-for="mapp in mappings"  :key="mapp">
                         <td class="px-1 py-1 whitespace-no-wrap border-b border-gray-500">
                           <div class="flex items-center">
-                            <div class="text-sm leading-5 text-gray-800">{{ mapp.codingStandard?.name }}</div>
+                            <div class="text-sm leading-5 text-gray-800">{{ mapp.sampleType.name}}</div>
                           </div>
                         </td>
                         <td class="px-1 py-1 whitespace-no-wrap border-b border-gray-500">
@@ -407,11 +421,13 @@ function saveMappingForm(): void {
                             <button @click="MappingFormManager(false, mapp)" class="px-2 py-1 mr-2 border-sky-800 border text-sky-800 rounded-sm transition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none">Edit</button>
                         </td>
                     </tr>
+  
                     </tbody>
                 </table>
               </div>
             </div>
         </div>
+
         <div v-else> <!-- fiancials -->
           <h3>Billing</h3>
           <hr>
@@ -580,7 +596,7 @@ function saveMappingForm(): void {
       <form action="post" class="p-1">
         <div class="grid grid-cols-2 gap-x-4 mb-4">
           <label class="block col-span-2 mb-2">
-            <span class="text-gray-700">Coding Standard</span>
+            <span class="text-gray-700">Codingxxx</span>
             <select
               class="form-select block w-full mt-1"
               v-model="mappingForm.codingStandardUid"
@@ -595,20 +611,40 @@ function saveMappingForm(): void {
               </option>
             </select>
           </label>
+
+
           <label class="block col-span-2 mb-2">
-            <span class="text-gray-700">Standard Name</span>
+            <span class="text-gray-700">Tipo de muestra</span>
+            <select
+              class="form-select block w-full mt-1"
+              v-model="mappingForm.sampleTypeUid"
+            >
+              <option></option>
+              <option
+                v-for="c_standard in sampleStore.sampleTypes"
+                :key="c_standard.uid"
+                :value="c_standard?.uid"
+              >
+                {{ c_standard.name }}
+              </option>
+            </select>
+          </label>
+
+
+          <label class="block col-span-2 mb-2">
+            <span class="text-gray-700">Lim-Min</span>
             <input
               class="form-input mt-1 block w-full"
               v-model="mappingForm.name"
-              placeholder="Keyword ..."
+              placeholder="min ..."
             />
           </label>
           <label class="block col-span-2 mb-2">
-            <span class="text-gray-700">Standard Code</span>
+            <span class="text-gray-700">Lim-Max</span>
             <input
               class="form-input mt-1 block w-full"
               v-model="mappingForm.code"
-              placeholder="Keyword ..."
+              placeholder="max ..."
             />
           </label>
           <label class="block col-span-2 mb-2">

@@ -37,12 +37,19 @@ class AnalysisResult(Auditable, BaseMPTT):
 
     sample_uid = Column(String, ForeignKey("sample.uid"), nullable=False)
     sample = relationship("Sample", back_populates="analysis_results", lazy="selectin")
+    
+    coding_uid = Column(String, ForeignKey("analysis_coding.uid"), nullable=True)
+    coding = relationship("AnalysisCoding", backref="analysis_results", lazy="selectin")
+
     analysis_uid = Column(String, ForeignKey("analysis.uid"), nullable=False)
     analysis = relationship("Analysis", backref="analysis_results", lazy="selectin")
+
     instrument_uid = Column(String, ForeignKey("instrument.uid"), nullable=True)
     instrument = relationship("Instrument", lazy="selectin")
+
     method_uid = Column(String, ForeignKey("method.uid"), nullable=True)
-    method = relationship("Method", lazy="selectin")
+    method = relationship("Method",lazy="selectin")
+
     result = Column(String, nullable=True)
     analyst_uid = Column(String, ForeignKey("user.uid"), nullable=True)
     analyst = relationship("User", foreign_keys=[analyst_uid], lazy="selectin")

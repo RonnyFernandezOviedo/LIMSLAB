@@ -8,6 +8,7 @@ from api.gql.client.types import ClientContactType, ClientType
 from api.gql.permissions import IsAuthenticated
 from api.gql.types import OperationError, DeletedItem
 from apps.client import models, schemas
+from apps.analysis.models.analysis import AnalysisRequest
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -24,11 +25,14 @@ DeleteContactResponse = strawberry.union(
     "DeleteContactResponse", (DeletedItem, OperationError), description=""  # noqa
 )
 
+DeleteClientResponse = strawberry.union(
+    "DeleteContactResponse", (DeletedItem, OperationError), description=""  # noqa add by ronny
+)
+
 
 @strawberry.input
 class ClientInputType:
     name: str
-    code: str
     district_uid: str | None = None
     email: str | None = None
     email_cc: str | None = None
@@ -38,6 +42,8 @@ class ClientInputType:
     consent_sms: bool | None = False
     internal_use: bool | None = False
     active: bool | None = True
+    cliente_direccion: str | None = None
+    
 
 
 @strawberry.input
@@ -50,6 +56,7 @@ class ClientContactInputType:
     mobile_phone: str | None = None
     consent_sms: bool | None = False
     is_active: bool = True
+    
 
 
 @strawberry.type
@@ -68,17 +75,12 @@ class ClientMutations:
         if not success:
             return auth_err
 
-        if not payload.code or not payload.name:
+        if not payload.name:
             return OperationError(
                 error="Please Provide a name and a unique client code"
             )
-
-        exists = await models.Client.get(code=payload.code)
-        if exists:
-            return OperationError(
-                error=f"Client code {payload.code} already belong to client {exists.name}"
-            )
-
+        logger.info(
+        f"agregando solicitud de clinete")
         incoming: dict = {
             "created_by_uid": felicity_user.uid,
             "updated_by_uid": felicity_user.uid,
@@ -226,6 +228,7 @@ class ClientMutations:
             return OperationError(error="No uid provided to identify deletion obj")
 
         client_contact = await models.ClientContact.get(uid=uid)
+        logger.info(f"contacto a ser eliminado: {client_contact}")
         if not client_contact:
             return OperationError(
                 error=f"Client Contact with uid {uid} not found. Cannot delete obj ..."
@@ -239,3 +242,43 @@ class ClientMutations:
         obj_in = schemas.ClientContactUpdate(**client_contact.to_dict())
         client_contact = await client_contact.update(obj_in)
         return DeletedItem(uid=client_contact.uid)
+    
+    @strawberry.mutation(permission_classes=[IsAuthenticated])
+    async def delete_client(self, info, uid: str) -> DeleteClientResponse:
+
+        is_authenticated, felicity_user = await auth_from_info(info)
+        verify_user_auth(
+            is_authenticated,
+            felicity_user,
+            "Only Authenticated user can delete/deactivate client contacts",
+        )
+
+        if not uid:
+            return OperationError(error="No uid provided to identify deletion obj")
+        
+        client_inuse = await AnalysisRequest.get(client_uid=uid)
+
+        logger.info(f"Existe analsiis ligados a este cliente: {client_inuse}")
+
+        if client_inuse:
+            return OperationError(
+                error=f"Client Contact with uid {uid} already has an analysys request. Cannot delect constact ..."
+            )
+        
+        client = await models.Client.get(uid=uid)
+        logger.info(f"cliente a ser eliminado: {client}")
+        if not client:
+            return OperationError(
+                error=f"Cliente con uid {uid} no encontrado. No se puede eliminar ..."
+            )
+        try:
+            setattr(client, "active", False)
+        except Exception as e:
+            logger.warning(f"failed to set attribute is_active: {e}")
+
+        client: models.Client = await models.Client.get(uid=uid)
+        if not client:
+            raise Exception(f"Notice with uid {uid} does not exist")
+
+        await client.delete()
+        return DeletedItem(uid=uid)

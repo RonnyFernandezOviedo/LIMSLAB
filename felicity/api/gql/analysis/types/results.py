@@ -3,10 +3,11 @@ from typing import Optional
 
 import strawberry  # noqa
 from api.gql.types import PageInfo
-from api.gql.analysis.types.analysis import AnalysisType, QCSetType, SampleType
+from api.gql.analysis.types.analysis import AnalysisType, QCSetType, SampleType, AnalysisCodingType
 from api.gql.instrument.types import InstrumentType, MethodType
 from api.gql.user.types import UserType
 from apps.worksheet import models as ws_models
+
 
 
 @strawberry.type
@@ -50,6 +51,8 @@ class AnalysisResultType:
     updated_by_uid: str | None
     updated_by: UserType | None
     updated_at: datetime | None
+    coding_uid: str | None
+    coding: AnalysisCodingType | None
 
     @strawberry.field
     async def worksheet_id(self, info) -> str | None:

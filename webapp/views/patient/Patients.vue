@@ -5,6 +5,7 @@ import { RouterLink } from "vue-router";
 import { usePatientStore, useLocationStore } from "../../stores";
 import { IPatient } from "../../models/patient";
 import * as shield from "../../guards";
+import { parseDate } from "../../utils/helpers";
 
 const DataTable = defineAsyncComponent(
   () => import("../../components/datatable/DataTable.vue")
@@ -42,12 +43,82 @@ const tableColumns = ref([
             patientUid: patient?.uid,
           },
         },
+        class:
+          "px-2 mr-2 border-sky-800 border text-sky-800 rounded-sm transition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none",
         innerHTML: patient?.patientId,
       });
     },
   },
   {
-    name: "Nombre Contacto",
+    name: "Cliente",
+    value: "client.name",
+    sortable: false,
+    sortBy: "asc",
+    hidden: false,
+  },
+  {
+    name: "Codigo Cliente",
+    value: "client.clienteId",
+    sortable: false,
+    sortBy: "asc",
+    hidden: false,
+  },
+ // {
+ //   name: "Nombre Contacto",
+  //  value: "",
+  //  sortable: false,
+  //  sortBy: "asc",
+ //   hidden: false,
+ //   customRender: function (patient, _) {
+   //   return h(RouterLink, {
+  //      to: {
+    //      name: "patient-detail",
+    //      params: {
+    //        patientUid: patient?.uid,
+    //      },
+   //     },
+  //      innerHTML: getPatientFullName(patient),
+//      });
+//   },
+//  },
+  {
+    name: "Correo",
+    value: "client.email",
+    sortable: false,
+    sortBy: "asc",
+    hidden: false,
+
+  },
+ /// {
+   //name: "ID Contacto Cliente",
+   // value: "clientPatientId",
+    //sortable: false,
+    //sortBy: "asc",
+   // hidden: false,
+ // }, remove by ronny
+ {
+    name: "Pais",
+    value: "client.district.province.country.name",
+    sortable: false,
+    sortBy: "asc",
+    hidden: true,
+  },
+  {
+    name: "Provincia",
+    value: "client.district.province.name",
+    sortable: false,
+    sortBy: "asc",
+    hidden: true,
+  },
+  {
+    name: "Distrito",
+    value: "client.district.name",
+    sortable: false,
+    sortBy: "asc",
+    hidden: true,
+  },
+  {
+    name: "Fecha Creacion",
     value: "",
     sortable: false,
     sortBy: "asc",
@@ -55,49 +126,14 @@ const tableColumns = ref([
     customRender: function (patient, _) {
       return h(RouterLink, {
         to: {
-          name: "patient-detail",
+          name: "",
           params: {
             patientUid: patient?.uid,
           },
         },
-        innerHTML: getPatientFullName(patient),
+        innerHTML:parseDate(patient.createdAt,false),
       });
     },
-  },
-  {
-    name: "Edad",
-    value: "age",
-    sortable: false,
-    sortBy: "asc",
-    hidden: true,
-  },
-  {
-    name: "Correo",
-    value: "gender",
-    sortable: false,
-    sortBy: "asc",
-    hidden: false,
-  },
-  {
-    name: "ID Contacto Cliente",
-    value: "clientPatientId",
-    sortable: false,
-    sortBy: "asc",
-    hidden: false,
-  },
-  {
-    name: "Provincia",
-    value: "client.district.province.name",
-    sortable: false,
-    sortBy: "asc",
-    hidden: false,
-  },
-  {
-    name: "Distrito",
-    value: "client.district.name",
-    sortable: false,
-    sortBy: "asc",
-    hidden: false,
   },
   {
     name: "",
@@ -119,7 +155,7 @@ const tableColumns = ref([
         innerHTML: "Agregar Muestra(s)",
       });
     },
-  },
+  }, 
 ]);
 
 locationsStore.fetchCountries();

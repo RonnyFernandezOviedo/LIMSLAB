@@ -12,6 +12,7 @@ from pydantic import ConfigDict
 class ClientBase(BaseModel):
     name: str | None = None
     code: str | None = None
+    cliente_id: str | None = None
     district_uid: str | None = None
     email: str | None = None
     email_cc: str | None = None
@@ -21,6 +22,9 @@ class ClientBase(BaseModel):
     consent_sms: bool | None = None
     internal_use: bool | None = False
     active: bool | None = True
+    cliente_direccion: str | None = None
+
+
 
 
 class ClientBaseInDB(ClientBase):
@@ -32,6 +36,7 @@ class ClientBaseInDB(ClientBase):
 # Properties to receive via API on creation
 class ClientCreate(ClientBase):
     district_uid: str | None = None
+    
 
 
 # Properties to receive via API on update
@@ -66,6 +71,7 @@ class ClientContactBase(BaseModel):
     business_phone: str | None = None
     is_active: bool | None = True
     is_superuser: bool | None = False
+  
 
 
 class ClientContactBaseInDB(ClientContactBase):

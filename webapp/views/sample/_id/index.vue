@@ -24,6 +24,7 @@ const {
   publishSamples,
   verifySamples,
   recoverSamples,
+  printSamples,
 } = useSampleComposable();
 
 const state = reactive({
@@ -100,16 +101,11 @@ const publishText = computed(() => {
   return "Pre publicar";
 }),
   canPublish = computed(() => {
-    if (
-      ["Esperando", "aprobada", "publicado"].includes(
-        sample?.value?.status?.toLowerCase()!
-      )
-    )
+    if (["Esperando", "aprobada", "publicado"].includes(sample?.value?.status?.toLowerCase()!))
       return true;
     const results = sampleStore.analysisResults;
-    if (
-      ["recibido", "paired"].includes(sample?.value?.status?.toLowerCase() ?? "") &&
-      results?.some((r) => ["aprobada"].includes(r.status?.toLowerCase() ?? ""))
+    if (["recibido", "paired"].includes(sample?.value?.status?.toLowerCase() ?? "") &&
+    results?.some((r) => ["aprobada"].includes(r.status?.toLowerCase() ?? ""))
     ) {
       return true;
     }
@@ -140,6 +136,14 @@ const canReject = computed(() => {
       name: "reject-samples",
       params: { samples: JSON.stringify([sample?.value]) },
     });
+
+
+
+const printReports_ = async () => printSamples([sample?.value?.uid!]),
+ xxx = computed(() => {
+    if (sample?.value?.status?.toLowerCase() === "publicado") return true;
+    return false;
+  });  
 
 const canRecover = computed(() => {
   if (["stored"].includes(sample?.value?.status?.toLowerCase()!)) return true;
@@ -240,6 +244,10 @@ const goToStorage = async (sample?: ISample) => {
               <div v-show="canPublish" @click="publishSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-gray-400 hover:text-white">
                 {{ publishText }}
+              </div>
+              <div v-show="canPublish" @click="printReports_()"
+                class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-gray-400 hover:text-white">
+                Imprimir
               </div>
               <div v-show="canInvalidate" @click="invalidateSample()"
                 class="no-underline text-gray-900 py-0 opacity-60 px-4 border-b border-transparent hover:opacity-100 md:hover:border-grey-dark hover:bg-gray-400 hover:text-white">

@@ -21,6 +21,7 @@ from apps.job.conf import states as job_states
 from apps.notification.utils import FelicityStreamer
 from apps.patient import models as pt_models
 from apps.reflex.utils import ReflexUtil
+from apps.instrument.models import Method as Method
 
 
 streamer = FelicityStreamer()
@@ -34,6 +35,8 @@ class ARSampleInputType:
     sample_type: str
     profiles: List[str]
     analyses: List[str]
+    date_collected: str
+
 
 
 @strawberry.input
@@ -89,7 +92,9 @@ class AnalysisRequestInputType:
     samples: List[ARSampleInputType] = None
     client_request_id: str | None = None
     internal_use: bool | None = False
+    #dateCollected: datetime | None 
     priority: int = priorities.NORMAL
+
 
 
 @strawberry.mutation(permission_classes=[IsAuthenticated])
@@ -142,12 +147,17 @@ async def create_analysis_request(
     )
 
     # 1. create samples
+
+
+
+
     logger.info(
         f"Adding {len(payload.samples)} samples to the analysis request {analysis_request.client_request_id}"
     )
     for s in payload.samples:
         _st_uid = s.sample_type
         stype = await analysis_models.SampleType.get(uid=_st_uid)
+
         if not stype:
             return OperationError(
                 error=f"Error, failed to retrieve sample type {_st_uid}"
@@ -160,12 +170,18 @@ async def create_analysis_request(
             "sample_type_uid": _st_uid,
             "sample_id": None,
             "priority": payload.priority,
+            "date_collected": s.date_collected,
+            #"date_collected": payload.dateCollected,
             "status": states.sample.EXPECTED,
         }
 
         profiles = []
         analyses = []
+        metodos = []
         _profiles_analyses = set()
+        _metodos_analyses = set()
+
+
 
         for p_uid in s.profiles:
             profile = await analysis_models.Profile.get_related(
@@ -176,12 +192,15 @@ async def create_analysis_request(
             for _an in analyses_:
                 _profiles_analyses.add(_an)
 
+
         # make sure the selected analyses are not part of the selected profiles
         for a_uid in s.analyses:
             analysis = await analysis_models.Analysis.get(uid=a_uid)
             if analysis not in _profiles_analyses:
                 analyses.append(analysis)
                 _profiles_analyses.add(analysis)
+
+
 
         # determine sample due date
         tat_lengths = []
@@ -217,8 +236,7 @@ async def create_analysis_request(
             )
 
         # create and attach result objects for each Analyses
-        logger.info(
-            f"Adding {len(_profiles_analyses)} service results to the sample {sample.sample_id}"
+        logger.info(f"Adding {len(_profiles_analyses)} service results to the sample {sample.sample_id}"
         )
         a_result_schema = schemas.AnalysisResultCreate(
             sample_uid=sample.uid,
@@ -227,12 +245,42 @@ async def create_analysis_request(
             due_date=None,
             created_by_uid=felicity_user.uid,
             updated_by_uid=felicity_user.uid,
+            method_uid=None,
+            coding_uid=None,
         )
         result_schemas = []
+
         for _service in _profiles_analyses:
+
+            # Add UID for Method by Ronny
+            metodo = await analysis_models.Analysis.get_related(related=["methods"], uid=_service.uid)
+            metodos.append(metodo)
+            metodo_ = metodo.methods
+            if len(metodo_)==0:
+                uid_metodo = None
+            else:
+                uid_metodo =list(metodo_)[0].uid
+            logger.info(f"Adding _service {_service}")
+            logger.info(f"Adding _metodo {metodo_}")
+
+            
+            
+            # Add UID for Coding by Ronny
+            coding = await analysis_models.AnalysisCoding.get(analysis_uid=_service.uid, sample_type_uid=_st_uid)
+            if coding != None:
+               uid_coding= coding.uid
+
+            else:
+                uid_coding = None      
+            logger.info(f"codigoxxx {uid_coding}")
+
+
+
             result_schemas.append(
-                a_result_schema.copy(
+                a_result_schema.model_copy(
                     update={
+                        "coding_uid":uid_coding,
+                        "method_uid":uid_metodo,
                         "analysis_uid": _service.uid,
                         "due_date": datetime.now()
                         + timedelta(minutes=_service.tat_length_minutes)
@@ -241,12 +289,12 @@ async def create_analysis_request(
                     }
                 )
             )
+
         created = await result_models.AnalysisResult.bulk_create(result_schemas)
 
         # initialise reflex action if exist
         logger.debug(f"ReflexUtil .... set_reflex_actions ...")
         await ReflexUtil.set_reflex_actions(created)
-
     # ! paramount !
     await asyncio.sleep(1)
 
@@ -493,7 +541,6 @@ async def publish_samples(
     ns_samples = await analysis_models.Sample.get_by_uids([nf.uid for nf in not_final])
     for sample in ns_samples:
         await streamer.stream(sample, felicity_user, sample.status, "sample")
-
     return OperationSuccess(
         message="Sus resultados se estan publicando en segundo plano."
     )
@@ -522,8 +569,8 @@ async def print_samples(info, samples: List[str]) -> SampleActionResponse:
         if sample:
             return_samples.append(sample)
 
-    return SampleListingType(samples=return_samples)
-
+    return SampleListingType(samples=return_samples), OperationSuccess(
+        message="Sus resultados se estan imprimiendo en segundo plano.")
 
 @strawberry.mutation(permission_classes=[IsAuthenticated])
 async def invalidate_samples(info, samples: List[str]) -> SampleActionResponse:

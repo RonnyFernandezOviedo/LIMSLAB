@@ -31,7 +31,7 @@ const tableColumns = ref([
   },
   {
     name: "Nombre Cliente",
-    value: "",
+    value: "name",
     sortable: false,
     sortBy: "asc",
     hidden: false,
@@ -43,22 +43,28 @@ const tableColumns = ref([
             clientUid: client?.uid,
           },
         },
-        class:
-          "px-1 ml-2 border-white border text-gray-500rounded-smtransition duration-300 hover:border-sky-800 hover:text-sky-800 focus:outline-none",
-        innerHTML: client?.name,
+        class:"px-2 mr-2 border-sky-800 border text-sky-800 rounded-sm transition duration-300 hover:bg-sky-800 hover:text-white focus:outline-none",
+        innerHTML: client.name,
       });
     },
   },
   {
     name: "Codigo Cliente",
-    value: "code",
+    value: "clienteId",
     sortable: false,
     sortBy: "asc",
     hidden: false,
   },
+  //{
+    //name: "Codigo Cliente",
+    //value: "code",
+   // sortable: false,
+   // sortBy: "asc",
+    //hidden: false,
+  //},//
   {
-    name: "Distrito",
-    value: "district.name",
+    name: "Pais",
+    value: "district.province.country.name",
     sortable: false,
     sortBy: "asc",
     hidden: false,
@@ -71,20 +77,33 @@ const tableColumns = ref([
     hidden: false,
   },
   {
-    name: "Number Telefono",
-    value: "mobilePhone",
+    name: "Distrito",
+    value: "district.name",
     sortable: false,
     sortBy: "asc",
     hidden: false,
   },
   {
-    name: "Email",
-    value: "email",
+    name: "Numbero Telefono",
+    value: "phoneMobile",
     sortable: false,
     sortBy: "asc",
     hidden: false,
   },
-  
+ // {
+   // name: "Email",
+    //value: "email",
+    //sortable: false,
+    //sortBy: "asc",
+    //hidden: false,
+  //},
+  {
+    name: "Direccion",
+    value: "clienteDireccion",
+    sortable: false,
+    sortBy: "asc",
+    hidden: false,
+  },
 ]);
 
 const { countries, provinces, districts } = storeToRefs(locationStore);
@@ -116,7 +135,7 @@ locationStore.fetchCountries();
 function addClient() {
   withClientMutation(
     ADD_CLIENT,
-    { payload: { name: client.name, code: client.code, districtUid: client.districtUid } },
+    { payload: { name: client.name, districtUid: client.districtUid, email:client.email,  phoneMobile:client.mobilePhone, clienteDireccion:client.clienteDireccion} },
     "createClient"
   ).then((res) => clientStore.addClient(res));
 }
@@ -128,8 +147,10 @@ function editClient() {
       uid: client.uid,
       payload: {
         name: client.name,
-        code: client.code,
         districtUid: client.districtUid,
+        email: client.email,
+        phoneMobile: client.mobilePhone,
+        clienteDirecion: client.clienteDireccion,
       }
     },
     "updateClient"
@@ -212,11 +233,19 @@ const countNone = computed(
         <div class="grid grid-cols-2 gap-x-4 mb-4">
           <label class="block col-span-1 mb-2">
             <span class="text-gray-700">Nombre</span>
-            <input class="form-input mt-1 block w-full" v-model="client.name" placeholder="Name ..." />
+            <input class="form-input mt-1 block w-full" v-model="client.name" placeholder="Nombre ..." />
+          </label>
+          <!--<label class="block col-span-1 mb-2">
+            <span class="text-gray-700">Codigo</span>
+            <input class="form-input mt-1 block w-full" v-model="client.code" placeholder="Codigo ..." />
+          </label>-->
+          <label class="block col-span-1 mb-2">
+            <span class="text-gray-700">Email</span>
+            <input class="form-input mt-1 block w-full" v-model="client.email" placeholder="Email ..." />
           </label>
           <label class="block col-span-1 mb-2">
-            <span class="text-gray-700">Codigo</span>
-            <input class="form-input mt-1 block w-full" v-model="client.code" placeholder="Code ..." />
+            <span class="text-gray-700">Telefono</span>
+            <input class="form-input mt-1 block w-full" v-model="client.mobilePhone" placeholder="Telefono ..." />
           </label>
         </div>
 
@@ -249,6 +278,10 @@ const countNone = computed(
             </select>
           </label>
         </div>
+          <label class="block col-span-1 mb-2">
+            <span class="text-gray-700">Direccion</span>
+            <input class="form-input mt-1 block w-full" v-model="client.clienteDireccion" placeholder="Direccion ..." />
+          </label>
 
         <hr />
         <button type="button" @click.prevent="saveForm()"

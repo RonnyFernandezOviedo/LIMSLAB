@@ -183,6 +183,8 @@ export const ADD_METHOD = gql`
                 name
                 description
                 keyword
+                min
+                max
             }
 
             ... on OperationError {
@@ -202,6 +204,8 @@ export const EDIT_METHOD = gql`
                 name
                 description
                 keyword
+                min
+                max
             }
 
             ... on OperationError {

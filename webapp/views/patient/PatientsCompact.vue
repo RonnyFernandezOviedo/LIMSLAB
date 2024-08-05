@@ -125,9 +125,9 @@ const updatePatient = (patient: IPatient) => {
     <div class="grid grid-cols-12 gap-4 mt-2">
       <section v-motion :initial="{ opacity: 0, y: 100 }" :enter="{ opacity: 1, y: 0, scale: 1 }"
         :variants="{ custom: { scale: 2 } }" :delay="400"
-        class="col-span-3 h-screen overflow-y-scroll overscroll-contain patient-scroll">
+        class="col-span-2 h-screen overflow-y-scroll overscroll-contain patient-scroll">
         <div v-if="fetchingPatients" class="py-4 text-center bg-white w-full mb-1 rounded-sm shadow border">
-          <LoadingMessage message="Buscando pacientes ..." />
+          <LoadingMessage message="Buscando solicitudes ..." />
         </div>
         <div v-else>
           <a v-for="pt in patients" :key="pt.patientId" @click="selectPatient(pt)" :class="[
@@ -139,11 +139,6 @@ const updatePatient = (patient: IPatient) => {
                 <span>{{ pt.patientId }}</span>
               </div>
               <div class="text-sm text-gray-500 flex justify-between">
-                <span>{{ getPatientFullName(pt) }}</span>
-                <span>{{ pt.clientPatientId }}</span>
-              </div>
-              <div class="text-sm text-gray-500 flex justify-between">
-                <span>{{ pt?.client?.district?.province?.name }}</span>
                 <span>{{ pt?.client?.name }}</span>
               </div>
             </div>
@@ -155,7 +150,7 @@ const updatePatient = (patient: IPatient) => {
       </section>
 
       <section v-if="isPatientSelected" v-motion :initial="{ opacity: 0, y: -100 }"
-        :enter="{ opacity: 1, y: 0, scale: 1 }" :variants="{ custom: { scale: 2 } }" :delay="400" class="col-span-9">
+        :enter="{ opacity: 1, y: 0, scale: 1 }" :variants="{ custom: { scale: 2 } }" :delay="400" class="col-span-10">
         <!-- PatientInfo -->
 
         <PatientInfo @editPatient="() => (showModal = true)" />
@@ -181,7 +176,7 @@ const updatePatient = (patient: IPatient) => {
     <!-- Patient Edit Form Modal -->
     <modal v-if="showModal" @close="showModal = false" :contentWidth="'w-3/6'">
       <template v-slot:header>
-        <h3>Patient Form</h3>
+        <h3>Registro solicitud</h3>
       </template>
 
       <template v-slot:body>

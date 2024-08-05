@@ -2260,7 +2260,6 @@ export type PatientIdentificationType = {
 
 export type PatientInputType = {
   age?: InputMaybe<Scalars['Int']['input']>;
-  ageDobEstimated?: InputMaybe<Scalars['Boolean']['input']>;
   clientPatientId: Scalars['String']['input'];
   clientUid: Scalars['String']['input'];
   consentSms?: InputMaybe<Scalars['Boolean']['input']>;
@@ -2284,7 +2283,6 @@ export type PatientType = {
   __typename?: 'PatientType';
   active: Scalars['Boolean']['output'];
   age?: Maybe<Scalars['Int']['output']>;
-  ageDobEstimated: Scalars['Boolean']['output'];
   client?: Maybe<ClientType>;
   clientPatientId: Scalars['String']['output'];
   clientUid: Scalars['String']['output'];
@@ -8172,12 +8170,7 @@ export const AddAnalysisRequestDocument = gql`
         uid
         firstName
         lastName
-        clientPatientId
-        gender
         dateOfBirth
-        age
-        ageDobEstimated
-        consentSms
       }
       client {
         uid
@@ -9032,12 +9025,7 @@ export const GetAllSamplesDocument = gql`
           uid
           firstName
           lastName
-          clientPatientId
-          gender
           dateOfBirth
-          age
-          ageDobEstimated
-          consentSms
         }
         client {
           uid
@@ -9152,12 +9140,7 @@ export const GetAnalysesRequestsByPatientUidDocument = gql`
       uid
       firstName
       lastName
-      clientPatientId
-      gender
       dateOfBirth
-      age
-      ageDobEstimated
-      consentSms
     }
     client {
       uid
@@ -9232,12 +9215,7 @@ export const GetAnalysesRequestsByClientUidDocument = gql`
       uid
       firstName
       lastName
-      clientPatientId
-      gender
       dateOfBirth
-      age
-      ageDobEstimated
-      consentSms
     }
     client {
       uid
@@ -9446,12 +9424,7 @@ export const GetSampleByUidDocument = gql`
         uid
         firstName
         lastName
-        clientPatientId
-        gender
         dateOfBirth
-        age
-        ageDobEstimated
-        consentSms
       }
       client {
         uid
@@ -9801,7 +9774,6 @@ export const AddClientDocument = gql`
       __typename
       uid
       name
-      code
       districtUid
       district {
         uid
@@ -9835,7 +9807,6 @@ export const EditClientDocument = gql`
       __typename
       uid
       name
-      code
       districtUid
       district {
         uid
@@ -11627,15 +11598,11 @@ export const AddPatientDocument = gql`
     ... on PatientType {
       __typename
       uid
-      clientPatientId
       patientId
       firstName
       middleName
       lastName
-      age
-      gender
       dateOfBirth
-      ageDobEstimated
       client {
         uid
         name
@@ -11692,15 +11659,11 @@ export const EditPatientDocument = gql`
     ... on PatientType {
       __typename
       uid
-      clientPatientId
       patientId
       firstName
       middleName
       lastName
-      age
-      gender
       dateOfBirth
-      ageDobEstimated
       client {
         uid
         name
@@ -11769,15 +11732,11 @@ export const GetAllPatientsDocument = gql`
     }
     items {
       uid
-      clientPatientId
       patientId
       firstName
       middleName
       lastName
-      age
-      gender
       dateOfBirth
-      ageDobEstimated
       clientUid
       client {
         uid
@@ -11834,15 +11793,11 @@ export const SearchPatientsDocument = gql`
     query searchPatients($queryString: String!) {
   patientSearch(queryString: $queryString) {
     uid
-    clientPatientId
     patientId
     firstName
     middleName
     lastName
-    age
-    gender
     dateOfBirth
-    ageDobEstimated
     client {
       uid
       name
@@ -11891,15 +11846,11 @@ export const GetPatientByUidDocument = gql`
     query getPatientByUid($uid: String!) {
   patientByUid(uid: $uid) {
     uid
-    clientPatientId
     patientId
     firstName
     middleName
     lastName
-    age
-    gender
     dateOfBirth
-    ageDobEstimated
     client {
       uid
       name

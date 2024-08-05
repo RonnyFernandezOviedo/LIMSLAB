@@ -12,6 +12,20 @@ from api.gql.storage.types import StorageContainerType
 from api.gql.user.types import UserType
 
 
+
+
+@strawberry.type
+class AnalysisCodingType:
+    uid: str
+    analysis_uid: str
+    coding_standard_uid: str
+    sample_type_uid: str
+    name: str
+    code: str
+    description: str | None = None
+
+
+
 @strawberry.type
 class CodingStandardType:
     uid: str
@@ -184,6 +198,7 @@ class AnalysisType:
     hidden: bool | None
     internal_use: bool | None
     active: bool | None
+    analysis_limits: Optional[List["AnalysisCodingType"]]
     #
     created_by_uid: str | None
     created_by: UserType | None
@@ -196,14 +211,15 @@ class AnalysisType:
 @strawberry.type
 class AnalysisMappingType:
     uid: str
+    name: str 
+    code: str
+    sample_type_uid: str
     analysis_uid: str
-    analysis: AnalysisType | None
+    #analysis: AnalysisType | None
     coding_standard_uid: str
     coding_standard: CodingStandardType | None
-    name: str | None
+    sample_type: SampleTypeTyp | None
     description: str | None
-    code: str
-    #
     created_by_uid: str | None
     created_by: UserType | None
     created_at: datetime | None
@@ -224,6 +240,7 @@ class ProfileType:
     analyses: Optional[List[AnalysisType]]
     sample_types: Optional[List[SampleTypeTyp]]
     active: bool
+
     #
     created_by_uid: str | None
     created_by: UserType | None

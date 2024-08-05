@@ -10,7 +10,6 @@ export interface ICodingStandard {
     description?: string;
 }
 
-
 export interface ISampleType {
     uid?: string;
     name?: string;
@@ -47,6 +46,7 @@ export interface IAnalysisService {
     requiredVerifications: number;
     selfVerification: boolean;
     checked?: boolean;
+    analysisLimits?: IAnalysisLimits[];
 }
 
 export interface IAnalysisResult {
@@ -175,6 +175,7 @@ export interface IAnalysisRequest {
     clientRequestId?: string;
     priority?: number;
     createdAt?: Date;
+    //dateCollected?: Date;
 }
 
 export interface IQCSet {
@@ -248,3 +249,11 @@ export interface IAnalysisSpecification {
     ageMax?: number;
     methodUid?: string;
 }
+//add by ronny
+export interface IAnalysisLimits {
+    uid?: string;
+    name?: string;
+    code?: string;
+    sampleTypeUid?: string;
+}
+

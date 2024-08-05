@@ -65,7 +65,9 @@
   function addMethod(): void {
     const payload = { 
       name: form?.name, 
-      keyword: form?.keyword, 
+      keyword: form?.keyword,
+      min: form?.min,
+      max: form?.max, 
       description: form?.description,
       instruments: selectedIntsruments.value?.map((i) => i.uid), 
       analyses: selectedAnalyses.value?.map((i) => i.uid),
@@ -80,6 +82,8 @@
     const payload = { 
       name: form?.name, 
       keyword: form?.keyword, 
+      min:form?.min,
+      max:form?.max,
       description: form?.description, 
       instruments: selectedIntsruments.value?.map((i) => i.uid), 
       analyses: selectedAnalyses.value?.map((i) => i.uid),
@@ -114,11 +118,11 @@
         />
       </label>
       <label class="block col-span-1 mb-2">
-        <span class="text-gray-700">keyword</span>
+        <span class="text-gray-700">Codigo</span>
         <input
           class="form-input mt-1 block w-full"
           v-model="form.keyword"
-          placeholder="Keyword ..."
+          placeholder="Codigo ..."
         />
       </label>
     </div>
@@ -147,6 +151,30 @@
         track-by="uid">
         </VueMultiselect>
       </label>
+
+      <div class="grid grid-cols-3 gap-x-4 mb-4">
+      <label class="block col-span-1 mb-2">
+        <span class="text-gray-700">Rango min</span>
+        <input
+          class="form-input mt-1 block w-full"
+          v-model="form.min"
+          placeholder="min ..."
+        />
+      </label>
+      <label class="block col-span-1 mb-2">
+        <span class="text-gray-700">Rango max</span>
+        <input
+          class="form-input mt-1 block w-full"
+          v-model="form.max"
+          placeholder="max ..."
+        />
+      </label>
+    </div>
+
+
+
+
+
       <label class="block col-span-2 mb-2">
         <span class="text-gray-700">Descripcion</span>
         <textarea
